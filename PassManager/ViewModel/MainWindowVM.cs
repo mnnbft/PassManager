@@ -49,8 +49,8 @@ namespace PassManager.ViewModel
                 if(item != null)
                 {
                     SelectedPasswordString = new string('●', item.Password.Length);
+                    OnPropertyChanged("PasswordSelectedItem");
                 }
-                OnPropertyChanged("PasswordSelectedItem");
                 Current_Page = PI_Page;
             }
         }

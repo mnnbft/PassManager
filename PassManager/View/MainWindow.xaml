@@ -46,6 +46,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Border Grid.Column="0" Grid.Row="1" BorderBrush="Gray" BorderThickness="0,0,2,0" Margin="5">
@@ -53,9 +54,9 @@
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type m:TreeViewParam}" ItemsSource="{Binding Child}">
                         <Grid>
-                            <TextBlock Text="{Binding Title}" />
+                            <TextBlock Text="{Binding Title}" Style="{x:Null}"/>
                             <TextBox x:Name="editTextBox" Visibility="Hidden" MinWidth="100"
-                                       Text="{Binding Title}">
+                                       Text="{Binding Title}" Style="{x:Null}">
                                 <TextBox.InputBindings>
                                     <KeyBinding Key="Return" Command="{Binding RelativeSource={RelativeSource FindAncestor,
                                                                                AncestorType={x:Type Controls:MetroWindow}, AncestorLevel=1},
@@ -105,7 +106,12 @@
         </Border>
 
         <Controls:TransitioningContentControl Grid.Column="1" Grid.Row="1" Transition="LeftReplace" Content="{Binding Current_Page}" />
-        
+
+        <StatusBar Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Height="20">
+            <StatusBarItem>
+                <TextBlock Text="aaaa" Style="{x:Null}"/>
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Controls:MetroWindow>
     
