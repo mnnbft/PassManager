@@ -23,7 +23,11 @@ namespace PassManager.View
         public PasswordInfo()
         {
             InitializeComponent();
-            this.DataContext = Application.Current.MainWindow.DataContext;
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.DataContext = Window.GetWindow(this).DataContext;
         }
     }
 }

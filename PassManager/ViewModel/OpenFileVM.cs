@@ -70,15 +70,22 @@ namespace PassManager.ViewModel
             get
             {
                 return new DelegateCommand(
-                    delegate
+                    delegate (object obj)
                     {
+                        var MainWindow = System.Windows.Window.GetWindow((System.Windows.Controls.UserControl)obj);
+                        var WindowDC = (MainWindowVM)MainWindow.DataContext;
+
                         var CreatedItems = PasswordGenM.FileDecrypt(OpenFilePath, OpenKeyPath, Password);
-                        if (CreatedItems == null) return;
+                        if (CreatedItems == null)
+                            return;
+                        else
+                            WindowDC.OpenFileName = System.IO.Path.GetFileName(OpenFilePath);
 
                         var CreatedItems2 = OpenFileM.OpenCreateItems(CreatedItems);
-                        MainWindowVM.PasswordItems.Clear();
+
+                        WindowDC.PasswordItems.Clear();
                         foreach (var item in CreatedItems2)
-                            MainWindowVM.PasswordItems.Add(item);
+                            WindowDC.PasswordItems.Add(item);
                     });
             }
         }

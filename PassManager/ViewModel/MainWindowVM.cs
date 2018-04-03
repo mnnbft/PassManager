@@ -30,8 +30,18 @@ namespace PassManager.ViewModel
         }
 
         public static int CurrentKey = 0;
-        public static ObservableCollection<TreeViewParam> _PasswordItems = new ObservableCollection<TreeViewParam>();
-        public static ObservableCollection<TreeViewParam> PasswordItems
+        private string _OpenFileName;
+        public string OpenFileName
+        {
+            get { return _OpenFileName; }
+            set
+            {
+                _OpenFileName = value;
+                OnPropertyChanged("OpenFileName");
+            }
+        }
+        public ObservableCollection<TreeViewParam> _PasswordItems = new ObservableCollection<TreeViewParam>();
+        public ObservableCollection<TreeViewParam> PasswordItems
         {
             get { return _PasswordItems; }
             set { _PasswordItems = value; }

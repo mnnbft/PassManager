@@ -40,6 +40,7 @@
             </i:Interaction.Behaviors>
         </PasswordBox>
 
-        <Button Grid.Column="2" Grid.Row="3" Content="ＯＫ" Command="{Binding CommandOK}" />
+        <Button Grid.Column="2" Grid.Row="3" Content="ＯＫ" Command="{Binding CommandOK}" 
+                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1}}"/>
     </Grid>
 </UserControl>
