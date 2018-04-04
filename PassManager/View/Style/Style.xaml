@@ -3,17 +3,37 @@
                     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                     xmlns:local="clr-namespace:PassManager.View.Style">
 
-    <Style TargetType="TextBox">
-        <Setter Property="Margin" Value="8" />
+    <Style TargetType="TextBlock" BasedOn="{StaticResource ResourceKey={x:Type TextBlock}}">
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="FontSize" Value="15" />
+    </Style>
+    <Style TargetType="TextBox" BasedOn="{StaticResource ResourceKey={x:Type TextBox}}">
+        <Setter Property="Margin"   Value="5" />
+        <Setter Property="FontSize" Value="15" />
+    </Style>
+    <Style TargetType="Button" BasedOn="{StaticResource ResourceKey={x:Type Button}}">
+        <Setter Property="Background" Value="Black" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="Gray" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Margin" Value="5,0,5,0" />
+    </Style>
+    <Style TargetType="ToggleButton" BasedOn="{StaticResource ResourceKey={x:Type ToggleButton}}">
+        <Setter Property="Background" Value="Black" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="Gray" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Margin" Value="5,0,5,0" />
+    </Style>
+    <Style TargetType="PasswordBox" BasedOn="{StaticResource ResourceKey={x:Type PasswordBox}}">
+        <Setter Property="Margin" Value="5" />
         <Setter Property="FontSize" Value="18" />
     </Style>
-    <Style TargetType="PasswordBox">
-        <Setter Property="Margin" Value="8" />
-        <Setter Property="FontSize" Value="18" />
+    <Style TargetType="ComboBox" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
+        <Setter Property="Margin" Value="5" />
     </Style>
-    <Style TargetType="TextBlock">
-        <Setter Property="Margin"   Value="8" />
-        <Setter Property="FontSize" Value="18" />
+    <Style TargetType="CheckBox" BasedOn="{StaticResource ResourceKey={x:Type CheckBox}}">
+        <Setter Property="Margin" Value="5" />
     </Style>
     <Style x:Key="DefaultGridStyle" TargetType="Grid">
         <Setter Property="Margin" Value="5" />

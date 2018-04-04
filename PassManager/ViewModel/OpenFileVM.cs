@@ -79,13 +79,20 @@ namespace PassManager.ViewModel
                         if (CreatedItems == null)
                             return;
                         else
+                        {
+                            var CreatedItems2 = OpenFileM.OpenCreateItems(CreatedItems);
+                            WindowDC.PasswordItems.Clear();
+
+                            WindowDC.PasswordItems.Add(new TreeViewParam()
+                            {
+                                Key = -1,
+                                Title = System.IO.Path.GetFileNameWithoutExtension(OpenFilePath)
+                            });
+                            foreach (var item in CreatedItems2)
+                                WindowDC.PasswordItems.Add(item);
+
                             WindowDC.OpenFileName = System.IO.Path.GetFileName(OpenFilePath);
-
-                        var CreatedItems2 = OpenFileM.OpenCreateItems(CreatedItems);
-
-                        WindowDC.PasswordItems.Clear();
-                        foreach (var item in CreatedItems2)
-                            WindowDC.PasswordItems.Add(item);
+                        }
                     });
             }
         }

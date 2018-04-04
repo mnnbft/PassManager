@@ -37,11 +37,12 @@
             <v:Setting />
         </DataTemplate>
     </Controls:MetroWindow.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="153*" />
+            <ColumnDefinition Width="427*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -94,20 +95,25 @@
                 <TreeView.InputBindings>
                     <KeyBinding Key="F2" Command="{Binding CommandRename}" />
                 </TreeView.InputBindings>
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                        <Setter Property="IsExpanded" Value="True" />
+                    </Style>
+                </TreeView.ItemContainerStyle>
             </TreeView>
         </Border>
 
-        <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" BorderBrush="Gray" BorderThickness="0,0,0,2" Margin="5">
+        <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" BorderBrush="Gray" BorderThickness="0,0,0,2" Margin="5">
             <Controls:MetroAnimatedTabControl  SelectedIndex="{Binding TabPage}" TabStripPlacement="Top">
-                <TabItem Header="リスト閲覧" />
+                <TabItem Header="ファイルを開く" />
                 <TabItem Header="新規作成" />
                 <TabItem Header="設定" />
             </Controls:MetroAnimatedTabControl>
         </Border>
 
-        <Controls:TransitioningContentControl Grid.Column="1" Grid.Row="1" Transition="LeftReplace" Content="{Binding Current_Page}" />
+        <Controls:TransitioningContentControl Grid.Column="1" Grid.Row="1" Transition="LeftReplace" Content="{Binding Current_Page}" Grid.ColumnSpan="2" />
 
-        <StatusBar Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Height="25">
+        <StatusBar Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Height="25">
             <StatusBarItem>
                 <Border BorderThickness="0,0,1,0" BorderBrush="DarkGray" Padding="4,0,4,0">
                     <TextBlock Text="{Binding OpenFileName}" Style="{x:Null}"/>

@@ -57,7 +57,7 @@ namespace PassManager.Model
                 {
                     case 0:
                         if (!int.TryParse(p, out Key))
-                            Key = -1;
+                            Key = -999;
                         break;
                     case 1:
                         Title = p;

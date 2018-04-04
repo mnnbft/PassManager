@@ -38,7 +38,12 @@ namespace PassManager.ViewModel
             {
                 _OpenFileName = value;
                 OnPropertyChanged("OpenFileName");
+                OnPropertyChanged("OpenFileFlg");
             }
+        }
+        public bool OpenFileFlg
+        {
+            get { return !string.IsNullOrEmpty(OpenFileName); }
         }
         public ObservableCollection<TreeViewParam> _PasswordItems = new ObservableCollection<TreeViewParam>();
         public ObservableCollection<TreeViewParam> PasswordItems
@@ -56,7 +61,7 @@ namespace PassManager.ViewModel
                 IsInEditMode = false;
 
                 var item = PasswordSelectedItem as DataParam;
-                if(item != null)
+                if (item != null)
                 {
                     SelectedPasswordString = new string('●', item.Password.Length);
                     OnPropertyChanged("PasswordSelectedItem");
@@ -221,7 +226,7 @@ namespace PassManager.ViewModel
                             var ReCreatedItems = MainWindowM.ReCreateItems(PasswordSelectedItem, PasswordItems.ToList(), AddItem);
 
                             PasswordItems.Clear();
-                            foreach(var item in ReCreatedItems)
+                            foreach (var item in ReCreatedItems)
                                 PasswordItems.Add(item);
                         }
                         else
@@ -229,6 +234,11 @@ namespace PassManager.ViewModel
                             PasswordItems.Add(AddItem);
                             AddItem.ParentKey = null;
                         }
+                    },
+                    delegate
+                    {
+                        if (!OpenFileFlg) return false;
+                        return true;
                     });
             }
         }
@@ -240,8 +250,13 @@ namespace PassManager.ViewModel
                     delegate
                     {
                         IsInEditMode = true;
-                        if(PasswordSelectedItem != null)
+                        if (PasswordSelectedItem != null)
                             BeforeName = PasswordSelectedItem.Title;
+                    },
+                    delegate
+                    {
+                        if (!OpenFileFlg) return false;
+                        return true;
                     });
             }
         }
@@ -265,6 +280,11 @@ namespace PassManager.ViewModel
                     delegate
                     {
                         PasswordItems.Remove(PasswordSelectedItem);
+                    },
+                    delegate
+                    {
+                        if (!OpenFileFlg) return false;
+                        return true;
                     });
             }
         }
