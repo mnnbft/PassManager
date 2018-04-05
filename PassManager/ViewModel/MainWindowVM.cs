@@ -62,10 +62,9 @@ namespace PassManager.ViewModel
 
                 var item = PasswordSelectedItem as DataParam;
                 if (item != null)
-                {
                     SelectedPasswordString = new string('●', item.Password.Length);
-                    OnPropertyChanged("PasswordSelectedItem");
-                }
+
+                OnPropertyChanged("PasswordSelectedItem");
                 Current_Page = PI_Page;
             }
         }
@@ -171,7 +170,7 @@ namespace PassManager.ViewModel
             }
         }
 
-        public DelegateCommand CommandInit
+        public DelegateCommand CommandLoaded
         {
             get
             {

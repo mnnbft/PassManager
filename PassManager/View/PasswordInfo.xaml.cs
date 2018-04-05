@@ -24,10 +24,5 @@ namespace PassManager.View
         {
             InitializeComponent();
         }
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            this.DataContext = Window.GetWindow(this).DataContext;
-        }
     }
 }

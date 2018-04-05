@@ -11,6 +11,8 @@
         xmlns:local="clr-namespace:PassManager.View"
         mc:Ignorable="d"
         Title="PassManager" 
+        GlowBrush="{DynamicResource AccentColorBrush}"
+        WindowStartupLocation="CenterScreen"
         Height="700" Width="800">
 
     <Controls:MetroWindow.DataContext>
@@ -19,7 +21,7 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding CommandInit}" />
+            <i:InvokeCommandAction Command="{Binding CommandLoaded}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 

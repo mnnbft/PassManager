@@ -3,29 +3,34 @@
                     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                     xmlns:local="clr-namespace:PassManager.View.Style">
 
-    <Style TargetType="TextBlock" BasedOn="{StaticResource ResourceKey={x:Type TextBlock}}">
+    <Style TargetType="TextBlock">
         <Setter Property="Margin" Value="5" />
         <Setter Property="FontSize" Value="15" />
     </Style>
-    <Style TargetType="TextBox" BasedOn="{StaticResource ResourceKey={x:Type TextBox}}">
+    <Style TargetType="TextBox">
         <Setter Property="Margin"   Value="5" />
         <Setter Property="FontSize" Value="15" />
     </Style>
-    <Style TargetType="Button" BasedOn="{StaticResource ResourceKey={x:Type Button}}">
+    <Style TargetType="Button">
         <Setter Property="Background" Value="Black" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="Gray" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="Margin" Value="5,0,5,0" />
     </Style>
-    <Style TargetType="ToggleButton" BasedOn="{StaticResource ResourceKey={x:Type ToggleButton}}">
+    <Style TargetType="ToggleButton">
         <Setter Property="Background" Value="Black" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="Gray" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="Margin" Value="5,0,5,0" />
+        <Style.Triggers>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="DarkGray" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
-    <Style TargetType="PasswordBox" BasedOn="{StaticResource ResourceKey={x:Type PasswordBox}}">
+    <Style TargetType="PasswordBox">
         <Setter Property="Margin" Value="5" />
         <Setter Property="FontSize" Value="18" />
     </Style>
