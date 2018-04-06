@@ -117,9 +117,7 @@
 
         <StatusBar Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Height="25">
             <StatusBarItem>
-                <Border BorderThickness="0,0,1,0" BorderBrush="DarkGray" Padding="4,0,4,0">
-                    <TextBlock Text="{Binding OpenFileName}" Style="{x:Null}"/>
-                </Border>
+                <TextBlock Text="{Binding OpenFileName}" Style="{x:Null}"/>
             </StatusBarItem>
         </StatusBar>
     </Grid>

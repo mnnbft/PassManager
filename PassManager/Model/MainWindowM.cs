@@ -24,7 +24,7 @@ namespace PassManager.Model
                     y.Add(AddItem);
                 return y;
             };
-            foreach(var item in Items)
+            foreach (var item in Items)
             {
                 item.Child = f(item, item.Child);
                 rtItems.Add(item);
@@ -34,59 +34,30 @@ namespace PassManager.Model
         }
     }
 
+    [Serializable]
     public class TreeViewParam
     {
         public string Title { get; set; }
-        public int Key;
-        public int? ParentKey;
+        public int Key { get; set; }
+        public int? ParentKey { get; set; }
         public List<TreeViewParam> Child { get; set; } = new List<TreeViewParam>();
     }
-    public class DataParam : TreeViewParam
+
+    [Serializable]
+    public class BaseParam : TreeViewParam
     {
-        public DataParam()
-        {
-        }
-        public DataParam(string param)
-        {
-            int i = 0;
-            char[] split = ",".ToCharArray();
-
-            foreach (var p in param.Split(split))
-            {
-                switch (i)
-                {
-                    case 0:
-                        if (!int.TryParse(p, out Key))
-                            Key = -999;
-                        break;
-                    case 1:
-                        Title = p;
-                        break;
-                    case 2:
-                        UserName = p;
-                        break;
-                    case 3:
-                        Password = new SecureString();
-                        foreach (var s in p.ToCharArray())
-                        {
-                            Password.AppendChar(s);
-                        }
-                        break;
-                    case 4:
-                        Supplement = p;
-                        break;
-                    case 5:
-                        int tmp;
-                        ParentKey = int.TryParse(p, out tmp) ? tmp : (int?)null;
-
-                        break;
-                }
-                i++;
-            }
-        }
-
         public string UserName { get; set; }
-        public SecureString Password;
         public string Supplement { get; set; }
+    }
+
+    [Serializable]
+    public class SaveParam : BaseParam
+    {
+        public string PasswordString { get; set; }
+    }
+
+    public class DataParam : BaseParam
+    {
+        public SecureString Password { get; set; }
     }
 }

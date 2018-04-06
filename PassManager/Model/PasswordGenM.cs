@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace PassManager.Model
 {
+    using Common;
     using System.IO;
     using System.IO.Compression;
     using System.Security;
     using System.Security.Cryptography;
     using System.Runtime.InteropServices;
+    using System.Runtime.Serialization.Formatters.Binary;
 
     public enum PassType : byte
     {
@@ -113,10 +115,7 @@ namespace PassManager.Model
 
         public static bool FileEncrypt(string filePath, string keyPath, SecureString password, DataParam[] nowData_a, DataParam[] addData_a)
         {
-            int len;
             IntPtr bstr;
-            byte[] buffer = new byte[4096];
-            byte[] fileBuffer = new byte[0];
 
             using (FileStream outKeyFS = new FileStream(keyPath, FileMode.Create, FileAccess.Write))
             {
@@ -127,29 +126,6 @@ namespace PassManager.Model
                     sw.Write(BCHash);
                     Marshal.ZeroFreeBSTR(bstr);
                 }
-            }
-
-            foreach(var d in nowData_a)
-            {
-                bstr = Marshal.SecureStringToBSTR(d.Password);
-                var ParentKeyStr = d.ParentKey.HasValue ? d.ParentKey.Value.ToString() : "NULL";
-
-                fileBuffer = fileBuffer.Concat(Encoding.Unicode
-                            .GetBytes(string.Format("{0},{1},{2},{3},{4},{5}" + Environment.NewLine, 
-                                      d.Key, d.Title, d.UserName, Marshal.PtrToStringUni(bstr), d.Supplement, ParentKeyStr))).ToArray();
-
-                Marshal.ZeroFreeBSTR(bstr);
-            }
-            foreach(var d in addData_a)
-            {
-                bstr = Marshal.SecureStringToBSTR(d.Password);
-                var ParentKeyStr = d.ParentKey.HasValue ? d.ParentKey.Value.ToString() : "NULL";
-
-                fileBuffer = fileBuffer.Concat(Encoding.Unicode
-                            .GetBytes(string.Format("{0},{1},{2},{3},{4},{5}" + Environment.NewLine, 
-                                      d.Key, d.Title, d.UserName, Marshal.PtrToStringUni(bstr), d.Supplement, ParentKeyStr))).ToArray();
-
-                Marshal.ZeroFreeBSTR(bstr);
             }
 
             using (FileStream outFileFs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
@@ -177,18 +153,36 @@ namespace PassManager.Model
 
                     using (CryptoStream cse = new CryptoStream(outFileFs, encryptor, CryptoStreamMode.Write))
                     {
+                        var bf = new BinaryFormatter();
                         using (DeflateStream ds = new DeflateStream(cse, CompressionMode.Compress))
                         {
                             outFileFs.Write(salt, 0, 32);
                             outFileFs.Write(rij.IV, 0, 32);
 
-                            using (MemoryStream ms = new MemoryStream(fileBuffer))
+                            var WriteObject = new List<SaveParam>();
+                            Func<DataParam[], List<SaveParam>> f = x =>
                             {
-                                while((len = ms.Read(buffer, 0, 4096)) > 0)
+                                var rtItems = new List<SaveParam>();
+                                IntPtr xBstr;
+
+                                foreach (var y in x)
                                 {
-                                    ds.Write(buffer, 0, len);
+                                    var obj = Common.Copy(y, new SaveParam());
+                                    if(y.Password.Length > -1)
+                                    {
+                                        xBstr = Marshal.SecureStringToBSTR(y.Password);
+                                        obj.PasswordString = Marshal.PtrToStringUni(xBstr);
+                                        Marshal.ZeroFreeBSTR(bstr);
+                                    }
+                                    rtItems.Add(obj);
                                 }
-                            }
+
+                                return rtItems;
+                            };
+                            WriteObject.AddRange(f(nowData_a));
+                            WriteObject.AddRange(f(addData_a));
+
+                            bf.Serialize(ds, WriteObject);
                         }
                     }
                 }
@@ -199,10 +193,8 @@ namespace PassManager.Model
         public static DataParam[] FileDecrypt(string filePath, string keyPath, SecureString password)
         {
             IntPtr bstr;
-            int len;
-            byte[] fileBuffer = new byte[4096];
-            var rtBuffer = new List<byte>();
-            string rtString = string.Empty;
+            List<SaveParam> ReadObject;
+            List<DataParam> rtItems = new List<DataParam>(); ;
 
             if (string.Compare(Path.GetExtension(filePath), ".db", true) != 0)
             {
@@ -285,38 +277,39 @@ namespace PassManager.Model
 
                             using (CryptoStream cse = new CryptoStream(readKeyFS, decryptor, CryptoStreamMode.Read))
                             {
+                                var bf = new BinaryFormatter();
                                 using (DeflateStream ds = new DeflateStream(cse, CompressionMode.Decompress))
                                 {
-                                    while ((len = ds.Read(fileBuffer, 0, 4096)) > 0)
+                                    try
                                     {
-                                        outKeyMS.Write(fileBuffer, 0, len);
+                                        ReadObject = (List<SaveParam>)bf.Deserialize(ds);
+                                        foreach(var r in ReadObject)
+                                            rtItems.Add(Common.Copy(r, new DataParam()));
                                     }
-                                    rtBuffer.AddRange(outKeyMS.ToArray());
+                                    catch(Exception e)
+                                    {
+                                        System.Windows.MessageBox.Show(string.Format("{0}", e.Message)
+                                            ,"Error", System.Windows.MessageBoxButton.OK);
+
+                                        return null;
+                                    }
                                 }
                             }
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    System.Windows.MessageBox.Show("keyファイルが見つかりません"
+                    System.Windows.MessageBox.Show(string.Format("{0}", e.Message)
                         ,"Error", System.Windows.MessageBoxButton.OK);
 
                     return null;
                 }
             }
-            var rtItems = new List<DataParam>();
-            using (StringReader sr = new StringReader(Encoding.Unicode.GetString(rtBuffer.ToArray())))
-            {
-                while (sr.Peek() > -1)
-                {
-                    var tmpItem = new DataParam(sr.ReadLine());
-                    if (ViewModel.MainWindowVM.CurrentKey <= tmpItem.Key)
-                        ViewModel.MainWindowVM.CurrentKey = tmpItem.Key + 1;
-                    rtItems.Add(tmpItem);
-                }
-            }
-            return rtItems.ToArray();
+            if (rtItems.Count != 0)
+                return rtItems.ToArray();
+            else
+                return null;
         }
     }
 }

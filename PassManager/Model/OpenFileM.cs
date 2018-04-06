@@ -16,7 +16,7 @@ namespace PassManager.Model
             f = x =>
             {
                 var rtItem = new List<DataParam>();
-                var FileItems2 = FileItems.Where(para => para.ParentKey == x.Key).ToList();
+                var FileItems2 = FileItems.Where(i => i.ParentKey == x.Key).ToList();
                 foreach (var t in FileItems2)
                 {
                     t.Child.AddRange(f(t));
@@ -25,7 +25,7 @@ namespace PassManager.Model
                 return rtItem;
             };
 
-            foreach (var t in FileItems.Where(para => !para.ParentKey.HasValue))
+            foreach (var t in FileItems.Where(i => !i.ParentKey.HasValue))
             {
                 t.Child.AddRange(f(t));
                 rtItems.Add(t);

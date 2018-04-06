@@ -69,6 +69,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behavior\SecurePasswordBehavior.cs" />
+    <Compile Include="Common\Common.cs" />
     <Compile Include="Common\DelegateCommand.cs" />
     <Compile Include="Common\ViewModelBase.cs" />
     <Compile Include="Model\MainWindowM.cs" />
