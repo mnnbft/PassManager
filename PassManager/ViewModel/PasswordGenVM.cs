@@ -148,6 +148,8 @@ namespace PassManager.ViewModel
                             var window = Window.GetWindow((UserControl)obj);
                             var dc = (MainWindowVM)window.DataContext;
 
+                            AddItem.Key = dc.CurrentKey++;
+
                             AddItem.ParentKey = dc.PasswordSelectedItem.Key;
                             var ReCreatedItems = MainWindowM.ReCreateItems(dc.PasswordSelectedItem, dc.PasswordItems.ToList(), AddItem);
 

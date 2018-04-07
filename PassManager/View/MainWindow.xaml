@@ -35,6 +35,9 @@
             <v:Setting />
         </DataTemplate>
     </Controls:MetroWindow.Resources>
+    <Controls:MetroWindow.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding CommandFileSave}" />
+    </Controls:MetroWindow.InputBindings>
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">

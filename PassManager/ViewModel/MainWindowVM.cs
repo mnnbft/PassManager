@@ -29,7 +29,7 @@ namespace PassManager.ViewModel
             Current_Page = PO_Page;
         }
 
-        public static int CurrentKey = 0;
+        public int CurrentKey = 0;
         private string _OpenFileName;
         public string OpenFileName
         {
