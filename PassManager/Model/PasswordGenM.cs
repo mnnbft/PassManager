@@ -113,7 +113,7 @@ namespace PassManager.Model
             return password;
         }
 
-        public static bool FileEncrypt(string filePath, string keyPath, SecureString password, DataParam[] nowData_a, DataParam[] addData_a)
+        public static bool FileEncrypt(string filePath, string keyPath, SecureString password, DataParam[] Data_a)
         {
             IntPtr bstr;
 
@@ -160,27 +160,33 @@ namespace PassManager.Model
                             outFileFs.Write(rij.IV, 0, 32);
 
                             var WriteObject = new List<SaveParam>();
-                            Func<DataParam[], List<SaveParam>> f = x =>
+                            Func<DataParam[], DataParam[]> f = null;
+                            f = x =>
                             {
-                                var rtItems = new List<SaveParam>();
-                                IntPtr xBstr;
+                                var rtItems = new List<DataParam>();
 
-                                foreach (var y in x)
+                                foreach(var y in x)
                                 {
-                                    var obj = Common.Copy(y, new SaveParam());
-                                    if(y.Password.Length > -1)
-                                    {
-                                        xBstr = Marshal.SecureStringToBSTR(y.Password);
-                                        obj.PasswordString = Marshal.PtrToStringUni(xBstr);
-                                        Marshal.ZeroFreeBSTR(bstr);
-                                    }
-                                    rtItems.Add(obj);
+                                    if (y.Child.Count > 0)
+                                        rtItems.AddRange(f(y.Child.Select(i => Common.Copy(i, new DataParam())).ToArray()));
+                                    y.Child.Clear();
+                                    rtItems.Add(y);
                                 }
-
-                                return rtItems;
+                                return rtItems.ToArray();
                             };
-                            WriteObject.AddRange(f(nowData_a));
-                            WriteObject.AddRange(f(addData_a));
+
+                            foreach (var d in f(Data_a).OrderBy(i => i.Key))
+                            {
+                                var obj = Common.Copy(d, new SaveParam());
+
+                                if(d.Password != null)
+                                {
+                                    bstr = Marshal.SecureStringToBSTR(d.Password);
+                                    obj.PasswordString = Marshal.PtrToStringUni(bstr);
+                                    Marshal.ZeroFreeBSTR(bstr);
+                                }
+                                WriteObject.Add(obj);
+                            }
 
                             bf.Serialize(ds, WriteObject);
                         }
@@ -284,7 +290,19 @@ namespace PassManager.Model
                                     {
                                         ReadObject = (List<SaveParam>)bf.Deserialize(ds);
                                         foreach(var r in ReadObject)
-                                            rtItems.Add(Common.Copy(r, new DataParam()));
+                                        {
+                                            var addItem = Common.Copy(r, new DataParam());
+                                            addItem.Password = new SecureString();
+
+                                            if(!string.IsNullOrEmpty(r.PasswordString))
+                                            {
+                                                addItem.Password = new SecureString();
+                                                foreach (var c in r.PasswordString.ToCharArray())
+                                                    addItem.Password.AppendChar(c);
+                                            }
+
+                                            rtItems.Add(addItem);
+                                        }
                                     }
                                     catch(Exception e)
                                     {

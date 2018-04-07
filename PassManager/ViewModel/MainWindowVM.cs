@@ -41,28 +41,35 @@ namespace PassManager.ViewModel
                 OnPropertyChanged("OpenFileFlg");
             }
         }
+        public string CurrentFilePath;
+        public string CurrentKeyPath;
+        public System.Security.SecureString CurrentFilePassword;
         public bool OpenFileFlg
         {
             get { return !string.IsNullOrEmpty(OpenFileName); }
         }
-        public ObservableCollection<TreeViewParam> _PasswordItems = new ObservableCollection<TreeViewParam>();
-        public ObservableCollection<TreeViewParam> PasswordItems
+        public ObservableCollection<DataParam> _PasswordItems = new ObservableCollection<DataParam>();
+        public ObservableCollection<DataParam> PasswordItems
         {
             get { return _PasswordItems; }
             set { _PasswordItems = value; }
         }
-        private TreeViewParam _PasswordSelectedItem;
-        public TreeViewParam PasswordSelectedItem
+        private DataParam _PasswordSelectedItem;
+        public DataParam PasswordSelectedItem
         {
             get { return _PasswordSelectedItem; }
             set
             {
                 _PasswordSelectedItem = value;
+                TabPage = null;
                 IsInEditMode = false;
 
-                var item = PasswordSelectedItem as DataParam;
-                if (item != null)
-                    SelectedPasswordString = new string('●', item.Password.Length);
+                SelectedPasswordString = string.Empty;
+                if(PasswordSelectedItem != null)
+                {
+                    if (PasswordSelectedItem.Password.Length > 0)
+                        SelectedPasswordString = new string('●', PasswordSelectedItem.Password.Length);
+                }
 
                 OnPropertyChanged("PasswordSelectedItem");
                 Current_Page = PI_Page;
@@ -147,8 +154,8 @@ namespace PassManager.ViewModel
                 }
             }
         }
-        private byte _TabPage;
-        public byte TabPage
+        private byte? _TabPage;
+        public byte? TabPage
         {
             get { return _TabPage; }
             set
@@ -202,7 +209,7 @@ namespace PassManager.ViewModel
                 return new DelegateCommand(
                     delegate (object obj)
                     {
-                        PasswordSelectedItem = (TreeViewParam)obj;
+                        PasswordSelectedItem = (DataParam)obj;
                     });
             }
         }
@@ -213,15 +220,13 @@ namespace PassManager.ViewModel
                 return new DelegateCommand(
                     delegate
                     {
-                        var AddItem = new TreeViewParam();
+                        var AddItem = new DataParam();
                         AddItem.Title = "新しいフォルダー";
                         AddItem.Key = CurrentKey++;
 
                         if (PasswordSelectedItem != null)
                         {
                             AddItem.ParentKey = PasswordSelectedItem.Key;
-                            var index = PasswordItems.IndexOf(PasswordSelectedItem);
-
                             var ReCreatedItems = MainWindowM.ReCreateItems(PasswordSelectedItem, PasswordItems.ToList(), AddItem);
 
                             PasswordItems.Clear();
@@ -284,6 +289,32 @@ namespace PassManager.ViewModel
                     {
                         if (!OpenFileFlg) return false;
                         return true;
+                    });
+            }
+        }
+        public DelegateCommand CommandFileClose
+        {
+            get
+            {
+                return new DelegateCommand(
+                    delegate
+                    {
+                        OpenFileName = null;
+                        PasswordItems.Clear();
+                        PasswordSelectedItem = null;
+                        TabPage = (int)PageNum.Default_Page;
+                    });
+            }
+        }
+        public DelegateCommand CommandFileSave
+        {
+            get
+            {
+                return new DelegateCommand(
+                    delegate
+                    {
+                        Model.PasswordGenM.FileEncrypt(CurrentFilePath, CurrentKeyPath,
+                            CurrentFilePassword, PasswordItems.Select(i => Common.Copy(i, new DataParam())).ToArray());
                     });
             }
         }

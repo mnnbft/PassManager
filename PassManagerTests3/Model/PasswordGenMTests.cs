@@ -59,7 +59,7 @@ namespace PassManager.Model.Tests
                 password.AppendChar(c);
             }
 
-            Assert.AreEqual(true, PasswordGenM.FileEncrypt(dbPath, keyPath, password, new DataParam[0], tmp.ToArray()));
+            Assert.AreEqual(true, PasswordGenM.FileEncrypt(dbPath, keyPath, password, tmp.ToArray()));
         }
         [TestMethod()]
         public void DecryptTest()

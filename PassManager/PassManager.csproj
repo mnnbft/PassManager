@@ -149,6 +149,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\appbar.close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\appbar.save.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

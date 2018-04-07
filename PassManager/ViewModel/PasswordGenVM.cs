@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace PassManager.ViewModel
 {
-    using System.Security;
-    using System.Runtime.InteropServices;
     using Common;
     using Model;
+    using System.Security;
+    using System.Runtime.InteropServices;
+    using System.Windows;
+    using System.Windows.Controls;
 
     public class PasswordGenVM : ViewModelBase
     {
@@ -131,23 +133,28 @@ namespace PassManager.ViewModel
             get
             {
                 return new DelegateCommand(
-                    delegate
+                    delegate (object obj)
                     {
-                        var tmp = new List<DataParam>();
-
-                        tmp.Add(new DataParam()
+                        var AddItem = new DataParam()
                         {
                             Title = this.Title,
                             UserName = this.UserName,
                             Password = this.SecurePassword,
                             Supplement = this.Supplement
-                        });
-                        var test = new SecureString();
-                        foreach(var t in "12345".ToCharArray())
+                        };
+
+                        if(obj != null)
                         {
-                            test.AppendChar(t);
+                            var window = Window.GetWindow((UserControl)obj);
+                            var dc = (MainWindowVM)window.DataContext;
+
+                            AddItem.ParentKey = dc.PasswordSelectedItem.Key;
+                            var ReCreatedItems = MainWindowM.ReCreateItems(dc.PasswordSelectedItem, dc.PasswordItems.ToList(), AddItem);
+
+                            dc.PasswordItems.Clear();
+                            foreach (var item in ReCreatedItems)
+                                dc.PasswordItems.Add(item);
                         }
-                        PasswordGenM.FileEncrypt("C:\\Users\\user\\Desktop\\test.db", "C:\\Users\\user\\Desktop\\test.key", test, new DataParam[0],  tmp.ToArray());
                     });
             }
         }

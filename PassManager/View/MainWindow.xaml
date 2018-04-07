@@ -18,14 +18,10 @@
     <Controls:MetroWindow.DataContext>
         <vm:MainWindowVM />
     </Controls:MetroWindow.DataContext>
-
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding CommandLoaded}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
-
     <Controls:MetroWindow.Resources>
+        <BitmapImage x:Key="SaveImage" UriSource="../Icons/appbar.save.png" DecodePixelHeight="25" DecodePixelWidth="25"/>
+        <BitmapImage x:Key="CloseImage" UriSource="../Icons/appbar.close.png" DecodePixelHeight="25" DecodePixelWidth="25"/>
+
         <DataTemplate DataType="{x:Type vm:OpenFileVM}">
             <v:OpenFile />
         </DataTemplate>
@@ -40,6 +36,13 @@
         </DataTemplate>
     </Controls:MetroWindow.Resources>
 
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding CommandLoaded}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -53,62 +56,77 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Column="0" Grid.Row="1" BorderBrush="Gray" BorderThickness="0,0,2,0" Margin="5">
-            <TreeView ItemsSource="{Binding PasswordItems}" MinWidth="200">
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type m:TreeViewParam}" ItemsSource="{Binding Child}">
-                        <Grid>
-                            <TextBlock Text="{Binding Title}" Style="{x:Null}"/>
-                            <TextBox x:Name="editTextBox" Visibility="Hidden" MinWidth="100"
-                                       Text="{Binding Title}" Style="{x:Null}">
-                                <TextBox.InputBindings>
-                                    <KeyBinding Key="Return" Command="{Binding RelativeSource={RelativeSource FindAncestor,
-                                                                               AncestorType={x:Type Controls:MetroWindow}, AncestorLevel=1},
-                                                                               Path=DataContext.CommandEditKeyDown}" />
-                                </TextBox.InputBindings>
-                            </TextBox>
-                        </Grid>
-                        <HierarchicalDataTemplate.Triggers>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor,
-                                               AncestorType={x:Type TreeViewItem}}, Path=IsSelected}" Value="True" />
-                                    <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor,
-                                               AncestorType={x:Type Controls:MetroWindow}, AncestorLevel=1}, Path=DataContext.IsInEditMode}" Value="True" />
-                                </MultiDataTrigger.Conditions>
-                                <Setter TargetName="editTextBox" Property="Visibility" Value="Visible" />
-                            </MultiDataTrigger>
-                        </HierarchicalDataTemplate.Triggers>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-                <TreeView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="新規作成" Command="{Binding CommandItemCreate}" />
-                        <MenuItem Header="名前変更" Command="{Binding CommandRename}" />
-                        <MenuItem Header="削除" Command="{Binding CommandItemDelete}" />
-                    </ContextMenu>
-                </TreeView.ContextMenu>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectedItemChanged">
-                        <i:InvokeCommandAction Command="{Binding CommandSelectedItemChanged}"
-                                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor,
-                                               AncestorType={x:Type TreeView}, AncestorLevel=1}, Path=SelectedItem}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <TreeView.InputBindings>
-                    <KeyBinding Key="F2" Command="{Binding CommandRename}" />
-                </TreeView.InputBindings>
-                <TreeView.ItemContainerStyle>
-                    <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
-                        <Setter Property="IsExpanded" Value="True" />
-                    </Style>
-                </TreeView.ItemContainerStyle>
-            </TreeView>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <DockPanel Grid.Row="0" LastChildFill="False">
+                    <Button DockPanel.Dock="Right" Command="{Binding CommandFileClose}" Margin="0">
+                        <Image Source="{StaticResource CloseImage}" />
+                    </Button>
+                    <Button DockPanel.Dock="Right" Command="{Binding CommandFileSave}" Margin="0">
+                        <Image Source="{StaticResource SaveImage}" />
+                    </Button>
+                </DockPanel>
+                <TreeView Grid.Row="1" ItemsSource="{Binding PasswordItems}" MinWidth="200">
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type m:DataParam}" ItemsSource="{Binding Child}">
+                            <Grid>
+                                <TextBlock Text="{Binding Title}" Style="{x:Null}"/>
+                                <TextBox x:Name="editTextBox" Visibility="Hidden" MinWidth="100"
+                                           Text="{Binding Title}" Style="{x:Null}">
+                                    <TextBox.InputBindings>
+                                        <KeyBinding Key="Return" Command="{Binding RelativeSource={RelativeSource FindAncestor,
+                                                                                   AncestorType={x:Type Controls:MetroWindow}, AncestorLevel=1},
+                                                                                   Path=DataContext.CommandEditKeyDown}" />
+                                    </TextBox.InputBindings>
+                                </TextBox>
+                            </Grid>
+                            <HierarchicalDataTemplate.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor,
+                                                   AncestorType={x:Type TreeViewItem}}, Path=IsSelected}" Value="True" />
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor,
+                                                   AncestorType={x:Type Controls:MetroWindow}, AncestorLevel=1}, Path=DataContext.IsInEditMode}" Value="True" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter TargetName="editTextBox" Property="Visibility" Value="Visible" />
+                                </MultiDataTrigger>
+                            </HierarchicalDataTemplate.Triggers>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                    <TreeView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="新規作成" Command="{Binding CommandItemCreate}" />
+                            <MenuItem Header="名前変更" Command="{Binding CommandRename}" />
+                            <MenuItem Header="削除" Command="{Binding CommandItemDelete}" />
+                        </ContextMenu>
+                    </TreeView.ContextMenu>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectedItemChanged">
+                            <i:InvokeCommandAction Command="{Binding CommandSelectedItemChanged}"
+                                                   CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor,
+                                                   AncestorType={x:Type TreeView}, AncestorLevel=1}, Path=SelectedItem}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <TreeView.InputBindings>
+                        <KeyBinding Key="F2" Command="{Binding CommandRename}" />
+                    </TreeView.InputBindings>
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                            <Setter Property="IsExpanded" Value="True" />
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                </TreeView>
+            </Grid>
         </Border>
 
         <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" BorderBrush="Gray" BorderThickness="0,0,0,2" Margin="5">
             <Controls:MetroAnimatedTabControl  SelectedIndex="{Binding TabPage}" TabStripPlacement="Top">
                 <TabItem Header="ファイルを開く" />
-                <TabItem Header="新規作成" />
+                <TabItem Header="新規作成" IsEnabled="{Binding OpenFileFlg}"/>
                 <TabItem Header="設定" />
             </Controls:MetroAnimatedTabControl>
         </Border>

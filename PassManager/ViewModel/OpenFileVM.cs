@@ -12,7 +12,17 @@ namespace PassManager.ViewModel
 
     public class OpenFileVM : ViewModelBase
     {
-        public string _OpenFilePath { get; set; }
+        private bool _NewFileFlg = false;
+        public bool NewFileFlg
+        {
+            get { return _NewFileFlg; }
+            set
+            {
+                _NewFileFlg = value;
+                OnPropertyChanged("NewFileFlg");
+            }
+        }
+        private string _OpenFilePath { get; set; }
         public string OpenFilePath
         {
             get { return _OpenFilePath; }
@@ -22,23 +32,7 @@ namespace PassManager.ViewModel
                 OnPropertyChanged("OpenFilePath");
             }
         }
-
-        public DelegateCommand OpenFileDialog
-        {
-            get
-            {
-                return new DelegateCommand(
-                    delegate
-                    {
-                        var fbd = new OpenFileDialog();
-                        if (fbd.ShowDialog() == DialogResult.OK)
-                        {
-                            OpenFilePath = fbd.FileName;
-                        }
-                    });
-            }
-        }
-        public string _OpenKeyPath { get; set; }
+        private string _OpenKeyPath { get; set; }
         public string OpenKeyPath
         {
             get { return _OpenKeyPath; }
@@ -50,6 +44,19 @@ namespace PassManager.ViewModel
         }
         public System.Security.SecureString Password { get; set; } = new System.Security.SecureString();
 
+        public DelegateCommand OpenFileDialog
+        {
+            get
+            {
+                return new DelegateCommand(
+                    delegate
+                    {
+                        var fbd = new OpenFileDialog();
+                        if (fbd.ShowDialog() == DialogResult.OK)
+                            OpenFilePath = fbd.FileName;
+                    });
+            }
+        }
         public DelegateCommand OpenKeyDialog
         {
             get
@@ -59,9 +66,7 @@ namespace PassManager.ViewModel
                     {
                         var fbd = new OpenFileDialog();
                         if (fbd.ShowDialog() == DialogResult.OK)
-                        {
                             OpenKeyPath = fbd.FileName;
-                        }
                     });
             }
         }
@@ -75,24 +80,38 @@ namespace PassManager.ViewModel
                         var MainWindow = System.Windows.Window.GetWindow((System.Windows.Controls.UserControl)obj);
                         var WindowDC = (MainWindowVM)MainWindow.DataContext;
 
-                        var CreatedItems = PasswordGenM.FileDecrypt(OpenFilePath, OpenKeyPath, Password);
-                        if (CreatedItems == null)
-                            return;
-                        else
+                        if (NewFileFlg)
                         {
-                            var CreatedItems2 = OpenFileM.OpenCreateItems(CreatedItems);
-                            WindowDC.PasswordItems.Clear();
-
-                            WindowDC.PasswordItems.Add(new TreeViewParam()
+                            var RootItem = new DataParam()
                             {
+                                Title = OpenFilePath,
                                 Key = -1,
-                                Title = System.IO.Path.GetFileNameWithoutExtension(OpenFilePath)
-                            });
-                            foreach (var item in CreatedItems2)
-                                WindowDC.PasswordItems.Add(item);
-
+                                ParentKey = null
+                            };
+                            WindowDC.PasswordItems.Clear();
+                            WindowDC.PasswordItems.Add(RootItem);
+                            
                             WindowDC.OpenFileName = System.IO.Path.GetFileName(OpenFilePath);
                         }
+                        else
+                        {
+                            var CreatedItems = PasswordGenM.FileDecrypt(OpenFilePath, OpenKeyPath, Password);
+                            if (CreatedItems != null)
+                            {
+                                var CreatedItems2 = OpenFileM.OpenCreateItems(CreatedItems);
+                                WindowDC.PasswordItems.Clear();
+
+                                foreach (var item in CreatedItems2)
+                                    WindowDC.PasswordItems.Add(item);
+
+                                WindowDC.OpenFileName = System.IO.Path.GetFileName(OpenFilePath);
+                            }
+                            else
+                                return;
+                        }
+                        WindowDC.CurrentFilePath = OpenFilePath;
+                        WindowDC.CurrentKeyPath = OpenKeyPath;
+                        WindowDC.CurrentFilePassword = Password;
                     });
             }
         }
