@@ -58,6 +58,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+<!--aaa-->
         <Border Grid.Column="0" Grid.Row="1" BorderBrush="Gray" BorderThickness="0,0,2,0" Margin="5">
             <Grid>
                 <Grid.RowDefinitions>
