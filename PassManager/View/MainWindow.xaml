@@ -21,6 +21,7 @@
     <Controls:MetroWindow.Resources>
         <BitmapImage x:Key="SaveImage" UriSource="../Icons/appbar.save.png" DecodePixelHeight="25" DecodePixelWidth="25"/>
         <BitmapImage x:Key="CloseImage" UriSource="../Icons/appbar.close.png" DecodePixelHeight="25" DecodePixelWidth="25"/>
+        <BitmapImage x:Key="KawaiiImage" UriSource="../Icons/kawaii.png" />
 
         <DataTemplate DataType="{x:Type vm:OpenFileVM}">
             <v:OpenFile />
@@ -45,12 +46,11 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="153*" />
-            <ColumnDefinition Width="427*"/>
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -134,7 +134,8 @@
             </Controls:MetroAnimatedTabControl>
         </Border>
 
-        <Controls:TransitioningContentControl Grid.Column="1" Grid.Row="1" Transition="LeftReplace" Content="{Binding Current_Page}" Grid.ColumnSpan="2" />
+        <Controls:TransitioningContentControl Panel.ZIndex="1" Grid.Column="1" Grid.Row="1" Transition="LeftReplace" Content="{Binding Current_Page}" Grid.ColumnSpan="2" />
+        <Image Panel.ZIndex="0" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Opacity="0.25" Source="{StaticResource KawaiiImage}" />
 
         <StatusBar Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Height="25">
             <StatusBarItem>

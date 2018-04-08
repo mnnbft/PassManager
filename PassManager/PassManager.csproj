@@ -158,5 +158,8 @@
   <ItemGroup>
     <Resource Include="Icons\appbar.save.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\kawaii.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
