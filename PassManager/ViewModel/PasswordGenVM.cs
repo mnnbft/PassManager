@@ -12,6 +12,7 @@ namespace PassManager.ViewModel
     using System.Runtime.InteropServices;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Collections.ObjectModel;
 
     public class PasswordGenVM : ViewModelBase
     {
@@ -92,19 +93,8 @@ namespace PassManager.ViewModel
             }
         }
 
-        private string _Supplement;
-        public string Supplement
-        {
-            get { return _Supplement; }
-            set
-            {
-                if(Supplement != value)
-                {
-                    _Supplement = value;
-                    OnPropertyChanged("Supplement");
-                }
-            }
-        }
+        public ObservableCollection<string> Memos { get; set; } = new ObservableCollection<string>() { "test" };
+        public int MemosCnt { get { return Memos.Count; } }
 
         public DelegateCommand CommandGenPassword
         {
@@ -128,6 +118,29 @@ namespace PassManager.ViewModel
             }
         }
 
+        public DelegateCommand CommandMemoAdd
+        {
+            get
+            {
+                return new DelegateCommand(
+                    delegate
+                    {
+                        Memos.Add(null);
+                        OnPropertyChanged("MemosCnt");
+                    });
+            }
+        }
+        public DelegateCommand CommandTextChanged
+        {
+            get
+            {
+                return new DelegateCommand(
+                    delegate (object obj)
+                    {
+                        var obj2 = obj;
+                    });
+            }
+        }
         public DelegateCommand CommandCreate
         {
             get
@@ -140,7 +153,7 @@ namespace PassManager.ViewModel
                             Title = this.Title,
                             UserName = this.UserName,
                             Password = this.SecurePassword,
-                            Supplement = this.Supplement
+                            Memos = this.Memos
                         };
 
                         if(obj != null)

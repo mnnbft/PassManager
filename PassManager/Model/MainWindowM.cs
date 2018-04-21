@@ -8,6 +8,7 @@ using System.Data;
 namespace PassManager.Model
 {
     using System.Security;
+    using System.Collections.ObjectModel;
 
     public class MainWindowM
     {
@@ -34,13 +35,13 @@ namespace PassManager.Model
         }
     }
 
-    public class  DataParam
+    public class DataParam
     {
         public string Title { get; set; }
         public int Key { get; set; }
         public int? ParentKey { get; set; }
         public string UserName { get; set; }
-        public string Supplement { get; set; }
+        public ObservableCollection<string> Memos { get; set; }
         public SecureString Password { get; set; } = new SecureString();
         public List<DataParam> Child { get; set; } = new List<DataParam>();
     }

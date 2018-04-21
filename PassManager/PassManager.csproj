@@ -75,6 +75,7 @@
     <Compile Include="Common\Common.cs" />
     <Compile Include="Common\DelegateCommand.cs" />
     <Compile Include="Common\ViewModelBase.cs" />
+    <Compile Include="Converter\MultiBindingConverter.cs" />
     <Compile Include="Model\MainWindowM.cs" />
     <Compile Include="Model\OpenFileM.cs" />
     <Compile Include="Model\PasswordGenM.cs" />
