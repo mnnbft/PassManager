@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace PassManager.ViewModel
 {
+    using Prism.Commands;
     using Common;
     using Model;
     using System.Security;
@@ -26,32 +27,26 @@ namespace PassManager.ViewModel
         public bool A_AlpFlg { get; set; }
         public bool SymbolFlg { get; set; }
 
+        public ObservableCollection<string> Memos { get; set; } = new ObservableCollection<string>() { "test" };
+        public int MemosCnt { get { return Memos.Count; } }
+
         private string _Title;
         public string Title
         {
             get { return _Title; }
-            set
-            {
-                if (_Title != value)
-                {
-                    _Title = value;
-                    OnPropertyChanged("Title");
-                }
-            }
+            set { SetProperty(ref _Title, value); }
         }
-
         private string _UserName;
         public string UserName
         {
             get { return _UserName; }
-            set
-            {
-                if (_UserName != value)
-                {
-                    _UserName = value;
-                    OnPropertyChanged("UserName");
-                }
-            }
+            set { SetProperty(ref _UserName, value); }
+        }
+        private string _PasswordString;
+        public string PasswordString
+        {
+            get { return _PasswordString; }
+            set { SetProperty(ref _PasswordString, value); }
         }
 
         private bool _PasswordViewFlg = false;
@@ -68,16 +63,7 @@ namespace PassManager.ViewModel
                 Marshal.ZeroFreeBSTR(bstr);
             }
         }
-        private string _PasswordString;
-        public string PasswordString
-        {
-            get { return _PasswordString; }
-            set
-            {
-                _PasswordString = value;
-                OnPropertyChanged("PasswordString");
-            }
-        }
+
         private SecureString _SecurePassword = new SecureString();
         public SecureString SecurePassword
         {
@@ -92,9 +78,6 @@ namespace PassManager.ViewModel
                 Marshal.ZeroFreeBSTR(bstr);
             }
         }
-
-        public ObservableCollection<string> Memos { get; set; } = new ObservableCollection<string>() { "test" };
-        public int MemosCnt { get { return Memos.Count; } }
 
         public DelegateCommand CommandGenPassword
         {
@@ -130,22 +113,22 @@ namespace PassManager.ViewModel
                     });
             }
         }
-        public DelegateCommand CommandTextChanged
+        public DelegateCommand<object> CommandTextChanged
         {
             get
             {
-                return new DelegateCommand(
+                return new DelegateCommand<object>(
                     delegate (object obj)
                     {
                         var obj2 = obj;
                     });
             }
         }
-        public DelegateCommand CommandCreate
+        public DelegateCommand<object> CommandCreate
         {
             get
             {
-                return new DelegateCommand(
+                return new DelegateCommand<object>(
                     delegate (object obj)
                     {
                         var AddItem = new DataParam()

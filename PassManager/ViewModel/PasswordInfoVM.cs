@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace PassManager.ViewModel
 {
+    using Prism.Commands;
+    using Prism.Mvvm;  
     using System.Windows;
     using System.Windows.Controls;
     using Common;
@@ -16,17 +18,14 @@ namespace PassManager.ViewModel
         public MainWindowVM WindowDC
         {
             get { return _WindowDC; }
-            set
-            {
-                _WindowDC = value;
-                OnPropertyChanged("WindowDC");
-            }
+            set { SetProperty(ref _WindowDC, value); }
         }
-        public DelegateCommand CommandLoaded
+
+        public DelegateCommand<object> CommandLoaded
         {
             get
             {
-                return new DelegateCommand(
+                return new DelegateCommand<object>(
                     delegate(object obj)
                     {
                         if(_WindowDC == null && obj != null)

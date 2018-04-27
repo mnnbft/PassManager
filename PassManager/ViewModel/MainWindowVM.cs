@@ -8,6 +8,8 @@ namespace PassManager.ViewModel
 {
     using System.Collections.ObjectModel;
     using System.Runtime.InteropServices;
+    using Prism.Commands;
+    using Prism.Mvvm;
     using Common;
     using Model;
 
@@ -31,29 +33,13 @@ namespace PassManager.ViewModel
 
         public int CurrentKey = 0;
         private string _OpenFileName;
-        public string OpenFileName
-        {
-            get { return _OpenFileName; }
-            set
-            {
-                _OpenFileName = value;
-                OnPropertyChanged("OpenFileName");
-                OnPropertyChanged("OpenFileFlg");
-            }
-        }
         public string CurrentFilePath;
         public string CurrentKeyPath;
+
         public System.Security.SecureString CurrentFilePassword;
-        public bool OpenFileFlg
-        {
-            get { return !string.IsNullOrEmpty(OpenFileName); }
-        }
-        public ObservableCollection<DataParam> _PasswordItems = new ObservableCollection<DataParam>();
-        public ObservableCollection<DataParam> PasswordItems
-        {
-            get { return _PasswordItems; }
-            set { _PasswordItems = value; }
-        }
+
+        public ObservableCollection<DataParam> PasswordItems { get; set; } = new ObservableCollection<DataParam>();
+
         private DataParam _PasswordSelectedItem;
         public DataParam PasswordSelectedItem
         {
@@ -71,96 +57,77 @@ namespace PassManager.ViewModel
                         SelectedPasswordString = new string('●', PasswordSelectedItem.Password.Length);
                 }
 
-                OnPropertyChanged("PasswordSelectedItem");
+                SetProperty(ref _PasswordSelectedItem, value);
                 Current_Page = PI_Page;
+            }
+        }
+
+        public bool OpenFileFlg
+        {
+            get { return !string.IsNullOrEmpty(OpenFileName); }
+        }
+        public string OpenFileName
+        {
+            get { return _OpenFileName; }
+            set
+            {
+                _OpenFileName = value;
+                SetProperty(ref _OpenFileName, value);
+                OnPropertyChanged("OpenFileFlg");
             }
         }
         private string _SelectedPasswordString;
         public string SelectedPasswordString
         {
             get { return _SelectedPasswordString; }
-            set
-            {
-                _SelectedPasswordString = value;
-                OnPropertyChanged("SelectedPasswordString");
-            }
+            set { SetProperty(ref _SelectedPasswordString, value); }
         }
         private string BeforeName;
         private bool _IsInEditMode = false;
         public bool IsInEditMode
         {
             get { return _IsInEditMode; }
-            set
-            {
-                _IsInEditMode = value;
-                OnPropertyChanged("IsInEditMode");
-            }
+            set { SetProperty(ref _IsInEditMode, value); }
         }
-
-        private static ViewModelBase _Current_Page;
-        public ViewModelBase Current_Page
+        private static BindableBase _Current_Page;
+        public BindableBase Current_Page
         {
             get { return _Current_Page; }
-            set
-            {
-                if (_Current_Page != value)
-                {
-                    _Current_Page = value;
-                    OnPropertyChanged("Current_Page");
-                }
-            }
+            set { SetProperty(ref _Current_Page, value); }
         }
-
         private OpenFileVM _PO_Page;
         public OpenFileVM PO_Page
         {
             get { return _PO_Page; }
-            set
-            {
-                _PO_Page = value;
-                OnPropertyChanged("PO_Page");
-            }
+            set { SetProperty(ref _PO_Page, value); }
         }
         private PasswordGenVM _PG_Page;
         public PasswordGenVM PG_Page
         {
             get { return _PG_Page; }
-            set
-            {
-                _PG_Page = value;
-                OnPropertyChanged("PG_Page");
-            }
+            set { SetProperty(ref _PG_Page, value); }
         }
         private PasswordInfoVM _PI_Page;
         public PasswordInfoVM PI_Page
         {
             get { return _PI_Page; }
-            set
-            {
-                _PI_Page = value;
-                OnPropertyChanged("PI_Page");
-            }
+            set { SetProperty(ref _PI_Page, value); }
         }
         private SettingVM _Setting_Page;
         public SettingVM Setting_Page
         {
             get { return _Setting_Page; }
-            set
-            {
-                if (_Setting_Page != value)
-                {
-                    _Setting_Page = value;
-                    OnPropertyChanged("Setting_Page");
-                }
-            }
+            set { SetProperty(ref _Setting_Page, value); }
         }
+
         private byte? _TabPage;
         public byte? TabPage
         {
             get { return _TabPage; }
             set
             {
-                _TabPage = value;
+                SetProperty(ref _TabPage, value);
+
                 switch (_TabPage)
                 {
                     case (byte)PageNum.Default_Page:
@@ -173,7 +140,6 @@ namespace PassManager.ViewModel
                         Current_Page = Setting_Page;
                         break;
                 }
-                OnPropertyChanged("TabPage");
             }
         }
 
@@ -202,11 +168,11 @@ namespace PassManager.ViewModel
             }
         }
 
-        public DelegateCommand CommandSelectedItemChanged
+        public DelegateCommand<object> CommandSelectedItemChanged
         {
             get
             {
-                return new DelegateCommand(
+                return new DelegateCommand<object>(
                     delegate (object obj)
                     {
                         PasswordSelectedItem = (DataParam)obj;

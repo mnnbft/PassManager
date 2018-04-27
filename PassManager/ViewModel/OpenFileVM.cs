@@ -7,42 +7,32 @@ using System.Threading.Tasks;
 namespace PassManager.ViewModel
 {
     using System.Windows.Forms;
+    using Prism.Commands;
     using Common;
     using Model;
 
     public class OpenFileVM : ViewModelBase
     {
+        public System.Security.SecureString Password { get; set; } = new System.Security.SecureString();
+
         private bool _NewFileFlg = false;
         public bool NewFileFlg
         {
             get { return _NewFileFlg; }
-            set
-            {
-                _NewFileFlg = value;
-                OnPropertyChanged("NewFileFlg");
-            }
+            set { SetProperty(ref _NewFileFlg, value); }
         }
-        private string _OpenFilePath { get; set; }
+        private string _OpenFilePath;
         public string OpenFilePath
         {
             get { return _OpenFilePath; }
-            set
-            {
-                _OpenFilePath = value;
-                OnPropertyChanged("OpenFilePath");
-            }
+            set { SetProperty(ref _OpenFilePath, value); }
         }
-        private string _OpenKeyPath { get; set; }
+        private string _OpenKeyPath;
         public string OpenKeyPath
         {
             get { return _OpenKeyPath; }
-            set
-            {
-                _OpenKeyPath = value;
-                OnPropertyChanged("OpenKeyPath");
-            }
+            set { SetProperty(ref _OpenKeyPath, value); }
         }
-        public System.Security.SecureString Password { get; set; } = new System.Security.SecureString();
 
         public DelegateCommand OpenFileDialog
         {
@@ -70,11 +60,11 @@ namespace PassManager.ViewModel
                     });
             }
         }
-        public DelegateCommand CommandOK
+        public DelegateCommand<object> CommandOK
         {
             get
             {
-                return new DelegateCommand(
+                return new DelegateCommand<object>(
                     delegate (object obj)
                     {
                         var MainWindow = System.Windows.Window.GetWindow((System.Windows.Controls.UserControl)obj);
