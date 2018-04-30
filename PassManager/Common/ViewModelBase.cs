@@ -8,7 +8,6 @@ namespace PassManager.Common
 {
     using Prism.Mvvm;
     using System.ComponentModel;
-    using System.Runtime.CompilerServices;
 
     public class ViewModelBase : BindableBase
     {
