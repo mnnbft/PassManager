@@ -8,31 +8,40 @@ namespace PassManager.ViewModel
 {
     using System.Collections.ObjectModel;
     using System.Runtime.InteropServices;
+    using System.ComponentModel;
+    using System.IO;
     using Prism.Commands;
     using Prism.Mvvm;
+    using MahApps.Metro.Controls.Dialogs;
     using Common;
     using Model;
 
     public class MainWindowVM : ViewModelBase
     {
-        public enum PageNum : byte
+        public enum PageNum
         {
             Default_Page,
             PG_Page,
-            Setting
+            PI_Page,
+            Setting,
         }
 
-        public MainWindowVM()
+        private IDialogCoordinator dialogCoordinator;
+
+        public MainWindowVM(IDialogCoordinator instance)
         {
+            dialogCoordinator = instance;
+
             PO_Page = new OpenFileVM();
             PG_Page = new PasswordGenVM();
             PI_Page = new PasswordInfoVM();
             Setting_Page = new SettingVM();
             Current_Page = PO_Page;
+
+            openFileM.PropertyChanged += new PropertyChangedEventHandler(OpenFileModelChanged);
         }
 
         public int CurrentKey = 0;
-        private string _OpenFileName;
         public string CurrentFilePath;
         public string CurrentKeyPath;
 
@@ -47,34 +56,31 @@ namespace PassManager.ViewModel
             set
             {
                 _PasswordSelectedItem = value;
-                TabPage = null;
                 IsInEditMode = false;
 
                 SelectedPasswordString = string.Empty;
-                if(PasswordSelectedItem != null)
+                if (PasswordSelectedItem != null)
                 {
                     if (PasswordSelectedItem.Password.Length > 0)
                         SelectedPasswordString = new string('●', PasswordSelectedItem.Password.Length);
                 }
 
                 SetProperty(ref _PasswordSelectedItem, value);
-                Current_Page = PI_Page;
+                TabPage = PageNum.PI_Page;
             }
         }
 
+        /* Model Instances */
+        public static OpenFileM openFileM = new OpenFileM();
+
+        /* Properties */
         public bool OpenFileFlg
         {
             get { return !string.IsNullOrEmpty(OpenFileName); }
         }
         public string OpenFileName
         {
-            get { return _OpenFileName; }
-            set
-            {
-                _OpenFileName = value;
-                SetProperty(ref _OpenFileName, value);
-                OnPropertyChanged("OpenFileFlg");
-            }
+            get { return Path.GetFileName(openFileM.OpenFilePath); }
         }
         private string _SelectedPasswordString;
         public string SelectedPasswordString
@@ -120,8 +126,8 @@ namespace PassManager.ViewModel
             set { SetProperty(ref _Setting_Page, value); }
         }
 
-        private byte? _TabPage;
-        public byte? TabPage
+        private PageNum _TabPage;
+        public PageNum TabPage
         {
             get { return _TabPage; }
             set
@@ -130,13 +136,16 @@ namespace PassManager.ViewModel
 
                 switch (_TabPage)
                 {
-                    case (byte)PageNum.Default_Page:
+                    case PageNum.Default_Page:
                         Current_Page = PO_Page;
                         break;
-                    case (byte)PageNum.PG_Page:
+                    case PageNum.PG_Page:
                         Current_Page = PG_Page;
                         break;
-                    case (byte)PageNum.Setting:
+                    case PageNum.PI_Page:
+                        Current_Page = PI_Page;
+                        break;
+                    case PageNum.Setting:
                         Current_Page = Setting_Page;
                         break;
                 }
@@ -151,6 +160,7 @@ namespace PassManager.ViewModel
                     delegate
                     {
                         TabPage = (byte)PageNum.Default_Page;
+                        OnPropertyChanged("OpenFilePath");
                     });
             }
         }
@@ -265,7 +275,7 @@ namespace PassManager.ViewModel
                 return new DelegateCommand(
                     delegate
                     {
-                        OpenFileName = null;
+                        openFileM.OpenFilePath = null;
                         PasswordItems.Clear();
                         PasswordSelectedItem = null;
                         TabPage = (int)PageNum.Default_Page;
@@ -282,6 +292,15 @@ namespace PassManager.ViewModel
                         Model.PasswordGenM.FileEncrypt(CurrentFilePath, CurrentKeyPath,
                             CurrentFilePassword, PasswordItems.Select(i => Common.Copy(i, new DataParam())).ToArray());
                     });
+            }
+        }
+
+        private void OpenFileModelChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == "OpenFilePath")
+            {
+                OnPropertyChanged("OpenFileName");
+                OnPropertyChanged("OpenFileFlg");
             }
         }
     }

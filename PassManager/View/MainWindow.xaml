@@ -9,20 +9,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PassManager.View"
+        xmlns:c="clr-namespace:PassManager.Converter"
         mc:Ignorable="d"
         Title="PassManager" 
         GlowBrush="{DynamicResource AccentColorBrush}"
         WindowStartupLocation="CenterScreen"
         Height="700" Width="800">
 
-    <Controls:MetroWindow.DataContext>
-        <vm:MainWindowVM />
-    </Controls:MetroWindow.DataContext>
     <Controls:MetroWindow.Resources>
         <BitmapImage x:Key="SaveImage" UriSource="../Icons/appbar.save.png" DecodePixelHeight="25" DecodePixelWidth="25"/>
         <BitmapImage x:Key="CloseImage" UriSource="../Icons/appbar.close.png" DecodePixelHeight="25" DecodePixelWidth="25"/>
         <BitmapImage x:Key="KawaiiImage" UriSource="../Icons/kawaii.png" />
 
+        <c:PageNumConverter x:Key="PageNumConverter" />
         <DataTemplate DataType="{x:Type vm:OpenFileVM}">
             <v:OpenFile />
         </DataTemplate>
@@ -58,7 +57,11 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Border Grid.Column="0" Grid.Row="1" BorderBrush="Gray" BorderThickness="0,0,2,0" Margin="5">
+        <Border Grid.Column="0"
+                Grid.Row="1" 
+                BorderBrush="Gray" 
+                BorderThickness="0,0,2,0" 
+                Margin="5">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -126,18 +129,30 @@
             </Grid>
         </Border>
 
-        <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" BorderBrush="Gray" BorderThickness="0,0,0,2" Margin="5">
-            <Controls:MetroAnimatedTabControl  SelectedIndex="{Binding TabPage}" TabStripPlacement="Top">
+        <Border Grid.Column="0"
+                Grid.ColumnSpan="3"
+                Grid.Row="0" 
+                BorderBrush="Gray" 
+                BorderThickness="0,0,0,2" 
+                Margin="5">
+            <Controls:MetroAnimatedTabControl  SelectedIndex="{Binding TabPage, Converter={StaticResource PageNumConverter}}" TabStripPlacement="Top">
                 <TabItem Header="ファイルを開く" />
                 <TabItem Header="新規作成" IsEnabled="{Binding OpenFileFlg}"/>
                 <TabItem Header="設定" />
             </Controls:MetroAnimatedTabControl>
         </Border>
 
-        <Controls:TransitioningContentControl Panel.ZIndex="1" Grid.Column="1" Grid.Row="1" Transition="LeftReplace" Content="{Binding Current_Page}" Grid.ColumnSpan="2" />
+        <Controls:TransitioningContentControl Grid.Column="1" 
+                                              Grid.Row="1" 
+                                              Transition="LeftReplace" 
+                                              Content="{Binding Current_Page}" 
+                                              Grid.ColumnSpan="2" />
         <!--<Image Panel.ZIndex="0" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Opacity="0.25" Source="{StaticResource KawaiiImage}" />-->
 
-        <StatusBar Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Height="25">
+        <StatusBar Grid.Column="0"
+                   Grid.ColumnSpan="3"
+                   Grid.Row="2" 
+                   Height="25">
             <StatusBarItem>
                 <TextBlock Text="{Binding OpenFileName}" Style="{x:Null}"/>
             </StatusBarItem>

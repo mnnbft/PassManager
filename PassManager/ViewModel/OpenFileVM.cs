@@ -21,17 +21,23 @@ namespace PassManager.ViewModel
             get { return _NewFileFlg; }
             set { SetProperty(ref _NewFileFlg, value); }
         }
-        private string _OpenFilePath;
         public string OpenFilePath
         {
-            get { return _OpenFilePath; }
-            set { SetProperty(ref _OpenFilePath, value); }
+            get { return MainWindowVM.openFileM.OpenFilePath; }
+            set
+            {
+                MainWindowVM.openFileM.OpenFilePath = value;
+                OnPropertyChanged();
+            }
         }
-        private string _OpenKeyPath;
         public string OpenKeyPath
         {
-            get { return _OpenKeyPath; }
-            set { SetProperty(ref _OpenKeyPath, value); }
+            get { return MainWindowVM.openFileM.OpenKeyPath; }
+            set
+            {
+                MainWindowVM.openFileM.OpenKeyPath = value;
+                OnPropertyChanged();
+            }
         }
 
         public DelegateCommand OpenFileDialog
@@ -81,7 +87,6 @@ namespace PassManager.ViewModel
                             WindowDC.PasswordItems.Clear();
                             WindowDC.PasswordItems.Add(RootItem);
                             
-                            WindowDC.OpenFileName = System.IO.Path.GetFileName(OpenFilePath);
                         }
                         else
                         {
@@ -94,7 +99,6 @@ namespace PassManager.ViewModel
                                 foreach (var item in CreatedItems2)
                                     WindowDC.PasswordItems.Add(item);
 
-                                WindowDC.OpenFileName = System.IO.Path.GetFileName(OpenFilePath);
                             }
                             else
                                 return;

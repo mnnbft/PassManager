@@ -3,11 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace PassManager.Model
 {
-    public class OpenFileM
+    using Prism.Mvvm;
+
+    public class OpenFileM : BindableBase
     {
+        public string _OpenFilePath;
+        public string OpenFilePath
+        {
+            get { return _OpenFilePath; }
+            set { SetProperty(ref _OpenFilePath, value); }
+        }
+        public string OpenKeyPath { get; set; }
+
         public static List<DataParam> OpenCreateItems (DataParam[] FileItems)
         {
             var rtItems = new List<DataParam>();
