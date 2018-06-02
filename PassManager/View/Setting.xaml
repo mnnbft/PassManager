@@ -8,10 +8,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <UserControl.DataContext>
-        <vm:SettingVM />
-    </UserControl.DataContext>
-
     <UserControl.Resources>
         <ResourceDictionary Source="/View/Style/Style.xaml" />
     </UserControl.Resources>

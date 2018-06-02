@@ -23,6 +23,7 @@ namespace PassManager.View
         public OpenFile()
         {
             InitializeComponent();
+            DataContext = ViewModel.MainWindowVM.PO_Page;
         }
     }
 }

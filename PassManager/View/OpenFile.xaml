@@ -11,10 +11,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <UserControl.DataContext>
-        <vm:OpenFileVM />
-    </UserControl.DataContext>
-
     <Grid Style="{StaticResource DefaultGridStyle}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>

@@ -23,6 +23,7 @@ namespace PassManager.View
         public Setting()
         {
             InitializeComponent();
+            DataContext = ViewModel.MainWindowVM.Setting_Page;
         }
     }
 }

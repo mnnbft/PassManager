@@ -23,6 +23,7 @@ namespace PassManager.View
         public PasswordGen()
         {
             InitializeComponent();
+            DataContext = ViewModel.MainWindowVM.PG_Page;
         }
     }
 }

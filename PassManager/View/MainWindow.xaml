@@ -16,6 +16,9 @@
         WindowStartupLocation="CenterScreen"
         Height="700" Width="800">
 
+    <Controls:MetroWindow.DataContext>
+        <vm:MainWindowVM />
+    </Controls:MetroWindow.DataContext>
     <Controls:MetroWindow.Resources>
         <BitmapImage x:Key="SaveImage" UriSource="../Icons/appbar.save.png" DecodePixelHeight="25" DecodePixelWidth="25"/>
         <BitmapImage x:Key="CloseImage" UriSource="../Icons/appbar.close.png" DecodePixelHeight="25" DecodePixelWidth="25"/>

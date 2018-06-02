@@ -23,6 +23,7 @@ namespace PassManager.View
         public PasswordInfo()
         {
             InitializeComponent();
+            DataContext = ViewModel.MainWindowVM.PI_Page;
         }
     }
 }

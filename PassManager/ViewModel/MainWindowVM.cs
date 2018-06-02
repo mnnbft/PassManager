@@ -22,22 +22,13 @@ namespace PassManager.ViewModel
         {
             Default_Page,
             PG_Page,
-            PI_Page,
             Setting,
+            PI_Page,
         }
 
-        private IDialogCoordinator dialogCoordinator;
-
-        public MainWindowVM(IDialogCoordinator instance)
+        public MainWindowVM()
         {
-            dialogCoordinator = instance;
-
-            PO_Page = new OpenFileVM();
-            PG_Page = new PasswordGenVM();
-            PI_Page = new PasswordInfoVM();
-            Setting_Page = new SettingVM();
             Current_Page = PO_Page;
-
             openFileM.PropertyChanged += new PropertyChangedEventHandler(OpenFileModelChanged);
         }
 
@@ -73,6 +64,12 @@ namespace PassManager.ViewModel
         /* Model Instances */
         public static OpenFileM openFileM = new OpenFileM();
 
+        /* ViewModel Instances */
+        public static OpenFileVM PO_Page = new OpenFileVM();
+        public static PasswordGenVM PG_Page = new PasswordGenVM();
+        public static PasswordInfoVM PI_Page = new PasswordInfoVM();
+        public static SettingVM Setting_Page = new SettingVM();
+
         /* Properties */
         public bool OpenFileFlg
         {
@@ -95,35 +92,12 @@ namespace PassManager.ViewModel
             get { return _IsInEditMode; }
             set { SetProperty(ref _IsInEditMode, value); }
         }
+
         private static BindableBase _Current_Page;
         public BindableBase Current_Page
         {
             get { return _Current_Page; }
             set { SetProperty(ref _Current_Page, value); }
-        }
-        private OpenFileVM _PO_Page;
-        public OpenFileVM PO_Page
-        {
-            get { return _PO_Page; }
-            set { SetProperty(ref _PO_Page, value); }
-        }
-        private PasswordGenVM _PG_Page;
-        public PasswordGenVM PG_Page
-        {
-            get { return _PG_Page; }
-            set { SetProperty(ref _PG_Page, value); }
-        }
-        private PasswordInfoVM _PI_Page;
-        public PasswordInfoVM PI_Page
-        {
-            get { return _PI_Page; }
-            set { SetProperty(ref _PI_Page, value); }
-        }
-        private SettingVM _Setting_Page;
-        public SettingVM Setting_Page
-        {
-            get { return _Setting_Page; }
-            set { SetProperty(ref _Setting_Page, value); }
         }
 
         private PageNum _TabPage;
@@ -142,11 +116,11 @@ namespace PassManager.ViewModel
                     case PageNum.PG_Page:
                         Current_Page = PG_Page;
                         break;
-                    case PageNum.PI_Page:
-                        Current_Page = PI_Page;
-                        break;
                     case PageNum.Setting:
                         Current_Page = Setting_Page;
+                        break;
+                    case PageNum.PI_Page:
+                        Current_Page = PI_Page;
                         break;
                 }
             }
@@ -159,8 +133,7 @@ namespace PassManager.ViewModel
                 return new DelegateCommand(
                     delegate
                     {
-                        TabPage = (byte)PageNum.Default_Page;
-                        OnPropertyChanged("OpenFilePath");
+                        TabPage = PageNum.Default_Page;
                     });
             }
         }
@@ -173,7 +146,7 @@ namespace PassManager.ViewModel
                     delegate
                     {
                         Current_Page = null;
-                        TabPage = (byte)PageNum.Default_Page;
+                        TabPage = PageNum.Default_Page;
                     });
             }
         }
@@ -278,7 +251,7 @@ namespace PassManager.ViewModel
                         openFileM.OpenFilePath = null;
                         PasswordItems.Clear();
                         PasswordSelectedItem = null;
-                        TabPage = (int)PageNum.Default_Page;
+                        TabPage = PageNum.Default_Page;
                     });
             }
         }

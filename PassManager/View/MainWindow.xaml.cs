@@ -23,12 +23,9 @@ namespace PassManager.View
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        MainWindowVM vm = new MainWindowVM(DialogCoordinator.Instance);
-
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = vm;
         }
     }
 }
