@@ -1,17 +1,15 @@
-﻿using System;
+﻿using System.Linq;
+using System.IO;
+using System.Reflection;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization.Formatters.Binary;
 
-namespace PassManager.Common
+namespace PassManager.Models
 {
-    using System.IO;
-    using System.Reflection;
-    using System.Runtime.Serialization.Formatters.Binary;
-
-    public class Common
+    public class Functions
     {
+        private Functions() { }
+
         public static T DeepCopy<T>(T target)
         {
             T result;
@@ -28,6 +26,7 @@ namespace PassManager.Common
             }
             return result;
         }
+
         public static T2 DeepCopy2<T1, T2>(T1 target)
         {
             T2 result;
@@ -44,6 +43,7 @@ namespace PassManager.Common
             }
             return result;
         }
+
         public static T Copy<T>(object src, T dest)
         {
             if (src == null || dest == null) return dest;
@@ -55,6 +55,22 @@ namespace PassManager.Common
                 p.y.SetValue(dest, p.x.GetValue(src));
             }
             return dest;
+        }
+
+        public static int[] IntSlice(int value, int count)
+        {
+            int division = value / count;
+            int surplus = value % count;
+
+            var result = new List<int>();
+            for(int i = 0; i < count; i++)
+            {
+                int target = division;
+                target += surplus < count ? 1 : 0;
+                result.Add(target);
+            }
+
+            return result.ToArray();
         }
     }
 }

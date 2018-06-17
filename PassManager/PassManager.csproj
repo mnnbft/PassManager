@@ -81,13 +81,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behavior\SecurePasswordBehavior.cs" />
-    <Compile Include="Common\Common.cs" />
-    <Compile Include="Common\ViewModelBase.cs" />
     <Compile Include="Converter\MultiBindingConverter.cs" />
     <Compile Include="Converter\PageNumConverter.cs" />
-    <Compile Include="Model\MainWindowM.cs" />
-    <Compile Include="Model\OpenFileM.cs" />
-    <Compile Include="Model\PasswordGenM.cs" />
+    <Compile Include="Models\Functions.cs" />
+    <Compile Include="Models\MainWindowM.cs" />
+    <Compile Include="Models\OpenFileM.cs" />
+    <Compile Include="Models\Password.cs" />
+    <Compile Include="Models\PasswordGenM.cs" />
     <Compile Include="ViewModel\MainWindowVM.cs" />
     <Compile Include="ViewModel\OpenFileVM.cs" />
     <Compile Include="ViewModel\PasswordGenVM.cs" />
