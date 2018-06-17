@@ -2,118 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.IO.Compression;
+using System.Security;
+using System.Security.Cryptography;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Formatters.Binary;
 
-namespace PassManager.Model
+namespace PassManager.Models
 {
-    using Common;
-    using System.IO;
-    using System.IO.Compression;
-    using System.Security;
-    using System.Security.Cryptography;
-    using System.Runtime.InteropServices;
-    using System.Runtime.Serialization.Formatters.Binary;
-
-    public enum PassType : byte
+    public class FileIO
     {
-        Decimal,
-        a_Alp,
-        A_Alp,
-        Symbol
-    }
+        public FileIO Instance { get; } = new FileIO();
+        private FileIO() { }
 
-    public class PasswordGenM
-    {
-        private readonly string password_Decimal = "0123456789";
-        private readonly string password_a_Alp = "abcdefghijklmnopqrstuvwxyz";
-        private readonly string password_A_Alp = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        private readonly string password_Symbol = "`~!@#$%^&*()_+-=[]{};:'<>,./";
+        public string OpenFilePath { get; set; }
+        public string OpenKeyPath { get; set; }
 
-        public string BCHash { get; set; }
-
-        public SecureString GeneratePassword(int length, bool[] genparam)
-        {
-            var c_a = new List<char>();
-            var t_list = new List<int>();
-            byte e_length = (byte)Enum.GetNames(typeof(PassType)).Length;
-            Random r = new Random();
-            SecureString password = new SecureString();
-
-            for (byte i = (byte)PassType.Decimal; i < e_length; i++)
-            {
-                if (genparam[i])
-                {
-                    t_list.Add(i);
-                }
-            }
-
-            var t_a = t_list.ToArray();
-            int[] t_a2 = t_a.OrderBy(i => Guid.NewGuid()).ToArray();
-            int cnt = t_a2.Count();
-            int[] passlen = new int[e_length];
-
-            switch (cnt)
-            {
-                case 0:
-                    return password;
-                case 1:
-                    passlen[t_a2[0]] = length;
-                    break;
-                default:
-                    for (int i = 0; i < cnt; i++)
-                    {
-                        if (i != cnt - 1)
-                        {
-                            passlen[t_a2[i]] = length / cnt;
-                        }
-                        else
-                        {
-                            passlen[t_a2[i]] = length / cnt + length % cnt;
-                        }
-                    }
-                    break;
-            }
-
-            for (int i = 0; i < cnt; i++)
-            {
-                switch ((PassType)t_a2[i])
-                {
-                    case PassType.Decimal:
-                        for (int j = 0; j < passlen[(byte)PassType.Decimal]; j++)
-                        {
-                            c_a.Add(password_Decimal[r.Next(password_Decimal.Length)]);
-                        }
-                        break;
-                    case PassType.a_Alp:
-                        for (int j = 0; j < passlen[(byte)PassType.a_Alp]; j++)
-                        {
-                            c_a.Add(password_a_Alp[r.Next(password_a_Alp.Length)]);
-                        }
-                        break;
-                    case PassType.A_Alp:
-                        for (int j = 0; j < passlen[(byte)PassType.A_Alp]; j++)
-                        {
-                            c_a.Add(password_A_Alp[r.Next(password_A_Alp.Length)]);
-                        }
-                        break;
-                    case PassType.Symbol:
-                        for (int j = 0; j < passlen[(byte)PassType.Symbol]; j++)
-                        {
-                            c_a.Add(password_Symbol[r.Next(password_Symbol.Length)]);
-                        }
-                        break;
-                }
-            }
-
-            foreach(var c in new string(c_a.OrderBy(i => Guid.NewGuid()).ToArray()))
-            {
-                password.AppendChar(c);
-            }
-
-            return password;
-        }
-
-        public static bool FileEncrypt(string filePath, string keyPath, SecureString password, DataParam[] Data_a)
+        public static bool FileEncrypt(string filePath, string keyPath, SecureString password, ItemOperation.DataParam[] Data_a)
         {
             IntPtr bstr;
 
@@ -159,16 +65,16 @@ namespace PassManager.Model
                             outFileFs.Write(salt, 0, 32);
                             outFileFs.Write(rij.IV, 0, 32);
 
-                            var WriteObject = new List<SaveParam>();
-                            Func<DataParam[], DataParam[]> f = null;
+                            var WriteObject = new List<ItemOperation.SaveParam>();
+                            Func<ItemOperation.DataParam[], ItemOperation.DataParam[]> f = null;
                             f = x =>
                             {
-                                var rtItems = new List<DataParam>();
+                                var rtItems = new List<ItemOperation.DataParam>();
 
                                 foreach(var y in x)
                                 {
                                     if (y.Child.Count > 0)
-                                        rtItems.AddRange(f(y.Child.Select(i => Common.Copy(i, new DataParam())).ToArray()));
+                                        rtItems.AddRange(f(y.Child.Select(i => Functions.Copy(i, new ItemOperation.DataParam())).ToArray()));
                                     y.Child.Clear();
                                     rtItems.Add(y);
                                 }
@@ -177,7 +83,7 @@ namespace PassManager.Model
 
                             foreach (var d in f(Data_a).OrderBy(i => i.Key))
                             {
-                                var obj = Common.Copy(d, new SaveParam());
+                                var obj = Functions.Copy(d, new ItemOperation.SaveParam());
 
                                 if(d.Password != null)
                                 {
@@ -196,11 +102,11 @@ namespace PassManager.Model
             return true;
         }
 
-        public static DataParam[] FileDecrypt(string filePath, string keyPath, SecureString password)
+        public static ItemOperation.DataParam[] FileDecrypt(string filePath, string keyPath, SecureString password)
         {
             IntPtr bstr;
-            List<SaveParam> ReadObject;
-            List<DataParam> rtItems = new List<DataParam>(); ;
+            List<ItemOperation.SaveParam> ReadObject;
+            List<ItemOperation.DataParam> rtItems = new List<ItemOperation.DataParam>(); ;
 
             if (string.Compare(Path.GetExtension(filePath), ".db", true) != 0)
             {
@@ -288,10 +194,10 @@ namespace PassManager.Model
                                 {
                                     try
                                     {
-                                        ReadObject = (List<SaveParam>)bf.Deserialize(ds);
+                                        ReadObject = (List<ItemOperation.SaveParam>)bf.Deserialize(ds);
                                         foreach(var r in ReadObject)
                                         {
-                                            var addItem = Common.Copy(r, new DataParam());
+                                            var addItem = Functions.Copy(r, new ItemOperation.DataParam());
                                             addItem.Password = new SecureString();
 
                                             if(!string.IsNullOrEmpty(r.PasswordString))

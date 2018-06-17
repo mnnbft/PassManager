@@ -83,11 +83,10 @@
     <Compile Include="Behavior\SecurePasswordBehavior.cs" />
     <Compile Include="Converter\MultiBindingConverter.cs" />
     <Compile Include="Converter\PageNumConverter.cs" />
+    <Compile Include="Models\FileIO.cs" />
     <Compile Include="Models\Functions.cs" />
-    <Compile Include="Models\MainWindowM.cs" />
-    <Compile Include="Models\OpenFileM.cs" />
+    <Compile Include="Models\ItemOperation.cs" />
     <Compile Include="Models\Password.cs" />
-    <Compile Include="Models\PasswordGenM.cs" />
     <Compile Include="ViewModel\MainWindowVM.cs" />
     <Compile Include="ViewModel\OpenFileVM.cs" />
     <Compile Include="ViewModel\PasswordGenVM.cs" />
