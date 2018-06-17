@@ -163,7 +163,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ReadMe.txt" />
+    <None Include="ReadMe.md" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\appbar.close.png" />
