@@ -173,5 +173,8 @@
   <ItemGroup>
     <Resource Include="Icons\kawaii.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Licenses\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

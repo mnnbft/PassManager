@@ -7,7 +7,7 @@ using System.Security;
 
 namespace PassManager.Models
 {
-    public class Password
+    public sealed class Password
     {
         public static Password Instance { get; } = new Password();
         private Password() { }

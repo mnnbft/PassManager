@@ -11,7 +11,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace PassManager.Models
 {
-    public class FileIO
+    public sealed class FileIO
     {
         public FileIO Instance { get; } = new FileIO();
         private FileIO() { }

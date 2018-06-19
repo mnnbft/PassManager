@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+using System.Security;
 
 namespace PassManager.Models
 {
-    public class ItemOperation
+    public sealed class ItemOperation
     {
-        public class DataParam
+        public ItemOperation Instance { get; } = new ItemOperation();
+        private ItemOperation() { }
+
+        public class PasswordItem
         {
             public string Title { get; set; }
             public int Key { get; set; }
@@ -16,11 +19,15 @@ namespace PassManager.Models
             public string UserName { get; set; }
             public ObservableCollection<string> Memos { get; set; }
             public SecureString Password { get; set; } = new SecureString();
-            public List<DataParam> Child { get; set; } = new List<DataParam>();
+        }
+
+        public class RecursionItem : PasswordItem
+        {
+            public List<RecursionItem> Children { get; set; } = new List<RecursionItem>();
         }
 
         [Serializable]
-        public class SaveParam
+        public class SerializeItem
         {
             public string Title { get; set; }
             public int Key { get; set; }
@@ -30,52 +37,80 @@ namespace PassManager.Models
             public string PasswordString { get; set; }
         }
 
-        public static List<DataParam> ReCreateItems(DataParam SelectedItem, List<DataParam> Items, DataParam AddItem)
-        {
-            var rtItems = new List<DataParam>();
+        public int key = 0; 
+        public ObservableCollection<PasswordItem> PasswordItems { get; set; }
 
-            Func<DataParam, List<DataParam>, List<DataParam>> f = null;
-            f = (x, y) =>
+        public static List<RecursionItem> ListToRecursion(List<PasswordItem> list)
+        {
+            var result = new List<RecursionItem>();
+
+            Func<PasswordItem, List<RecursionItem>> listFunction = null;
+            listFunction = x =>
             {
-                foreach (var item in y)
-                    item.Child = f(item, item.Child);
-                if (x.Equals(SelectedItem))
-                    y.Add(AddItem);
-                return y;
+                var children = (from i in list
+                                where i.ParentKey.Value == x.Key
+                                select Functions.Copy(i, new RecursionItem())).ToList();
+                foreach(var i in children)
+                {
+                    i.Children = listFunction(i);
+                }
+                return children;
             };
-            foreach (var item in Items)
+
+            var roots = list.Where(i => !i.ParentKey.HasValue);
+            foreach(var i in roots)
             {
-                item.Child = f(item, item.Child);
-                rtItems.Add(item);
+                var add = new RecursionItem();
+                add.Children = listFunction(i);
+                result.Add(add);
             }
 
-            return rtItems;
+            return result;
         }
 
-        public static List<DataParam> OpenCreateItems (DataParam[] FileItems)
+        public static List<PasswordItem> RecursionToList(List<RecursionItem> recursion)
         {
-            var rtItems = new List<DataParam>();
+            var result = new List<PasswordItem>();
 
-            Func<DataParam, List<DataParam>> f = null;
-            f = x =>
+            Action<RecursionItem> recursionAction = null;
+            recursionAction = x =>
             {
-                var rtItem = new List<DataParam>();
-                var FileItems2 = FileItems.Where(i => i.ParentKey == x.Key).ToList();
-                foreach (var t in FileItems2)
+                foreach(var i in x.Children)
                 {
-                    t.Child.AddRange(f(t));
-                    rtItem.Add(t);
+                    var cast = Functions.Copy(i, new PasswordItem());
+                    result.Add(cast);
+                    recursionAction(i);
                 }
-                return rtItem;
             };
 
-            foreach (var t in FileItems.Where(i => !i.ParentKey.HasValue))
-            {
-                t.Child.AddRange(f(t));
-                rtItems.Add(t);
-            }
+            recursion.ForEach(i => recursionAction(i));
 
-            return rtItems;
+            return result;
+        }
+
+        public static List<RecursionItem> InsertItem(RecursionItem target,
+                                                     PasswordItem insert,
+                                                     List<RecursionItem> itemList)
+        {
+            var list = RecursionToList(itemList);
+            insert.ParentKey = target.Key;
+
+            list.Add(insert);
+
+            var result = ListToRecursion(list);
+            return result;
+        }
+
+        public static List<RecursionItem> DeleteItem(int deleteKey,
+                                                     List<RecursionItem> itemList)
+        {
+            var list = RecursionToList(itemList);
+            var target = list.FirstOrDefault(i => i.Key == deleteKey);
+
+            list.Remove(target);
+
+            var result = ListToRecursion(list);
+            return result;
         }
     }
 }

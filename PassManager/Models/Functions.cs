@@ -6,10 +6,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace PassManager.Models
 {
-    public class Functions
+    public sealed class Functions 
     {
-        private Functions() { }
-
         public static T DeepCopy<T>(T target)
         {
             T result;
