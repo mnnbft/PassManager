@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using System.IO;
+using System.Security;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace PassManager.Models
@@ -19,23 +21,6 @@ namespace PassManager.Models
                     bf.Serialize(ms, target);
                     ms.Position = 0;
                     result = (T)bf.Deserialize(ms);
-                }
-                finally { }
-            }
-            return result;
-        }
-
-        public static T2 DeepCopy2<T1, T2>(T1 target)
-        {
-            T2 result;
-            BinaryFormatter bf = new BinaryFormatter();
-            using(MemoryStream ms = new MemoryStream())
-            {
-                try
-                {
-                    bf.Serialize(ms, target);
-                    ms.Position = 0;
-                    result = (T2)bf.Deserialize(ms);
                 }
                 finally { }
             }
@@ -70,5 +55,14 @@ namespace PassManager.Models
 
             return result.ToArray();
         }
+
+        public static string SecureStringProcessing(SecureString secure)
+        {
+            var bstr = Marshal.SecureStringToBSTR(secure);
+            var charString = Marshal.PtrToStringUni(bstr);
+            Marshal.ZeroFreeBSTR(bstr);
+            return charString;
+        }
+
     }
 }

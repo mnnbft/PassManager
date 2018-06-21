@@ -33,12 +33,41 @@ namespace PassManager.Models
             public int Key { get; set; }
             public int? ParentKey { get; set; }
             public string UserName { get; set; }
-            public string Supplement { get; set; }
+            public string[] Memos { get; set; }
             public string PasswordString { get; set; }
         }
 
-        public int key = 0; 
-        public ObservableCollection<PasswordItem> PasswordItems { get; set; }
+        public int key = 0;
+        public ObservableCollection<PasswordItem> PasswordItems = 
+            new ObservableCollection<PasswordItem>();
+
+        public static IEnumerable<SerializeItem> GetSerializeItems(List<PasswordItem> passwordItems)
+        {
+            foreach(var i in passwordItems)
+            {
+                var target = Functions.Copy(i, new SerializeItem());
+                target.Memos = i.Memos.ToArray();
+                target.PasswordString = Functions.SecureStringProcessing(i.Password);
+
+                yield return target;
+            }
+        }
+
+        public static IEnumerable<PasswordItem> GetDeserializeItems(List<SerializeItem> serializeItems)
+        {
+            foreach(var i in serializeItems)
+            {
+                var target = Functions.Copy(i, new PasswordItem());
+                target.Memos = new ObservableCollection<string>(i.Memos);
+                target.Password = new SecureString();
+                foreach(var j in i.PasswordString.ToCharArray())
+                {
+                    target.Password.AppendChar(j);
+                }
+
+                yield return target;
+            }
+        }
 
         public static List<RecursionItem> ListToRecursion(List<PasswordItem> list)
         {

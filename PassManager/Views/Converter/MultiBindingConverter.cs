@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PassManager.Converter
+namespace PassManager.Views.Converter
 {
     using System.Globalization;
     using System.Windows.Data;

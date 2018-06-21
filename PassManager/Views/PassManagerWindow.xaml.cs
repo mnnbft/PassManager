@@ -10,20 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls;
 
-namespace PassManager.View
+namespace PassManager.Views
 {
     /// <summary>
-    /// Setting.xaml の相互作用ロジック
+    /// PassManagerWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class Setting : UserControl
+    public partial class PassManagerWindow : MetroWindow
     {
-        public Setting()
+        public PassManagerWindow()
         {
             InitializeComponent();
-            DataContext = ViewModel.MainWindowVM.Setting_Page;
         }
     }
 }

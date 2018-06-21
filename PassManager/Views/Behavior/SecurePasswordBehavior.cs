@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PassManager.Behavior
+namespace PassManager.Views.Behavior
 {
     using System.Security;
     using System.Windows;
