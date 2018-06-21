@@ -4,11 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PassManager.Views"
-        xmlns:viewmodels="clr-namespace:PassManager.ViewModels"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:viewmodels="clr-namespace:PassManager.ViewModels"
         d:DataContext="{d:DesignInstance viewmodels:PassManagerViewModel}"
         mc:Ignorable="d"
-        Title="PassManagerWindow" Height="450" Width="800">
+        Title="" Height="450" Width="800">
     <Grid>
+        <DockPanel>
+            <materialDesign:ColorZone DockPanel.Dock="Top"
+                                      Padding="16"
+                                      materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                      Mode="PrimaryMid">
+            </materialDesign:ColorZone>
+        </DockPanel>
     </Grid>
 </controls:MetroWindow>

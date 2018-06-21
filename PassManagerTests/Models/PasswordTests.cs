@@ -19,6 +19,7 @@ namespace PassManager.Models.Tests
             {
                 Password.PassType.Decimal,
                 Password.PassType.Low_Alp,
+                Password.PassType.Up_Alp,
             });
 
             var bstr = Marshal.SecureStringToBSTR(sec);

@@ -49,7 +49,7 @@ namespace PassManager.Models
             for(int i = 0; i < count; i++)
             {
                 int target = division;
-                target += surplus < count ? 1 : 0;
+                target += surplus-- > 0 ? 1 : 0;
                 result.Add(target);
             }
 

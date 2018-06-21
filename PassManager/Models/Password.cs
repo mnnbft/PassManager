@@ -54,7 +54,7 @@ namespace PassManager.Models
                 for(int i = 0; i < dictionary.Value; i++)
                 {
                     int randNum = rand.Next(0, maxValue);
-                    result.Add(passwordDictionary[type][i]);
+                    result.Add(passwordDictionary[type][randNum]);
                 }
             }
 
