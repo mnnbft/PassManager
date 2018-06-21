@@ -148,7 +148,16 @@
     <Resource Include="Views\Icons\kawaii.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Licenses\" />
+    <Resource Include="Licenses\MahApps.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Licenses\MaterialDesignInXamlToolkit.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Licenses\BcryptNet.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Licenses\Prism.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
