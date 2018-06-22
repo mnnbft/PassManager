@@ -10,13 +10,31 @@
         d:DataContext="{d:DesignInstance viewmodels:PassManagerViewModel}"
         mc:Ignorable="d"
         Title="" Height="450" Width="800">
-    <Grid>
-        <DockPanel>
-            <materialDesign:ColorZone DockPanel.Dock="Top"
-                                      Padding="16"
-                                      materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                      Mode="PrimaryMid">
-            </materialDesign:ColorZone>
-        </DockPanel>
-    </Grid>
+
+    <materialDesign:DialogHost>
+        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+            <materialDesign:DrawerHost.LeftDrawerContent >
+                <DockPanel MinWidth="200">
+                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                                  DockPanel.Dock="Top"
+                                  HorizontalAlignment="Right"
+                                  IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked}" />
+                    <ListBox>
+                    </ListBox>
+                </DockPanel>
+            </materialDesign:DrawerHost.LeftDrawerContent>
+            <DockPanel>
+                <materialDesign:ColorZone DockPanel.Dock="Top"
+                                          Padding="16"
+                                          materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                          Mode="PrimaryMid">
+                    <DockPanel>
+                        <ToggleButton x:Name="MenuToggleButton" Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                                      HorizontalAlignment="Left"
+                                      IsChecked="False"/>
+                    </DockPanel>
+                </materialDesign:ColorZone>
+            </DockPanel>
+        </materialDesign:DrawerHost>
+    </materialDesign:DialogHost>
 </controls:MetroWindow>
