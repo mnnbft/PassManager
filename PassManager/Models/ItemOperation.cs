@@ -72,11 +72,13 @@ namespace PassManager.Models
         public static List<RecursionItem> ListToRecursion(List<PasswordItem> list)
         {
             var result = new List<RecursionItem>();
+            var roots = list.Where(i => !i.ParentKey.HasValue);
+            var notRoots = list.Where(i => i.ParentKey.HasValue);
 
             Func<PasswordItem, List<RecursionItem>> listFunction = null;
             listFunction = x =>
             {
-                var children = (from i in list
+                var children = (from i in notRoots
                                 where i.ParentKey.Value == x.Key
                                 select Functions.Copy(i, new RecursionItem())).ToList();
                 foreach(var i in children)
@@ -86,7 +88,6 @@ namespace PassManager.Models
                 return children;
             };
 
-            var roots = list.Where(i => !i.ParentKey.HasValue);
             foreach(var i in roots)
             {
                 var add = new RecursionItem();
@@ -104,10 +105,11 @@ namespace PassManager.Models
             Action<RecursionItem> recursionAction = null;
             recursionAction = x =>
             {
+                var cast = Functions.Copy(x, new PasswordItem());
+                result.Add(cast);
+
                 foreach(var i in x.Children)
                 {
-                    var cast = Functions.Copy(i, new PasswordItem());
-                    result.Add(cast);
                     recursionAction(i);
                 }
             };
@@ -130,15 +132,47 @@ namespace PassManager.Models
             return result;
         }
 
+        public static List<RecursionItem> DeleteItem(RecursionItem delete,
+                                                     List<RecursionItem> itemList)
+        {
+            return DeleteItem(delete.Key, itemList);
+        }
         public static List<RecursionItem> DeleteItem(int deleteKey,
                                                      List<RecursionItem> itemList)
         {
-            var list = RecursionToList(itemList);
-            var target = list.FirstOrDefault(i => i.Key == deleteKey);
+            if (deleteKey <= 0) return null;
+            var recurtionItems = RecursionToList(itemList);
+            var target = recurtionItems.FirstOrDefault(i => i.Key == deleteKey);
+            if (target == null) return null;
 
-            list.Remove(target);
+            var deleteKeys = new List<int>();
+            Action<PasswordItem> deleteAction = null;
+            deleteAction = x =>
+            {
+                deleteKeys.Add(x.Key);
+                var children = recurtionItems.Where(i =>
+                {
+                    if(i.ParentKey.HasValue &&
+                       i.ParentKey == x.Key)
+                    {
+                        return true;
+                    }
+                    return false;
+                });
+                foreach(var i in children)
+                {
+                    deleteAction(i);
+                }
+            };
+            deleteAction(target);
 
-            var result = ListToRecursion(list);
+            foreach(var i in deleteKeys)
+            {
+                var delete = recurtionItems.First(j => j.Key == i);
+                recurtionItems.Remove(delete);
+            }
+
+            var result = ListToRecursion(recurtionItems);
             return result;
         }
     }
