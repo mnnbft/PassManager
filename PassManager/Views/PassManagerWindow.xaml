@@ -9,18 +9,27 @@
         xmlns:viewmodels="clr-namespace:PassManager.ViewModels"
         d:DataContext="{d:DesignInstance viewmodels:PassManagerViewModel}"
         mc:Ignorable="d"
-        Title="" Height="450" Width="800">
+        Title="" Height="600" Width="900">
+    <controls:MetroWindow.DataContext>
+        <viewmodels:PassManagerViewModel />
+    </controls:MetroWindow.DataContext>
+    <controls:MetroWindow.Resources>
+        <DataTemplate x:Key="MenuButtonTemplate">
+            <Button Content="{Binding}" 
+                    Margin="5" />
+        </DataTemplate>
+    </controls:MetroWindow.Resources>
 
     <materialDesign:DialogHost>
         <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
             <materialDesign:DrawerHost.LeftDrawerContent >
-                <DockPanel MinWidth="200">
+                <DockPanel MinWidth="250">
                     <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
                                   DockPanel.Dock="Top"
                                   HorizontalAlignment="Right"
                                   IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked}" />
-                    <ListBox>
-                    </ListBox>
+                    <ItemsControl ItemsSource="{Binding MenuButtonItems}"
+                                  ItemTemplate="{StaticResource MenuButtonTemplate}" />
                 </DockPanel>
             </materialDesign:DrawerHost.LeftDrawerContent>
             <DockPanel>

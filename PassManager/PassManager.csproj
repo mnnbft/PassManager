@@ -89,6 +89,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\MenuContent.cs" />
     <Compile Include="Views\Behavior\SecurePasswordBehavior.cs" />
     <Compile Include="Views\Converter\MultiBindingConverter.cs" />
     <Compile Include="Models\ApplicationOption.cs" />
@@ -96,7 +97,6 @@
     <Compile Include="Models\Functions.cs" />
     <Compile Include="Models\ItemOperation.cs" />
     <Compile Include="Models\Password.cs" />
-    <Compile Include="ViewModels\Instances.cs" />
     <Compile Include="ViewModels\PassManagerViewModel.cs" />
     <Compile Include="Views\PassManagerWindow.xaml.cs">
       <DependentUpon>PassManagerWindow.xaml</DependentUpon>
