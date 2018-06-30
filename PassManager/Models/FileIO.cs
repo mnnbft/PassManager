@@ -22,7 +22,10 @@ namespace PassManager.Models
         public string SelectedFilePath { get; set; }
         public string SelectedKeyPath { get; set; }
 
-        public static bool FileEncrypt(string filePath, string keyPath, SecureString password, List<PasswordItem> passwordItems)
+        public static bool FileEncrypt(string filePath, 
+                                       string keyPath, 
+                                       SecureString password,
+                                       List<PasswordItem> passwordItems)
         {
             var passString = Functions.SecureStringProcessing(password);
 
@@ -90,7 +93,9 @@ namespace PassManager.Models
             return true;
         }
 
-        public static List<PasswordItem> FileDecrypt(string filePath, string keyPath, SecureString password)
+        public static List<PasswordItem> FileDecrypt(string filePath,
+                                                     string keyPath, 
+                                                     SecureString password)
         {
             var passString = Functions.SecureStringProcessing(password);
 

@@ -98,8 +98,8 @@
     <Compile Include="Models\ItemOperation.cs" />
     <Compile Include="Models\Password.cs" />
     <Compile Include="ViewModels\PassManagerViewModel.cs" />
-    <Compile Include="Views\PassManagerWindow.xaml.cs">
-      <DependentUpon>PassManagerWindow.xaml</DependentUpon>
+    <Compile Include="Views\PassManager.xaml.cs">
+      <DependentUpon>PassManager.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -130,22 +130,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\PassManagerWindow.xaml">
+    <Page Include="Views\PassManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Views\Icons\appbar.close.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Views\Icons\appbar.save.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Views\Icons\kawaii.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Licenses\MahApps.txt" />

@@ -18,9 +18,9 @@ namespace PassManager.Views
     /// <summary>
     /// PassManagerWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class PassManagerWindow : MetroWindow
+    public partial class PassManager : MetroWindow
     {
-        public PassManagerWindow()
+        public PassManager()
         {
             InitializeComponent();
         }

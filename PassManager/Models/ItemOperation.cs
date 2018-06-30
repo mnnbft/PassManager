@@ -37,7 +37,7 @@ namespace PassManager.Models
             public string PasswordString { get; set; }
         }
 
-        public int key = 0;
+        public int Key { get; set; } = 0;
         public ObservableCollection<PasswordItem> PasswordItems = 
             new ObservableCollection<PasswordItem>();
 

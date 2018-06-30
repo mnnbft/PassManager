@@ -16,16 +16,16 @@ namespace PassManager.Models
         public enum MenuButtonItem
         {
             View,
-            Generation,
             Setting,
         }
+
         public Dictionary<MenuButtonItem, string> menuButtonDictionary =
             new Dictionary<MenuButtonItem, string>()
             {
-                { MenuButtonItem.View, "表示画面" },
-                { MenuButtonItem.Generation, "パスワード作成" },
-                { MenuButtonItem.Setting, "設定" },
+                { MenuButtonItem.View, "Password" },
+                { MenuButtonItem.Setting, "Setting" },
             };
+
         public string[] MenuButtonItems
         {
             get { return menuButtonDictionary.Select(i => i.Value).ToArray(); }
