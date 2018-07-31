@@ -8,7 +8,7 @@ namespace PassManager.Models
 {
     public sealed class ItemOperation
     {
-        public ItemOperation Instance { get; } = new ItemOperation();
+        public static ItemOperation Instance { get; } = new ItemOperation();
         private ItemOperation() { }
 
         public class PasswordItem
@@ -38,8 +38,8 @@ namespace PassManager.Models
         }
 
         public int Key { get; set; } = 0;
-        public ObservableCollection<PasswordItem> PasswordItems = 
-            new ObservableCollection<PasswordItem>();
+        public ObservableCollection<RecursionItem> RecursionItems { get; } =
+            new ObservableCollection<RecursionItem>();
 
         public static IEnumerable<SerializeItem> GetSerializeItems(List<PasswordItem> passwordItems)
         {

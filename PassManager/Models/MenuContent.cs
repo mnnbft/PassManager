@@ -18,6 +18,12 @@ namespace PassManager.Models
             View,
             Setting,
         }
+        public enum ContextMenuItem
+        {
+            New,
+            Modify,
+            Delete,
+        }
 
         public Dictionary<MenuButtonItem, string> menuButtonDictionary =
             new Dictionary<MenuButtonItem, string>()
@@ -26,9 +32,21 @@ namespace PassManager.Models
                 { MenuButtonItem.Setting, "Setting" },
             };
 
-        public string[] MenuButtonItems
+        public Dictionary<ContextMenuItem, string> contextMenuDictionary =
+            new Dictionary<ContextMenuItem, string>()
+            {
+                { ContextMenuItem.New, "新規作成" },
+                { ContextMenuItem.Modify, "修正" },
+                { ContextMenuItem.Delete, "削除" },
+            };
+
+        public IEnumerable<string> MenuButtonItems
         {
-            get { return menuButtonDictionary.Select(i => i.Value).ToArray(); }
+            get { return menuButtonDictionary.Select(i => i.Value); }
+        }
+        public IEnumerable<string> ContextMenuItems
+        {
+            get { return contextMenuDictionary.Select(i => i.Value); }
         }
     }
 }

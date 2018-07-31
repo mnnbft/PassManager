@@ -24,25 +24,28 @@
                      Margin="20 0 20 0">
             <ToolBar Style="{DynamicResource MaterialDesignToolBar}"
                      ClipToBounds="False"
-                     ItemsSource="{Binding MenuButtonItems}">
+                     ItemsSource="{Binding MenuButtonItems,
+                     Mode=OneTime}">
                 <ToolBar.ItemTemplate>
                     <DataTemplate>
-                        <WrapPanel>
-                            <Button Style="{StaticResource MaterialDesignFlatButton}"
-                                    FontSize="18"
-                                    Content="{Binding}"
-                                    ToolTip="{Binding}"
-                                    Padding="0 0 0 5" 
-                                    Margin="15"/>
-                            <Separator />
-                        </WrapPanel>
+                        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                FontSize="18"
+                                Content="{Binding}"
+                                ToolTip="{Binding}"
+                                Padding="0 0 0 5" 
+                                Margin="15"/>
                     </DataTemplate>
                 </ToolBar.ItemTemplate>
             </ToolBar>
         </ToolBarTray>
         <DockPanel DockPanel.Dock="Bottom">
             <TreeView DockPanel.Dock="Left"
+                      ItemsSource="{Binding RecursionItems}"
                       MinWidth="250">
+                <TreeView.ContextMenu>
+                    <ContextMenu ItemsSource="{Binding ContextMenuItems,
+                                 Mode=OneTime}" />
+                </TreeView.ContextMenu>
             </TreeView>
             <Grid DockPanel.Dock="Right">
             </Grid>
