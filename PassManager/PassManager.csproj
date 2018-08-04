@@ -93,6 +93,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\MenuContent.cs" />
+    <Compile Include="ViewModels\FileFindDialogViewModel.cs" />
+    <Compile Include="ViewModels\FileNewDialogViewModel.cs" />
     <Compile Include="Views\Behavior\SecurePasswordBehavior.cs" />
     <Compile Include="Views\Converter\MultiBindingConverter.cs" />
     <Compile Include="Models\ApplicationOption.cs" />
@@ -101,6 +103,12 @@
     <Compile Include="Models\ItemOperation.cs" />
     <Compile Include="Models\Password.cs" />
     <Compile Include="ViewModels\PassManagerViewModel.cs" />
+    <Compile Include="Views\FileFindDialog.xaml.cs">
+      <DependentUpon>FileFindDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FileNewDialog.xaml.cs">
+      <DependentUpon>FileNewDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PassManager.xaml.cs">
       <DependentUpon>PassManager.xaml</DependentUpon>
     </Compile>
@@ -133,6 +141,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\FileFindDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FileNewDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PassManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

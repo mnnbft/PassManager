@@ -94,8 +94,8 @@ namespace PassManager.Models
         }
 
         public static List<FolderItem> FileDecrypt(string filePath,
-                                                     string keyPath, 
-                                                     SecureString password)
+                                                   string keyPath, 
+                                                   SecureString password)
         {
             var passString = Functions.SecureStringProcessing(password);
 
