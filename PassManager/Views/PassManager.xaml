@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PassManager.Views"
         xmlns:prism="http://prismlibrary.com/"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:viewmodels="clr-namespace:PassManager.ViewModels"
         prism:ViewModelLocator.AutoWireViewModel="True"
+        xmlns:dockablz="http://dragablz.net/winfx/xaml/dockablz"
+        xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -20,35 +22,70 @@
         mc:Ignorable="d"
         Title="" Height="600" Width="900">
     <DockPanel>
-        <ToolBarTray DockPanel.Dock="Top"
-                     Margin="20 0 20 0">
-            <ToolBar Style="{DynamicResource MaterialDesignToolBar}"
-                     ClipToBounds="False"
-                     ItemsSource="{Binding MenuButtonItems,
-                     Mode=OneTime}">
-                <ToolBar.ItemTemplate>
-                    <DataTemplate>
-                        <Button Style="{StaticResource MaterialDesignFlatButton}"
-                                FontSize="18"
-                                Content="{Binding}"
-                                ToolTip="{Binding}"
-                                Padding="0 0 0 5" 
-                                Margin="15"/>
-                    </DataTemplate>
-                </ToolBar.ItemTemplate>
-            </ToolBar>
-        </ToolBarTray>
-        <DockPanel DockPanel.Dock="Bottom">
-            <TreeView DockPanel.Dock="Left"
-                      ItemsSource="{Binding RecursionItems}"
-                      MinWidth="250">
-                <TreeView.ContextMenu>
-                    <ContextMenu ItemsSource="{Binding ContextMenuItems,
-                                 Mode=OneTime}" />
-                </TreeView.ContextMenu>
-            </TreeView>
-            <Grid DockPanel.Dock="Right">
-            </Grid>
-        </DockPanel>
+        <material:DialogHost>
+            <material:DrawerHost>
+                <DockPanel>
+                    <material:ColorZone DockPanel.Dock="Top" 
+                                        Mode="PrimaryMid" 
+                                        material:ShadowAssist.ShadowDepth="Depth2"
+                                        Padding="10"
+                                        Panel.ZIndex="1">
+                        <DockPanel>
+                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                    HorizontalAlignment="Left"
+                                    material:ShadowAssist.ShadowDepth="Depth0">
+                                <material:PackIcon Kind="FileFind"
+                                                   Width="24"
+                                                   Height="24" />
+                            </Button>
+                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                    HorizontalAlignment="Left"
+                                    material:ShadowAssist.ShadowDepth="Depth0">
+                                <material:PackIcon Kind="FilePlus"
+                                                   Width="24"
+                                                   Height="24" />
+                            </Button>
+                            <material:PopupBox HorizontalAlignment="Right">
+                                <StackPanel>
+                                </StackPanel>
+                            </material:PopupBox>
+                        </DockPanel>
+                    </material:ColorZone>
+                    <DockPanel DockPanel.Dock="Bottom">
+                        <TreeView DockPanel.Dock="Left"
+                                  Background="#E8E8E8"
+                                  MinWidth="200" />
+                        <dragablz:TabablzControl ItemsSource="{Binding TabName}"
+                                                 DockPanel.Dock="Right">
+                            <dragablz:TabablzControl.InterTabController>
+                                <dragablz:InterTabController />
+                            </dragablz:TabablzControl.InterTabController>
+                            <dragablz:TabablzControl.HeaderItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel MinWidth="75">
+                                        <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                                DockPanel.Dock="Right"
+                                                VerticalAlignment="Center"
+                                                Width="14"
+                                                Height="14">
+                                            <material:PackIcon Kind="Close"
+                                                               Width="12"
+                                                               Height="12" />
+                                        </Button>
+                                        <TextBlock DockPanel.Dock="Left" 
+                                                   Text="{Binding}"
+                                                   VerticalAlignment="Center" />
+                                    </DockPanel>
+                                </DataTemplate>
+                            </dragablz:TabablzControl.HeaderItemTemplate>
+                            <dragablz:TabablzControl.ContentTemplate>
+                                <DataTemplate>
+                                </DataTemplate>
+                            </dragablz:TabablzControl.ContentTemplate>
+                        </dragablz:TabablzControl>
+                    </DockPanel>
+                </DockPanel>
+            </material:DrawerHost>
+        </material:DialogHost>
     </DockPanel>
 </controls:MetroWindow>

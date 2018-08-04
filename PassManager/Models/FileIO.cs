@@ -9,8 +9,8 @@ using System.Security.Cryptography;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using BCrypt.Net;
-using PasswordItem = PassManager.Models.ItemOperation.PasswordItem;
-using SerializeItem = PassManager.Models.ItemOperation.SerializeItem;
+using FolderItem = PassManager.Models.ItemOperation.FolderItem;
+using SerializeFolder = PassManager.Models.ItemOperation.SerializeFolder;
 
 namespace PassManager.Models
 {
@@ -25,7 +25,7 @@ namespace PassManager.Models
         public static bool FileEncrypt(string filePath, 
                                        string keyPath, 
                                        SecureString password,
-                                       List<PasswordItem> passwordItems)
+                                       List<FolderItem> FolderItems)
         {
             var passString = Functions.SecureStringProcessing(password);
 
@@ -77,8 +77,8 @@ namespace PassManager.Models
                                 outFileFs.Write(salt, 0, 32);
                                 outFileFs.Write(rij.IV, 0, 32);
 
-                                var serializeItems = ItemOperation.GetSerializeItems(passwordItems).ToList();
-                                bf.Serialize(ds, serializeItems);
+                                var SerializeFolders = ItemOperation.GetSerializeFolders(FolderItems).ToList();
+                                bf.Serialize(ds, SerializeFolders);
                             }
                         }
                     }
@@ -93,7 +93,7 @@ namespace PassManager.Models
             return true;
         }
 
-        public static List<PasswordItem> FileDecrypt(string filePath,
+        public static List<FolderItem> FileDecrypt(string filePath,
                                                      string keyPath, 
                                                      SecureString password)
         {
@@ -128,7 +128,7 @@ namespace PassManager.Models
                 return null;
             }
 
-            var passwordItems = new List<PasswordItem>();
+            var FolderItems = new List<FolderItem>();
             using (MemoryStream outKeyMS = new MemoryStream())
             {
                 try
@@ -163,8 +163,8 @@ namespace PassManager.Models
                                 {
                                     try
                                     {
-                                        var serializeItems = (List<SerializeItem>)bf.Deserialize(ds);
-                                        passwordItems = ItemOperation.GetDeserializeItems(serializeItems).ToList();
+                                        var SerializeFolders = (List<SerializeFolder>)bf.Deserialize(ds);
+                                        FolderItems = ItemOperation.GetDeSerializeFolders(SerializeFolders).ToList();
                                     }
                                     catch(Exception e)
                                     {
@@ -182,7 +182,7 @@ namespace PassManager.Models
                     return null;
                 }
             }
-            return passwordItems;
+            return FolderItems;
         }
     }
 }

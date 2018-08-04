@@ -64,5 +64,14 @@ namespace PassManager.Models
             return charString;
         }
 
+        public static SecureString SecureStringProcessing(string password)
+        {
+            var result = new SecureString();
+            foreach(var passChar in password)
+            {
+                result.AppendChar(passChar);
+            }
+            return result;
+        }
     }
 }

@@ -11,55 +11,49 @@ namespace PassManager.Models.Tests
     [TestClass()]
     public class ItemOperationTests
     {
-        List<ItemOperation.SerializeItem> testItems = new List<ItemOperation.SerializeItem>()
+        List<ItemOperation.SerializeFolder> testItems = new List<ItemOperation.SerializeFolder>()
         {
-            new ItemOperation.SerializeItem()
+            new ItemOperation.SerializeFolder()
             {
                 Key = 0,
                 Title = "test1",
-                UserName = "user1",
                 ParentKey = null,
-                Memos = new string[] { "string", "test"},
-                PasswordString = "12345",
+                Items = new ItemOperation.SerializePassword[3], 
             },
-            new ItemOperation.SerializeItem()
+            new ItemOperation.SerializeFolder()
             {
                 Key = 1,
                 Title = "test2",
-                UserName = "user2",
                 ParentKey = 0,
-                Memos = new string[] { "string", "test"},
-                PasswordString = "12345",
+                Items = new ItemOperation.SerializePassword[3], 
             },
-            new ItemOperation.SerializeItem()
+            new ItemOperation.SerializeFolder()
             {
                 Key = 2,
                 Title = "test3",
-                UserName = "user3",
                 ParentKey = 1,
-                Memos = new string[] { "string", "test"},
-                PasswordString = "12345",
+                Items = new ItemOperation.SerializePassword[3], 
             },
         };
 
         [TestMethod()]
-        public void GetSerializeItemsTest()
+        public void GetSerializeFoldersTest()
         {
-            var test = ItemOperation.GetDeserializeItems(testItems);
-            var test2 = ItemOperation.GetSerializeItems(test.ToList());
+            var test = ItemOperation.GetDeSerializeFolders(testItems);
+            var test2 = ItemOperation.GetSerializeFolders(test.ToList());
         }
 
         [TestMethod()]
         public void ListToRecursionTest()
         {
-            var test1 = ItemOperation.GetDeserializeItems(testItems);
+            var test1 = ItemOperation.GetDeSerializeFolders(testItems);
             var test2 = ItemOperation.ListToRecursion(test1.ToList());
         }
 
         [TestMethod()]
         public void RecursionToListTest()
         {
-            var test1 = ItemOperation.GetDeserializeItems(testItems);
+            var test1 = ItemOperation.GetDeSerializeFolders(testItems);
             var test2 = ItemOperation.ListToRecursion(test1.ToList());
             var test3 = ItemOperation.RecursionToList(test2.ToList());
         }
@@ -67,28 +61,26 @@ namespace PassManager.Models.Tests
         [TestMethod()]
         public void InsertItemTest()
         {
-            var test1 = ItemOperation.GetDeserializeItems(testItems);
+            var test1 = ItemOperation.GetDeSerializeFolders(testItems);
             var test2 = ItemOperation.ListToRecursion(test1.ToList());
 
-            var insert = new ItemOperation.RecursionItem()
+            var insert = new ItemOperation.RecursionFolder()
             {
                 Key = 3,
                 Title = "insert",
-                UserName = "insert",
                 ParentKey = 1,
-                Memos = new System.Collections.ObjectModel.ObservableCollection<string>(),
+                Items = new List<ItemOperation.PasswordItem>(3),
                 Children = null,
-                Password = new System.Security.SecureString(),
             };
 
             var target = test2.FirstOrDefault(i => i.Key == 0);
-            ItemOperation.InsertItem(target, insert, test2);
+            var result = ItemOperation.InsertItem(target, insert, test2);
         }
 
         [TestMethod()]
         public void DeleteItemTest()
         {
-            var test1 = ItemOperation.GetDeserializeItems(testItems);
+            var test1 = ItemOperation.GetDeSerializeFolders(testItems);
             var test2 = ItemOperation.ListToRecursion(test1.ToList());
 
             var target = test2.FirstOrDefault(i => i.Key == 0);
