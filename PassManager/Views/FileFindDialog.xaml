@@ -5,38 +5,32 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PassManager.Views"
              xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewmodels="clr-namespace:PassManager.ViewModels"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
+             d:DataContext="{d:DesignInstance viewmodels:FileFindDialogViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="16"
           MinWidth="300"
-          Height="200">
+          Height="300">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBox Grid.Column="0"
-                 Grid.Row="0"
-                 material:HintAssist.Hint="FilePath"
-                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-        <Button Grid.Column="1"
-                Grid.Row="0">
-            <material:PackIcon Kind="File"
-                               Width="24"
-                               Height="24" />
-        </Button>
+        <TextBlock Grid.ColumnSpan="2"
+                   Text="ファイルから開く" />
         <TextBox Grid.Column="0"
                  Grid.Row="1"
-                 material:HintAssist.Hint="KeyPath"
+                 material:HintAssist.Hint="ファイルの場所"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
         <Button Grid.Column="1"
                 Grid.Row="1">
@@ -44,14 +38,32 @@
                                Width="24"
                                Height="24" />
         </Button>
-        <TextBox Grid.Column="0" Grid.Row="2" material:HintAssist.Hint="Password"
+        <TextBox Grid.Column="0"
+                 Grid.Row="2"
+                 material:HintAssist.Hint="キーファイルの場所"
+                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+        <Button Grid.Column="1"
+                Grid.Row="2">
+            <material:PackIcon Kind="File"
+                               Width="24"
+                               Height="24" />
+        </Button>
+        <TextBox Grid.Column="0" 
+                 Grid.Row="3"
+                 material:HintAssist.Hint="パスワード"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" /> 
         <Grid Grid.ColumnSpan="2"
               Grid.Row="4">
-            <Button Content="Create"
-                    HorizontalAlignment="Left"/>
-            <Button Content="Cancel"
-                    HorizontalAlignment="Right"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"
+                    Content="開く"
+                    Command="{Binding CommandOpen}" />
+            <Button Grid.Column="2"
+                    Content="キャンセル"
                     Command="{Binding CommandCancel}" />
         </Grid>
     </Grid>
