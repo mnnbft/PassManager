@@ -99,7 +99,7 @@ namespace PassManager.Models
         {
             var passString = Functions.SecureStringProcessing(password);
 
-            if (string.Compare(Path.GetExtension(filePath), ".db", true) != 0)
+            if (string.Compare(Path.GetExtension(filePath), ".pass", true) != 0)
             {
                 return null;
             }

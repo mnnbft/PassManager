@@ -14,8 +14,15 @@ namespace PassManager.ViewModels
 {
     class PassManagerViewModel : BindableBase
     {
-        public ObservableCollection<string> TabName { get; } =
-            new ObservableCollection<string>();
+        public PassManagerViewModel()
+        {
+            ItemOperation.Instance.PropertyChanged += (d, e) => { OnPropertyChanged(e); };
+        }
+
+        public ObservableCollection<ItemOperation.RecursionFolder> RecursionFolders
+        {
+            get { return ItemOperation.Instance.RecursionFolders; }
+        }
 
         public DelegateCommand CommandFileFind
         {
@@ -24,10 +31,6 @@ namespace PassManager.ViewModels
         public DelegateCommand CommandFileNew
         {
             get { return new DelegateCommand(FunctionFileNew); }
-        }
-        public DelegateCommand<int> CommandTabClose
-        {
-            get { return new DelegateCommand<int>(FunctionTabClose); }
         }
 
         private async void FunctionFileFind()
@@ -39,10 +42,6 @@ namespace PassManager.ViewModels
         {
             var dialog = new FileNewDialog();
             await DialogHost.Show(dialog);
-        }
-        private void FunctionTabClose(int index)
-        {
-            TabName.RemoveAt(index);
         }
     }
 }

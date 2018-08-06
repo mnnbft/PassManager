@@ -55,6 +55,8 @@
                     </material:ColorZone>
                     <DockPanel DockPanel.Dock="Bottom">
                         <TreeView DockPanel.Dock="Left"
+                                  ItemsSource="{Binding RecursionFolders}"
+                                  DisplayMemberPath="Title"
                                   Background="#E8E8E8"
                                   MinWidth="200" />
                         <dragablz:TabablzControl ItemsSource="{Binding TabName}"

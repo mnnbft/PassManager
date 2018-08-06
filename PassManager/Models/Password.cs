@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security;
+using System.IO;
 
 namespace PassManager.Models
 {
@@ -62,6 +63,34 @@ namespace PassManager.Models
             result.ForEach(i => password.AppendChar(i));
 
             return password;
+        }
+
+        public void CreateNewFile(string fileName, string filePath, string keyPath, SecureString password)
+        {
+            ItemOperation.Instance.RecursionFolders.Clear();
+
+            var fullFilePath = Path.Combine(filePath, fileName + ".pass");
+            var fullKeyPath = Path.Combine(filePath, fileName + ".key");
+
+            var rootItem = new ItemOperation.FolderItem()
+            {
+                Key = -1,
+                Title = fileName,
+                ParentKey = null,
+                Items = new List<ItemOperation.PasswordItem>(),
+            };
+
+            var defaultItems = new List<ItemOperation.FolderItem>(new ItemOperation.FolderItem[] { rootItem });
+            FileIO.FileEncrypt(fullFilePath, fullKeyPath, password, defaultItems);
+
+            var decryptItems = FileIO.FileDecrypt(fullFilePath, fullKeyPath, password);
+            var recursionFolders = ItemOperation.ListToRecursion(decryptItems);
+
+            recursionFolders.ForEach(i => ItemOperation.Instance.RecursionFolders.Add(i));
+        }
+
+        public void OpenFile(string filePath, string keyPath, SecureString password)
+        {
         }
     }
 }

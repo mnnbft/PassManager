@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Security;
+using Prism.Mvvm;
 
 namespace PassManager.Models
 {
-    public sealed class ItemOperation
+    public sealed class ItemOperation : BindableBase
     {
         public static ItemOperation Instance { get; } = new ItemOperation();
         private ItemOperation() { }
