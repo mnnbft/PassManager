@@ -95,8 +95,6 @@
     <Compile Include="Models\MenuContent.cs" />
     <Compile Include="ViewModels\FileFindDialogViewModel.cs" />
     <Compile Include="ViewModels\FileNewDialogViewModel.cs" />
-    <Compile Include="Views\Behavior\SecurePasswordBehavior.cs" />
-    <Compile Include="Views\Converter\MultiBindingConverter.cs" />
     <Compile Include="Models\ApplicationOption.cs" />
     <Compile Include="Models\FileIO.cs" />
     <Compile Include="Models\Functions.cs" />
