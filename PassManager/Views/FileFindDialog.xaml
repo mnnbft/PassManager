@@ -5,12 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PassManager.Views"
              xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converter="clr-namespace:PassManager.Views.Converter"
              xmlns:viewmodels="clr-namespace:PassManager.ViewModels"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewmodels:FileFindDialogViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converter:MultiBinding x:Key="MultiBinding" />
+    </UserControl.Resources>
     <Grid Margin="16"
           MinWidth="300"
           Height="300">
@@ -33,7 +37,15 @@
                  material:HintAssist.Hint="ファイルの場所"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
         <Button Grid.Column="1"
-                Grid.Row="1">
+                Grid.Row="1"
+                Tag="FilePath"
+                Command="{x:Static viewmodels:CommonViewModel.CommandOpenFileDialog}">
+            <Button.CommandParameter>
+                <MultiBinding Converter="{StaticResource MultiBinding}">
+                    <Binding />
+                    <Binding RelativeSource="{RelativeSource Mode=Self}" Path="Tag" />
+                </MultiBinding>
+            </Button.CommandParameter>
             <material:PackIcon Kind="File"
                                Width="24"
                                Height="24" />
@@ -43,7 +55,15 @@
                  material:HintAssist.Hint="キーファイルの場所"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
         <Button Grid.Column="1"
-                Grid.Row="2">
+                Grid.Row="2"
+                Tag="KeyPath"
+                Command="{x:Static viewmodels:CommonViewModel.CommandOpenFileDialog}">
+            <Button.CommandParameter>
+                <MultiBinding Converter="{StaticResource MultiBinding}">
+                    <Binding />
+                    <Binding RelativeSource="{RelativeSource Mode=Self}" Path="Tag" />
+                </MultiBinding>
+            </Button.CommandParameter>
             <material:PackIcon Kind="File"
                                Width="24"
                                Height="24" />

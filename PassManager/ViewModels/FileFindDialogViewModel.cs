@@ -19,6 +19,18 @@ namespace PassManager.ViewModels
         {
             get { return new DelegateCommand(FunctionCancel); }
         }
+        private string keyPath;
+        public string KeyPath
+        {
+            get { return keyPath; }
+            set { SetProperty(ref keyPath, value); }
+        }
+        private string fileName;
+        public string FileName
+        {
+            get { return fileName; }
+            set { SetProperty(ref fileName, value); }
+        }
 
         private void FunctionFileOpen()
         {

@@ -54,11 +54,36 @@
                         </DockPanel>
                     </material:ColorZone>
                     <DockPanel DockPanel.Dock="Bottom">
-                        <TreeView DockPanel.Dock="Left"
-                                  ItemsSource="{Binding RecursionFolders}"
-                                  DisplayMemberPath="Title"
-                                  Background="#E8E8E8"
-                                  MinWidth="200" />
+                        <DockPanel DockPanel.Dock="Left">
+                            <material:ColorZone DockPanel.Dock="Bottom" 
+                                                Mode="PrimaryMid" 
+                                                material:ShadowAssist.ShadowDepth="Depth2"
+                                                Padding="10"
+                                                Panel.ZIndex="1">
+                                <DockPanel>
+                                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                            DockPanel.Dock="Right"
+                                            material:ShadowAssist.ShadowDepth="Depth0">
+                                        <material:PackIcon Kind="Minus"
+                                                           Width="24"
+                                                           Height="24" />
+                                    </Button>
+                                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                            HorizontalAlignment="Right"
+                                            material:ShadowAssist.ShadowDepth="Depth0">
+                                        <material:PackIcon Kind="Plus"
+                                                           Width="24"
+                                                           Height="24" />
+                                    </Button>
+                                </DockPanel>
+                            </material:ColorZone>
+                            <TreeView DockPanel.Dock="Top"
+                                      ItemsSource="{Binding RecursionFolders}"
+                                      DisplayMemberPath="Title"
+                                      Background="#E8E8E8"
+                                      MinWidth="200">
+                            </TreeView>
+                        </DockPanel>
                         <dragablz:TabablzControl ItemsSource="{Binding TabName}"
                                                  DockPanel.Dock="Right">
                             <dragablz:TabablzControl.InterTabController>

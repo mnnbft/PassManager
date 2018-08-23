@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Security;
+using System.Windows.Forms;
 using Prism.Mvvm;
 using Prism.Commands;
 using MaterialDesignThemes.Wpf;
@@ -64,11 +65,6 @@ namespace PassManager.ViewModels
         private void FunctionCancel()
         {
             DialogHost.CloseDialogCommand.Execute(null, null);
-        }
-
-        private bool CanExecuteFunctionCreate()
-        {
-            return true;
         }
     }
 }
