@@ -23,7 +23,7 @@ namespace PassManager.Models
         {
             public PasswordItem(SerializePassword item)
             {
-                if(item != null)
+                if (item != null)
                 {
                     Title = item.Title;
                     Key = item.Key;
@@ -79,13 +79,17 @@ namespace PassManager.Models
             public string PasswordString { get; set; }
         }
 
-        public int Key { get; set; } = 0;
-        public ObservableCollection<RecursionFolder> RecursionFolders { get; } =
+        private ObservableCollection<RecursionFolder> recursionFolders =
             new ObservableCollection<RecursionFolder>();
+        public ObservableCollection<RecursionFolder> RecursionFolders
+        {
+            get { return recursionFolders; }
+            set { SetProperty(ref recursionFolders, value); }
+        }
 
         public static IEnumerable<SerializeFolder> GetSerializeFolders(List<FolderItem> FolderItems)
         {
-            foreach(var i in FolderItems)
+            foreach (var i in FolderItems)
             {
                 var target = Functions.Copy(i, new SerializeFolder());
                 target.Items = i.Items.Select(j => new SerializePassword(j)).ToArray();
@@ -95,7 +99,7 @@ namespace PassManager.Models
 
         public static IEnumerable<FolderItem> GetDeSerializeFolders(List<SerializeFolder> SerializeFolders)
         {
-            foreach(var i in SerializeFolders)
+            foreach (var i in SerializeFolders)
             {
                 var target = Functions.Copy(i, new FolderItem());
                 var converts = i.Items.Select(j => new PasswordItem(j));
@@ -116,14 +120,14 @@ namespace PassManager.Models
                 var children = (from i in notRoots
                                 where i.ParentKey.Value == x.Key
                                 select Functions.Copy(i, new RecursionFolder())).ToList();
-                foreach(var i in children)
+                foreach (var i in children)
                 {
                     i.Children = listFunction(i);
                 }
                 return children;
             };
 
-            foreach(var i in roots)
+            foreach (var i in roots)
             {
                 var add = Functions.Copy(i, new RecursionFolder());
                 add.Children = listFunction(i);
@@ -143,7 +147,7 @@ namespace PassManager.Models
                 var cast = Functions.Copy(x, new FolderItem());
                 result.Add(cast);
 
-                foreach(var i in x.Children)
+                foreach (var i in x.Children)
                 {
                     recursionAction(i);
                 }
@@ -155,10 +159,12 @@ namespace PassManager.Models
         }
 
         public static List<RecursionFolder> InsertItem(RecursionFolder target,
-                                                     FolderItem insert,
-                                                     List<RecursionFolder> itemList)
+                                                       FolderItem insert,
+                                                       List<RecursionFolder> itemList)
         {
             var list = RecursionToList(itemList);
+
+            insert.Key = list.Max(i => i.Key) + 1;
             insert.ParentKey = target.Key;
 
             list.Add(insert);
@@ -168,12 +174,12 @@ namespace PassManager.Models
         }
 
         public static List<RecursionFolder> DeleteItem(RecursionFolder delete,
-                                                     List<RecursionFolder> itemList)
+                                                       List<RecursionFolder> itemList)
         {
             return DeleteItem(delete.Key, itemList);
         }
         public static List<RecursionFolder> DeleteItem(int deleteKey,
-                                                     List<RecursionFolder> itemList)
+                                                       List<RecursionFolder> itemList)
         {
             if (deleteKey <= 0) return null;
             var recurtionItems = RecursionToList(itemList);

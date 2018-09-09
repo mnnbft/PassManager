@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PassManager.Views"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:prism="http://prismlibrary.com/"
         xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
@@ -79,9 +80,28 @@
                             </material:ColorZone>
                             <TreeView DockPanel.Dock="Top"
                                       ItemsSource="{Binding RecursionFolders}"
-                                      DisplayMemberPath="Title"
                                       Background="#E8E8E8"
                                       MinWidth="200">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectedItemChanged">
+                                        <i:InvokeCommandAction Command="{Binding CommandTreeViewChanged}"
+                                                               CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                                               AncestorType={x:Type TreeView}}, Path=SelectedItem}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <TreeView.ItemTemplate>
+                                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                        <TextBlock Text="{Binding Title}" />
+                                    </HierarchicalDataTemplate>
+                                </TreeView.ItemTemplate>
+                                <TreeView.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="新規作成"
+                                                  Command="{Binding CommandNewItem}" />
+                                        <MenuItem Header="新しいフォルダー"
+                                                  Command="{Binding CommandNewFolder}" />
+                                    </ContextMenu>
+                                </TreeView.ContextMenu>
                             </TreeView>
                         </DockPanel>
                         <dragablz:TabablzControl ItemsSource="{Binding TabName}"

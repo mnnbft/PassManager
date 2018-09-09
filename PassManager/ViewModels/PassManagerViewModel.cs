@@ -22,8 +22,8 @@ namespace PassManager.ViewModels
         public ObservableCollection<ItemOperation.RecursionFolder> RecursionFolders
         {
             get { return ItemOperation.Instance.RecursionFolders; }
+            set { ItemOperation.Instance.RecursionFolders = value; }
         }
-
         public DelegateCommand CommandFileFind
         {
             get { return new DelegateCommand(FunctionFileFind); }
@@ -32,6 +32,19 @@ namespace PassManager.ViewModels
         {
             get { return new DelegateCommand(FunctionFileNew); }
         }
+        public DelegateCommand<ItemOperation.RecursionFolder> CommandTreeViewChanged
+        {
+            get { return new DelegateCommand<ItemOperation.RecursionFolder>(FunctionTreeViewChanged); }
+        }
+        public DelegateCommand CommandNewItem
+        {
+            get { return new DelegateCommand(FunctionNewItem); }
+        }
+        public DelegateCommand CommandNewFolder
+        {
+            get { return new DelegateCommand(FunctionNewFolder); }
+        }
+        public ItemOperation.RecursionFolder SelectedFolder { get; set; }
 
         private async void FunctionFileFind()
         {
@@ -42,6 +55,22 @@ namespace PassManager.ViewModels
         {
             var dialog = new FileNewDialog();
             await DialogHost.Show(dialog);
+        }
+        private void FunctionTreeViewChanged(ItemOperation.RecursionFolder selectedItem)
+        {
+            SelectedFolder = selectedItem;
+        }
+        private void FunctionNewItem()
+        {
+        }
+        private void FunctionNewFolder()
+        {
+            var newFolder = new ItemOperation.FolderItem();
+            newFolder.Title = "新しいフォルダー";
+            var insertedList = ItemOperation.InsertItem(SelectedFolder, 
+                                                        newFolder, 
+                                                        RecursionFolders.ToList());
+            RecursionFolders = new ObservableCollection<ItemOperation.RecursionFolder>(insertedList);
         }
     }
 }
