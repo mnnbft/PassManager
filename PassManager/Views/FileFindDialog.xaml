@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PassManager.Views"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behavior="clr-namespace:PassManager.Views.Behavior"
              xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:converter="clr-namespace:PassManager.Views.Converter"
              xmlns:viewmodels="clr-namespace:PassManager.ViewModels"
@@ -39,7 +41,7 @@
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
         <Button Grid.Column="1"
                 Grid.Row="1"
-                Tag="FilePath"
+                Tag="FullFilePath"
                 Command="{x:Static viewmodels:CommonViewModel.CommandOpenFileDialog}">
             <Button.CommandParameter>
                 <MultiBinding Converter="{StaticResource MultiBinding}">
@@ -58,7 +60,7 @@
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
         <Button Grid.Column="1"
                 Grid.Row="2"
-                Tag="KeyPath"
+                Tag="FullKeyPath"
                 Command="{x:Static viewmodels:CommonViewModel.CommandOpenFileDialog}">
             <Button.CommandParameter>
                 <MultiBinding Converter="{StaticResource MultiBinding}">
@@ -70,11 +72,14 @@
                                Width="24"
                                Height="24" />
         </Button>
-        <TextBox Grid.Column="0" 
-                 Grid.Row="3"
-                 material:HintAssist.Hint="パスワード"
-                 Text="{Binding DummyPassword}"
-                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" /> 
+        <PasswordBox Grid.Column="0"
+                     Grid.Row="3"
+                     material:HintAssist.Hint="パスワード">
+            <i:Interaction.Behaviors>
+                <behavior:SecurePasswordBindingBehavior
+                    SecurePassword="{Binding SecurePassword, Mode=TwoWay}" />
+            </i:Interaction.Behaviors>
+        </PasswordBox>
         <Grid Grid.ColumnSpan="2"
               Grid.Row="4">
             <Grid.ColumnDefinitions>
@@ -84,7 +89,7 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
                     Content="開く"
-                    Command="{Binding CommandOpen}" />
+                    Command="{Binding CommandFileOpen}" />
             <Button Grid.Column="2"
                     Content="キャンセル"
                     Command="{Binding CommandCancel}" />

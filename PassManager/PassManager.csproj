@@ -102,6 +102,7 @@
     <Compile Include="Models\ItemOperation.cs" />
     <Compile Include="Models\Password.cs" />
     <Compile Include="ViewModels\PassManagerViewModel.cs" />
+    <Compile Include="Views\Behavior\SecurePasswordBindingBehavior.cs" />
     <Compile Include="Views\Converter\MultiBinding.cs" />
     <Compile Include="Views\FileFindDialog.xaml.cs">
       <DependentUpon>FileFindDialog.xaml</DependentUpon>

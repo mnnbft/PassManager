@@ -25,22 +25,8 @@ namespace PassManager.ViewModels
             get { return fullFilePath; }
             set { SetProperty(ref fullFilePath, value); }
         }
-        private string dummyPassword;
-        public string DummyPassword
-        {
-            get { return dummyPassword; }
-            set
-            {
-                SecurePassword.Clear();
-                foreach(var c in value)
-                {
-                    SecurePassword.AppendChar(c);
-                }
-                SetProperty(ref dummyPassword, new string('●', value.Length));
-            }
-        }
-
         public SecureString SecurePassword { get; set; } = new SecureString();
+
         public DelegateCommand CommandFileOpen
         {
             get { return new DelegateCommand(FunctionFileOpen); }

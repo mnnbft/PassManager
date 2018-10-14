@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.IO;
 using System.Security;
 using System.Reflection;
@@ -54,6 +55,27 @@ namespace PassManager.Models
             }
 
             return result.ToArray();
+        }
+
+        public static bool SecureStringEquals(SecureString secure1, SecureString secure2)
+        {
+            if (secure1 == null && secure2 == null) return true;
+            if (secure1 == null || secure2 == null) return false;
+            if (secure1.Length != secure2.Length) return false;
+
+            var ptr1 = Marshal.SecureStringToBSTR(secure1);
+            var ptr2 = Marshal.SecureStringToBSTR(secure2);
+
+            try
+            {
+                return Enumerable.Range(0, secure1.Length)
+                       .All(i => Marshal.ReadInt16(ptr1, i) == Marshal.ReadInt16(ptr2, i));
+            }
+            finally
+            {
+                Marshal.ZeroFreeBSTR(ptr1);
+                Marshal.ZeroFreeBSTR(ptr2);
+            }
         }
 
         public static string SecureStringProcessing(SecureString secure)

@@ -31,11 +31,17 @@ namespace PassManager.ViewModels
 
             property.SetValue(instance, dialog.SelectedPath);
         }
-  
+
         private static void FunctionOpenFileDialog(object[] obj)
         {
             var dialog = new OpenFileDialog();
-            dialog.ShowDialog();
+            if (dialog.ShowDialog() != DialogResult.OK) return;
+
+            var instance = (BindableBase)obj[0];
+            var propertyName = obj[1].ToString();
+            var property = instance.GetType().GetProperty(propertyName);
+
+            property.SetValue(instance, dialog.FileName);
         }
     }
 }
