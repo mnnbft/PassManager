@@ -11,12 +11,16 @@ namespace PassManager.ViewModels
 {
     public static class CommonViewModel
     {
+        public static DelegateCommand<object[]> CommandOpenFolderDialog
+        {
+            get { return new DelegateCommand<object[]>(FunctionOpenFolderDialog); }
+        }
         public static DelegateCommand<object[]> CommandOpenFileDialog
         {
             get { return new DelegateCommand<object[]>(FunctionOpenFileDialog); }
         }
 
-        private static void FunctionOpenFileDialog(object[] obj)
+        private static void FunctionOpenFolderDialog(object[] obj)
         {
             var dialog = new FolderBrowserDialog();
             if (dialog.ShowDialog() != DialogResult.OK) return;
@@ -26,6 +30,12 @@ namespace PassManager.ViewModels
             var property = instance.GetType().GetProperty(propertyName);
 
             property.SetValue(instance, dialog.SelectedPath);
+        }
+  
+        private static void FunctionOpenFileDialog(object[] obj)
+        {
+            var dialog = new OpenFileDialog();
+            dialog.ShowDialog();
         }
     }
 }

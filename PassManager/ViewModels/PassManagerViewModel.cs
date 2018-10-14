@@ -44,6 +44,10 @@ namespace PassManager.ViewModels
         {
             get { return new DelegateCommand(FunctionNewFolder); }
         }
+        public DelegateCommand CommandDeleteItem
+        {
+            get { return new DelegateCommand(FunctionDeleteFolder); }
+        }
         public ItemOperation.RecursionFolder SelectedFolder { get; set; }
 
         private async void FunctionFileFind()
@@ -67,10 +71,24 @@ namespace PassManager.ViewModels
         {
             var newFolder = new ItemOperation.FolderItem();
             newFolder.Title = "新しいフォルダー";
-            var insertedList = ItemOperation.InsertItem(SelectedFolder, 
-                                                        newFolder, 
+            var insertedList = ItemOperation.InsertItem(SelectedFolder,
+                                                        newFolder,
                                                         RecursionFolders.ToList());
-            RecursionFolders = new ObservableCollection<ItemOperation.RecursionFolder>(insertedList);
+            RecursionFolders.Clear();
+            foreach (var i in insertedList)
+            {
+                RecursionFolders.Add(i);
+            }
+        }
+        private void FunctionDeleteFolder()
+        {
+            var deletedList = ItemOperation.DeleteItem(SelectedFolder, RecursionFolders.ToList());
+
+            RecursionFolders.Clear();
+            foreach (var i in deletedList)
+            {
+                RecursionFolders.Add(i);
+            }
         }
     }
 }

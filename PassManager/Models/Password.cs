@@ -83,14 +83,15 @@ namespace PassManager.Models
             var defaultItems = new List<ItemOperation.FolderItem>(new ItemOperation.FolderItem[] { rootItem });
             FileIO.FileEncrypt(fullFilePath, fullKeyPath, password, defaultItems);
 
+            OpenFile(fullFilePath, fullKeyPath, password);
+        }
+
+        public void OpenFile(string fullFilePath, string fullKeyPath, SecureString password)
+        {
             var decryptItems = FileIO.FileDecrypt(fullFilePath, fullKeyPath, password);
             var recursionFolders = ItemOperation.ListToRecursion(decryptItems);
 
             recursionFolders.ForEach(i => ItemOperation.Instance.RecursionFolders.Add(i));
-        }
-
-        public void OpenFile(string filePath, string keyPath, SecureString password)
-        {
         }
     }
 }

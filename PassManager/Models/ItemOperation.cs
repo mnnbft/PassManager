@@ -181,7 +181,7 @@ namespace PassManager.Models
         public static List<RecursionFolder> DeleteItem(int deleteKey,
                                                        List<RecursionFolder> itemList)
         {
-            if (deleteKey <= 0) return null;
+            if (deleteKey < 0) return null;
             var recurtionItems = RecursionToList(itemList);
             var target = recurtionItems.FirstOrDefault(i => i.Key == deleteKey);
             if (target == null) return null;

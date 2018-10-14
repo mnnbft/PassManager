@@ -100,6 +100,8 @@
                                                   Command="{Binding CommandNewItem}" />
                                         <MenuItem Header="新しいフォルダー"
                                                   Command="{Binding CommandNewFolder}" />
+                                        <MenuItem Header="削除"
+                                                  Command="{Binding CommandDeleteItem}" />
                                     </ContextMenu>
                                 </TreeView.ContextMenu>
                             </TreeView>

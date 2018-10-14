@@ -42,7 +42,7 @@
         <Button Grid.Column="1"
                 Grid.Row="1"
                 Tag="FilePath"
-                Command="{x:Static viewmodels:CommonViewModel.CommandOpenFileDialog}">
+                Command="{x:Static viewmodels:CommonViewModel.CommandOpenFolderDialog}">
             <Button.CommandParameter>
                 <MultiBinding Converter="{StaticResource MultiBinding}">
                     <Binding />
@@ -61,7 +61,7 @@
         <Button Grid.Column="1"
                 Grid.Row="2"
                 Tag="KeyPath"
-                Command="{x:Static viewmodels:CommonViewModel.CommandOpenFileDialog}">
+                Command="{x:Static viewmodels:CommonViewModel.CommandOpenFolderDialog}">
             <Button.CommandParameter>
                 <MultiBinding Converter="{StaticResource MultiBinding}">
                     <Binding />
