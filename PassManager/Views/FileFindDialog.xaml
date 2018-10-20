@@ -77,7 +77,7 @@
                      material:HintAssist.Hint="パスワード">
             <i:Interaction.Behaviors>
                 <behavior:SecurePasswordBindingBehavior
-                    SecurePassword="{Binding SecurePassword, Mode=TwoWay}" />
+                    SecurePassword="{Binding SecurePassword}" />
             </i:Interaction.Behaviors>
         </PasswordBox>
         <Grid Grid.ColumnSpan="2"

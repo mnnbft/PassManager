@@ -32,10 +32,10 @@ namespace PassManager.ViewModels
         {
             get { return new DelegateCommand(FunctionFileNew); }
         }
-        public DelegateCommand<ItemOperation.RecursionFolder> CommandTreeViewChanged
-        {
-            get { return new DelegateCommand<ItemOperation.RecursionFolder>(FunctionTreeViewChanged); }
-        }
+        //public DelegateCommand<ItemOperation.RecursionFolder> CommandTreeViewChanged
+        //{
+        //    get { return new DelegateCommand<ItemOperation.RecursionFolder>(FunctionTreeViewChanged); }
+        //}
         public DelegateCommand CommandNewItem
         {
             get { return new DelegateCommand(FunctionNewItem); }
@@ -60,10 +60,10 @@ namespace PassManager.ViewModels
             var dialog = new FileNewDialog();
             await DialogHost.Show(dialog);
         }
-        private void FunctionTreeViewChanged(ItemOperation.RecursionFolder selectedItem)
-        {
-            SelectedFolder = selectedItem;
-        }
+        //private void FunctionTreeViewChanged(ItemOperation.RecursionFolder selectedItem)
+        //{
+        //    SelectedFolder = selectedItem;
+        //}
         private void FunctionNewItem()
         {
         }

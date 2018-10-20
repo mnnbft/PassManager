@@ -8,6 +8,7 @@
         xmlns:prism="http://prismlibrary.com/"
         xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:behavior="clr-namespace:PassManager.Views.Behavior"
         xmlns:viewmodels="clr-namespace:PassManager.ViewModels"
         prism:ViewModelLocator.AutoWireViewModel="True"
         xmlns:dockablz="http://dragablz.net/winfx/xaml/dockablz"
@@ -82,13 +83,17 @@
                                       ItemsSource="{Binding RecursionFolders}"
                                       Background="#E8E8E8"
                                       MinWidth="200">
-                                <i:Interaction.Triggers>
+                                <i:Interaction.Behaviors>
+                                    <behavior:TreeViewSelectedItemBindingBehavior
+                                        SelectedItem="{Binding SelectedFolder}" />
+                                </i:Interaction.Behaviors>
+                                <!--<i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SelectedItemChanged">
                                         <i:InvokeCommandAction Command="{Binding CommandTreeViewChanged}"
                                                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
                                                                AncestorType={x:Type TreeView}}, Path=SelectedItem}"/>
                                     </i:EventTrigger>
-                                </i:Interaction.Triggers>
+                                </i:Interaction.Triggers>-->
                                 <TreeView.ItemTemplate>
                                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                                         <TextBlock Text="{Binding Title}" />

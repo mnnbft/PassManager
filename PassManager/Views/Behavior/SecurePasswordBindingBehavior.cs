@@ -20,11 +20,20 @@ namespace PassManager.Views.Behavior
             set { SetValue(SecurePasswordProperty, value); }
         }
 
+        //public static readonly DependencyProperty SecurePasswordProperty =
+        //    DependencyProperty.Register(
+        //        nameof(SecurePassword),
+        //        typeof(SecureString),
+        //        typeof(SecurePasswordBindingBehavior),
+        //        new PropertyMetadata(new SecureString(), SecurePasswordPropertyChanged));
         public static readonly DependencyProperty SecurePasswordProperty =
-            DependencyProperty.Register("SecurePassword",
-            typeof(SecureString),
-            typeof(SecurePasswordBindingBehavior),
-            new PropertyMetadata(new SecureString(), SecurePasswordPropertyChanged));
+            DependencyProperty.Register(
+                nameof(SecurePassword),
+                typeof(SecureString),
+                typeof(SecurePasswordBindingBehavior),
+                new FrameworkPropertyMetadata(new SecureString(),
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    SecurePasswordPropertyChanged));
 
         private static void SecurePasswordPropertyChanged(DependencyObject d,
             DependencyPropertyChangedEventArgs e)
