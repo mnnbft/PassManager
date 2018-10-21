@@ -8,7 +8,7 @@ using System.Globalization;
 
 namespace PassManager.Views.Converter
 {
-    public class MultiBinding : IMultiValueConverter
+    public class MultiBindingConverter : IMultiValueConverter
     {
         public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
         {

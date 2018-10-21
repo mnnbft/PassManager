@@ -87,13 +87,6 @@
                                     <behavior:TreeViewSelectedItemBindingBehavior
                                         SelectedItem="{Binding SelectedFolder}" />
                                 </i:Interaction.Behaviors>
-                                <!--<i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="SelectedItemChanged">
-                                        <i:InvokeCommandAction Command="{Binding CommandTreeViewChanged}"
-                                                               CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                                               AncestorType={x:Type TreeView}}, Path=SelectedItem}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>-->
                                 <TreeView.ItemTemplate>
                                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                                         <TextBlock Text="{Binding Title}" />

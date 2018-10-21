@@ -15,7 +15,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <converter:MultiBinding x:Key="MultiBinding" />
+        <converter:MultiBindingConverter x:Key="MultiBindingConverter" />
     </UserControl.Resources>
     <Grid Margin="16"
           MinWidth="300"
@@ -44,7 +44,7 @@
                 Tag="FullFilePath"
                 Command="{x:Static viewmodels:CommonViewModel.CommandOpenFileDialog}">
             <Button.CommandParameter>
-                <MultiBinding Converter="{StaticResource MultiBinding}">
+                <MultiBinding Converter="{StaticResource MultiBindingConverter}">
                     <Binding />
                     <Binding RelativeSource="{RelativeSource Mode=Self}" Path="Tag" />
                 </MultiBinding>
@@ -63,7 +63,7 @@
                 Tag="FullKeyPath"
                 Command="{x:Static viewmodels:CommonViewModel.CommandOpenFileDialog}">
             <Button.CommandParameter>
-                <MultiBinding Converter="{StaticResource MultiBinding}">
+                <MultiBinding Converter="{StaticResource MultiBindingConverter}">
                     <Binding />
                     <Binding RelativeSource="{RelativeSource Mode=Self}" Path="Tag" />
                 </MultiBinding>
