@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 
@@ -31,7 +26,10 @@ namespace PassManager.Views.Behavior
             DependencyPropertyChangedEventArgs e)
         {
             var behavior = (TreeViewSelectedItemBindingBehavior)sender;
+            if (behavior.AssociatedObject == null) return;
+
             var generator = behavior.AssociatedObject.ItemContainerGenerator;
+
             if(generator.ContainerFromItem(e.NewValue) is TreeViewItem item)
             {
                 item.SetValue(TreeViewItem.IsSelectedProperty, true);

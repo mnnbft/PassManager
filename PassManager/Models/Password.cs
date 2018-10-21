@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Security;
 using System.IO;
+using System.Linq;
+using System.Security;
 
 namespace PassManager.Models
 {
@@ -72,15 +70,15 @@ namespace PassManager.Models
             var fullFilePath = Path.Combine(filePath, fileName + ".pass");
             var fullKeyPath = Path.Combine(filePath, fileName + ".key");
 
-            var rootItem = new ItemOperation.FolderItem()
+            var rootItem = new FolderItem()
             {
                 Key = -1,
                 Title = fileName,
                 ParentKey = null,
-                Items = new List<ItemOperation.PasswordItem>(),
+                Items = new List<PasswordItem>(),
             };
 
-            var defaultItems = new List<ItemOperation.FolderItem>(new ItemOperation.FolderItem[] { rootItem });
+            var defaultItems = new List<FolderItem>(new FolderItem[] { rootItem });
             FileIO.FileEncrypt(fullFilePath, fullKeyPath, password, defaultItems);
 
             OpenFile(fullFilePath, fullKeyPath, password);

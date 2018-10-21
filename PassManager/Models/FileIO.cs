@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 using System.Security.Cryptography;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters.Binary;
-using BCrypt.Net;
-using PassManager.Models;
+using System.Text;
 
 namespace PassManager.Models
 {

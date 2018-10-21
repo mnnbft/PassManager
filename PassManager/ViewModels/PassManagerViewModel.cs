@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using Prism.Mvvm;
-using Prism.Commands;
+﻿using MaterialDesignThemes.Wpf;
 using PassManager.Models;
-using MaterialDesignThemes.Wpf;
 using PassManager.Views;
+using Prism.Commands;
+using Prism.Mvvm;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace PassManager.ViewModels
 {
@@ -24,40 +20,39 @@ namespace PassManager.ViewModels
             get { return ItemOperation.Instance.RecursionFolders; }
             set { ItemOperation.Instance.RecursionFolders = value; }
         }
+        public RecursionFolder SelectedFolder { get; set; }
+
         public DelegateCommand CommandFileFind
         {
             get { return new DelegateCommand(FunctionFileFind); }
         }
-        public DelegateCommand CommandFileNew
-        {
-            get { return new DelegateCommand(FunctionFileNew); }
-        }
-        public DelegateCommand CommandNewItem
-        {
-            get { return new DelegateCommand(FunctionNewItem); }
-        }
-        public DelegateCommand CommandNewFolder
-        {
-            get { return new DelegateCommand(FunctionNewFolder); }
-        }
-        public DelegateCommand CommandDeleteItem
-        {
-            get { return new DelegateCommand(FunctionDeleteFolder); }
-        }
-        public RecursionFolder SelectedFolder { get; set; }
-
         private async void FunctionFileFind()
         {
             var dialog = new FileFindDialog();
             await DialogHost.Show(dialog);
+        }
+
+        public DelegateCommand CommandFileNew
+        {
+            get { return new DelegateCommand(FunctionFileNew); }
         }
         private async void FunctionFileNew()
         {
             var dialog = new FileNewDialog();
             await DialogHost.Show(dialog);
         }
+
+        public DelegateCommand CommandNewItem
+        {
+            get { return new DelegateCommand(FunctionNewItem); }
+        }
         private void FunctionNewItem()
         {
+        }
+
+        public DelegateCommand CommandNewFolder
+        {
+            get { return new DelegateCommand(FunctionNewFolder); }
         }
         private void FunctionNewFolder()
         {
@@ -71,6 +66,11 @@ namespace PassManager.ViewModels
             {
                 RecursionFolders.Add(i);
             }
+        }
+
+        public DelegateCommand CommandDeleteItem
+        {
+            get { return new DelegateCommand(FunctionDeleteFolder); }
         }
         private void FunctionDeleteFolder()
         {

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Security;
-using Prism.Mvvm;
 
 namespace PassManager.Models
 {

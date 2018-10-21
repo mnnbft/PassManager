@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Security;
-using System.Windows.Forms;
-using Prism.Mvvm;
+﻿using MaterialDesignThemes.Wpf;
 using Prism.Commands;
-using MaterialDesignThemes.Wpf;
+using Prism.Mvvm;
+using System.Security;
 
 namespace PassManager.ViewModels
 {
@@ -38,15 +31,15 @@ namespace PassManager.ViewModels
         {
             get { return new DelegateCommand(FunctionCreate); }
         }
-        public DelegateCommand CommandCancel
-        {
-            get { return new DelegateCommand(FunctionCancel); }
-        }
-
         private void FunctionCreate()
         {
             Models.Password.Instance.CreateNewFile(FileName, FilePath, KeyPath, SecurePassword);
             DialogHost.CloseDialogCommand.Execute(null, null);
+        }
+
+        public DelegateCommand CommandCancel
+        {
+            get { return new DelegateCommand(FunctionCancel); }
         }
         private void FunctionCancel()
         {

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Security;
+using System.Linq;
 using System.Reflection;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security;
 
 namespace PassManager.Models
 {
