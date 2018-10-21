@@ -7,85 +7,83 @@ using Prism.Mvvm;
 
 namespace PassManager.Models
 {
+    public class FolderItem
+    {
+        public string Title { get; set; }
+        public int Key { get; set; }
+        public int? ParentKey { get; set; }
+        public List<PasswordItem> Items { get; set; }
+    }
+
+    public class PasswordItem
+    {
+        public PasswordItem(SerializePassword item)
+        {
+            if (item != null)
+            {
+                Title = item.Title;
+                Key = item.Key;
+                FolderKey = item.FolderKey;
+                UserName = item.UserName;
+                Memos = new ObservableCollection<string>(item.Memos);
+                Password = Functions.SecureStringProcessing(item.PasswordString);
+            }
+        }
+
+        public string Title { get; set; }
+        public int Key { get; set; }
+        public int FolderKey { get; set; }
+        public string UserName { get; set; }
+        public ObservableCollection<string> Memos { get; set; }
+        public SecureString Password { get; set; } = new SecureString();
+    }
+
+    public class RecursionFolder : FolderItem
+    {
+        public List<RecursionFolder> Children { get; set; } = new List<RecursionFolder>();
+    }
+
+    [Serializable]
+    public class SerializeFolder
+    {
+        public string Title { get; set; }
+        public int Key { get; set; }
+        public int? ParentKey { get; set; }
+        public SerializePassword[] Items { get; set; }
+    }
+
+    [Serializable]
+    public class SerializePassword
+    {
+        public SerializePassword(PasswordItem item)
+        {
+            if (item != null)
+            {
+                Title = item.Title;
+                Key = item.Key;
+                FolderKey = item.FolderKey;
+                UserName = item.UserName;
+                Memos = item.Memos.ToArray();
+                PasswordString = Functions.SecureStringProcessing(item.Password);
+            }
+        }
+
+        public string Title { get; set; }
+        public int Key { get; set; }
+        public int FolderKey { get; set; }
+        public string UserName { get; set; }
+        public string[] Memos { get; set; }
+        public string PasswordString { get; set; }
+    }
+
     public sealed class ItemOperation : BindableBase
     {
         public static ItemOperation Instance { get; } = new ItemOperation();
+
         private ItemOperation() { }
 
-        public class FolderItem
-        {
-            public string Title { get; set; }
-            public int Key { get; set; }
-            public int? ParentKey { get; set; }
-            public List<PasswordItem> Items { get; set; }
-        }
-        public class PasswordItem
-        {
-            public PasswordItem(SerializePassword item)
-            {
-                if (item != null)
-                {
-                    Title = item.Title;
-                    Key = item.Key;
-                    FolderKey = item.FolderKey;
-                    UserName = item.UserName;
-                    Memos = new ObservableCollection<string>(item.Memos);
-                    Password = Functions.SecureStringProcessing(item.PasswordString);
-                }
-            }
-
-            public string Title { get; set; }
-            public int Key { get; set; }
-            public int FolderKey { get; set; }
-            public string UserName { get; set; }
-            public ObservableCollection<string> Memos { get; set; }
-            public SecureString Password { get; set; } = new SecureString();
-        }
-
-        public class RecursionFolder : FolderItem
-        {
-            public List<RecursionFolder> Children { get; set; } = new List<RecursionFolder>();
-        }
-
-        [Serializable]
-        public class SerializeFolder
-        {
-            public string Title { get; set; }
-            public int Key { get; set; }
-            public int? ParentKey { get; set; }
-            public SerializePassword[] Items { get; set; }
-        }
-        [Serializable]
-        public class SerializePassword
-        {
-            public SerializePassword(PasswordItem item)
-            {
-                if (item != null)
-                {
-                    Title = item.Title;
-                    Key = item.Key;
-                    FolderKey = item.FolderKey;
-                    UserName = item.UserName;
-                    Memos = item.Memos.ToArray();
-                    PasswordString = Functions.SecureStringProcessing(item.Password);
-                }
-            }
-
-            public string Title { get; set; }
-            public int Key { get; set; }
-            public int FolderKey { get; set; }
-            public string UserName { get; set; }
-            public string[] Memos { get; set; }
-            public string PasswordString { get; set; }
-        }
-
-        private ObservableCollection<RecursionFolder> recursionFolders =
-            new ObservableCollection<RecursionFolder>();
-        public ObservableCollection<RecursionFolder> RecursionFolders
-        {
-            get { return recursionFolders; }
-            set { SetProperty(ref recursionFolders, value); }
-        }
+        public ObservableCollection<RecursionFolder> RecursionFolders { get; set; }
+         = new ObservableCollection<RecursionFolder>();
 
         public static IEnumerable<SerializeFolder> GetSerializeFolders(List<FolderItem> FolderItems)
         {
@@ -178,6 +176,7 @@ namespace PassManager.Models
         {
             return DeleteItem(delete.Key, itemList);
         }
+
         public static List<RecursionFolder> DeleteItem(int deleteKey,
                                                        List<RecursionFolder> itemList)
         {

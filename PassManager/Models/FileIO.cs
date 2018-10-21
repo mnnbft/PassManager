@@ -9,8 +9,7 @@ using System.Security.Cryptography;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using BCrypt.Net;
-using FolderItem = PassManager.Models.ItemOperation.FolderItem;
-using SerializeFolder = PassManager.Models.ItemOperation.SerializeFolder;
+using PassManager.Models;
 
 namespace PassManager.Models
 {
