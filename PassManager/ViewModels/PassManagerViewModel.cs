@@ -21,6 +21,7 @@ namespace PassManager.ViewModels
             set { ItemOperation.Instance.RecursionFolders = value; }
         }
         public RecursionFolder SelectedFolder { get; set; }
+        public PasswordItem SelectedPassword { get; set; }
 
         public DelegateCommand CommandFileFind
         {
@@ -48,6 +49,8 @@ namespace PassManager.ViewModels
         }
         private void FunctionNewItem()
         {
+            if (SelectedFolder == null) return;
+            SelectedFolder.Items.Add(new PasswordItem());
         }
 
         public DelegateCommand CommandNewFolder

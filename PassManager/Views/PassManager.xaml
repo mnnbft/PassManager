@@ -104,7 +104,7 @@
                                 </TreeView.ContextMenu>
                             </TreeView>
                         </DockPanel>
-                        <dragablz:TabablzControl ItemsSource="{Binding TabName}"
+                        <dragablz:TabablzControl ItemsSource="{Binding TabItems}"
                                                  DockPanel.Dock="Right">
                             <dragablz:TabablzControl.InterTabController>
                                 <dragablz:InterTabController />

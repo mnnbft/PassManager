@@ -9,6 +9,10 @@ namespace PassManager.Models
 {
     public class FolderItem
     {
+        public FolderItem()
+        {
+            Items = new List<PasswordItem>();
+        }
         public string Title { get; set; }
         public int Key { get; set; }
         public int? ParentKey { get; set; }
@@ -17,13 +21,18 @@ namespace PassManager.Models
 
     public class PasswordItem
     {
+        public PasswordItem()
+        {
+            Title = string.Empty;
+            UserName = string.Empty;
+            Memos = new ObservableCollection<string>();
+            Password = new SecureString();
+        }
         public PasswordItem(SerializePassword item)
         {
             if (item != null)
             {
                 Title = item.Title;
-                Key = item.Key;
-                FolderKey = item.FolderKey;
                 UserName = item.UserName;
                 Memos = new ObservableCollection<string>(item.Memos);
                 Password = Functions.SecureStringProcessing(item.PasswordString);
@@ -31,8 +40,6 @@ namespace PassManager.Models
         }
 
         public string Title { get; set; }
-        public int Key { get; set; }
-        public int FolderKey { get; set; }
         public string UserName { get; set; }
         public ObservableCollection<string> Memos { get; set; }
         public SecureString Password { get; set; } = new SecureString();
@@ -60,8 +67,6 @@ namespace PassManager.Models
             if (item != null)
             {
                 Title = item.Title;
-                Key = item.Key;
-                FolderKey = item.FolderKey;
                 UserName = item.UserName;
                 Memos = item.Memos.ToArray();
                 PasswordString = Functions.SecureStringProcessing(item.Password);
@@ -69,8 +74,6 @@ namespace PassManager.Models
         }
 
         public string Title { get; set; }
-        public int Key { get; set; }
-        public int FolderKey { get; set; }
         public string UserName { get; set; }
         public string[] Memos { get; set; }
         public string PasswordString { get; set; }
