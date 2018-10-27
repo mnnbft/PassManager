@@ -30,13 +30,21 @@ namespace PassManager.Models
         public static T Copy<T>(object src, T dest)
         {
             if (src == null || dest == null) return dest;
-            var sProperties = src.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(i => i.CanRead && i.CanWrite);
-            var dProperties = dest.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(i => i.CanRead && i.CanWrite);
-            var properties = sProperties.Join(dProperties, x => new { x.Name, x.PropertyType }, x => new { x.Name, x.PropertyType }, (x, y) => new { x, y });
+            var sProperties = src.GetType()
+                              .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                              .Where(i => i.CanRead && i.CanWrite);
+            var dProperties = dest.GetType()
+                             .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                             .Where(i => i.CanRead && i.CanWrite);
+
+            var properties = sProperties.Join(dProperties, x => 
+                new { x.Name, x.PropertyType }, x => 
+                    new { x.Name, x.PropertyType }, (x, y) => 
+                        new { x, y });
+
             foreach (var p in properties)
-            {
-                p.y.SetValue(dest, p.x.GetValue(src));
-            }
+            { p.y.SetValue(dest, p.x.GetValue(src)); }
+                
             return dest;
         }
 
@@ -58,9 +66,12 @@ namespace PassManager.Models
 
         public static bool SecureStringEquals(SecureString secure1, SecureString secure2)
         {
-            if (secure1 == null && secure2 == null) return true;
-            if (secure1 == null || secure2 == null) return false;
-            if (secure1.Length != secure2.Length) return false;
+            if (secure1 == null && secure2 == null) 
+            { return true; }
+            if (secure1 == null || secure2 == null) 
+            { return false; }
+            if (secure1.Length != secure2.Length) 
+            { return false; }
 
             var ptr1 = Marshal.SecureStringToBSTR(secure1);
             var ptr2 = Marshal.SecureStringToBSTR(secure2);
@@ -77,7 +88,7 @@ namespace PassManager.Models
             }
         }
 
-        public static string SecureStringProcessing(SecureString secure)
+        public static string SecureStringToString(SecureString secure)
         {
             var bstr = Marshal.SecureStringToBSTR(secure);
             var charString = Marshal.PtrToStringUni(bstr);
@@ -85,13 +96,13 @@ namespace PassManager.Models
             return charString;
         }
 
-        public static SecureString SecureStringProcessing(string password)
+        public static SecureString StringToSecureString(string password)
         {
             var result = new SecureString();
+
             foreach(var passChar in password)
-            {
-                result.AppendChar(passChar);
-            }
+            { result.AppendChar(passChar); }
+
             return result;
         }
     }

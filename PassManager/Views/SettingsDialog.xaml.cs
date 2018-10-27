@@ -12,16 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using PassManager.Models;
 
 namespace PassManager.Views
 {
     /// <summary>
-    /// PasswordEditPanel.xaml の相互作用ロジック
+    /// SettingsDialog.xaml の相互作用ロジック
     /// </summary>
-    public partial class PasswordEditPanel : UserControl
+    public partial class SettingsDialog : UserControl
     {
-        public PasswordEditPanel()
+        public SettingsDialog()
         {
             InitializeComponent();
         }

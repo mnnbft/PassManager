@@ -4,79 +4,75 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security;
+using Newtonsoft.Json;
 
 namespace PassManager.Models
 {
-    public class FolderItem
+    [JsonObject]
+    public class FolderItem : BindableBase
     {
-        public FolderItem()
+        public FolderItem(bool canDelete = true)
         {
-            Items = new List<PasswordItem>();
+            CanDelete = canDelete;
+            Title = "新しいフォルダー";
+            IsExpanded = true;
+            Passwords = new ObservableCollection<PasswordItem>();
+            Children = new ObservableCollection<FolderItem>();
         }
-        public string Title { get; set; }
-        public int Key { get; set; }
-        public int? ParentKey { get; set; }
-        public List<PasswordItem> Items { get; set; }
+
+        public bool CanDelete { get; set; }
+        private string title;
+        public string Title
+        {
+            get { return title; }
+            set { SetProperty(ref title, value); }
+        }
+        private bool isExpanded;
+        public bool IsExpanded
+        {
+            get { return isExpanded; }
+            set { SetProperty(ref isExpanded, value); }
+        }
+        public ObservableCollection<PasswordItem> Passwords { get; set; }
+        public ObservableCollection<FolderItem> Children { get; set; }
     }
 
-    public class PasswordItem
+    public class PasswordItem : BindableBase
     {
         public PasswordItem()
         {
-            Title = string.Empty;
-            UserName = string.Empty;
-            Memos = new ObservableCollection<string>();
+            Title = "新しいパスワード";
+            UserName = "";
+            Url = "";
             Password = new SecureString();
-        }
-        public PasswordItem(SerializePassword item)
-        {
-            if (item != null)
-            {
-                Title = item.Title;
-                UserName = item.UserName;
-                Memos = new ObservableCollection<string>(item.Memos);
-                Password = Functions.SecureStringProcessing(item.PasswordString);
-            }
+            Memos = new ObservableCollection<string>();
         }
 
-        public string Title { get; set; }
-        public string UserName { get; set; }
+        private string title;
+        public string Title
+        {
+            get { return title; }
+            set { SetProperty(ref title, value); }
+        }
+        private string userName;
+        public string UserName
+        {
+            get { return userName; }
+            set { SetProperty(ref userName, value); }
+        }
+        private string url;
+        public string Url
+        {
+            get { return url; }
+            set { SetProperty(ref url, value); }
+        }
+        public SecureString password;
+        public SecureString Password
+        {
+            get { return password; }
+            set { SetProperty(ref password, value); }
+        }
         public ObservableCollection<string> Memos { get; set; }
-        public SecureString Password { get; set; } = new SecureString();
-    }
-
-    public class RecursionFolder : FolderItem
-    {
-        public List<RecursionFolder> Children { get; set; } = new List<RecursionFolder>();
-    }
-
-    [Serializable]
-    public class SerializeFolder
-    {
-        public string Title { get; set; }
-        public int Key { get; set; }
-        public int? ParentKey { get; set; }
-        public SerializePassword[] Items { get; set; }
-    }
-
-    [Serializable]
-    public class SerializePassword
-    {
-        public SerializePassword(PasswordItem item)
-        {
-            if (item != null)
-            {
-                Title = item.Title;
-                UserName = item.UserName;
-                Memos = item.Memos.ToArray();
-                PasswordString = Functions.SecureStringProcessing(item.Password);
-            }
-        }
-
-        public string Title { get; set; }
-        public string UserName { get; set; }
-        public string[] Memos { get; set; }
-        public string PasswordString { get; set; }
     }
 
     public sealed class ItemOperation : BindableBase
@@ -85,138 +81,11 @@ namespace PassManager.Models
 
         private ItemOperation() { }
 
-        public ObservableCollection<RecursionFolder> RecursionFolders { get; set; }
-         = new ObservableCollection<RecursionFolder>();
-
-        public static IEnumerable<SerializeFolder> GetSerializeFolders(List<FolderItem> FolderItems)
+        private PasswordItem selectedPassword;
+        public PasswordItem SelectedPassword
         {
-            foreach (var i in FolderItems)
-            {
-                var target = Functions.Copy(i, new SerializeFolder());
-                target.Items = i.Items.Select(j => new SerializePassword(j)).ToArray();
-                yield return target;
-            }
-        }
-
-        public static IEnumerable<FolderItem> GetDeSerializeFolders(List<SerializeFolder> SerializeFolders)
-        {
-            foreach (var i in SerializeFolders)
-            {
-                var target = Functions.Copy(i, new FolderItem());
-                var converts = i.Items.Select(j => new PasswordItem(j));
-                target.Items = new List<PasswordItem>(converts);
-                yield return target;
-            }
-        }
-
-        public static List<RecursionFolder> ListToRecursion(List<FolderItem> list)
-        {
-            var result = new List<RecursionFolder>();
-            var roots = list.Where(i => !i.ParentKey.HasValue);
-            var notRoots = list.Where(i => i.ParentKey.HasValue);
-
-            Func<FolderItem, List<RecursionFolder>> listFunction = null;
-            listFunction = x =>
-            {
-                var children = (from i in notRoots
-                                where i.ParentKey.Value == x.Key
-                                select Functions.Copy(i, new RecursionFolder())).ToList();
-                foreach (var i in children)
-                {
-                    i.Children = listFunction(i);
-                }
-                return children;
-            };
-
-            foreach (var i in roots)
-            {
-                var add = Functions.Copy(i, new RecursionFolder());
-                add.Children = listFunction(i);
-                result.Add(add);
-            }
-
-            return result;
-        }
-
-        public static List<FolderItem> RecursionToList(List<RecursionFolder> recursion)
-        {
-            var result = new List<FolderItem>();
-
-            Action<RecursionFolder> recursionAction = null;
-            recursionAction = x =>
-            {
-                var cast = Functions.Copy(x, new FolderItem());
-                result.Add(cast);
-
-                foreach (var i in x.Children)
-                {
-                    recursionAction(i);
-                }
-            };
-
-            recursion.ForEach(i => recursionAction(i));
-
-            return result;
-        }
-
-        public static List<RecursionFolder> InsertItem(RecursionFolder target,
-                                                       FolderItem insert,
-                                                       List<RecursionFolder> itemList)
-        {
-            var list = RecursionToList(itemList);
-
-            insert.Key = list.Max(i => i.Key) + 1;
-            insert.ParentKey = target.Key;
-
-            list.Add(insert);
-
-            var result = ListToRecursion(list);
-            return result;
-        }
-
-        public static List<RecursionFolder> DeleteItem(RecursionFolder delete,
-                                                       List<RecursionFolder> itemList)
-        {
-            return DeleteItem(delete.Key, itemList);
-        }
-
-        public static List<RecursionFolder> DeleteItem(int deleteKey,
-                                                       List<RecursionFolder> itemList)
-        {
-            if (deleteKey < 0) return null;
-            var recurtionItems = RecursionToList(itemList);
-            var target = recurtionItems.FirstOrDefault(i => i.Key == deleteKey);
-            if (target == null) return null;
-
-            var deleteKeys = new List<int>();
-            Action<FolderItem> deleteAction = null;
-            deleteAction = x =>
-            {
-                deleteKeys.Add(x.Key);
-                var children = recurtionItems.Where(i =>
-                {
-                    if(i.ParentKey.HasValue &&
-                       i.ParentKey == x.Key)
-                    {
-                        return true;
-                    }
-                    return false;
-                });
-                foreach(var i in children)
-                {
-                    deleteAction(i);
-                }
-            };
-            deleteAction(target);
-
-            foreach(var i in deleteKeys)
-            {
-                var delete = recurtionItems.First(j => j.Key == i);
-                recurtionItems.Remove(delete);
-            }
-
-            var result = ListToRecursion(recurtionItems);
-            return result;
+            get { return selectedPassword; }
+            set { SetProperty(ref selectedPassword, value); }
         }
     }
 }

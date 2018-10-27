@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security;
+using System.Collections.ObjectModel;
 
 namespace PassManager.Models
 {
@@ -65,31 +66,21 @@ namespace PassManager.Models
 
         public void CreateNewFile(string fileName, string filePath, string keyPath, SecureString password)
         {
-            ItemOperation.Instance.RecursionFolders.Clear();
-
             var fullFilePath = Path.Combine(filePath, fileName + ".pass");
             var fullKeyPath = Path.Combine(filePath, fileName + ".key");
 
-            var rootItem = new FolderItem()
-            {
-                Key = -1,
-                Title = fileName,
-                ParentKey = null,
-                Items = new List<PasswordItem>(),
-            };
+            var folderItems = new ObservableCollection<FolderItem>();
+            folderItems.Add(new FolderItem(false) { Title = fileName });
 
-            var defaultItems = new List<FolderItem>(new FolderItem[] { rootItem });
-            FileIO.FileEncrypt(fullFilePath, fullKeyPath, password, defaultItems);
+            FileIO.Instance.FileEncrypt(fullFilePath, fullKeyPath, password, folderItems);
 
             OpenFile(fullFilePath, fullKeyPath, password);
         }
 
-        public void OpenFile(string fullFilePath, string fullKeyPath, SecureString password)
+        public void OpenFile(string filePath, string keyPath, SecureString password)
         {
-            var decryptItems = FileIO.FileDecrypt(fullFilePath, fullKeyPath, password);
-            var recursionFolders = ItemOperation.ListToRecursion(decryptItems);
-
-            recursionFolders.ForEach(i => ItemOperation.Instance.RecursionFolders.Add(i));
+            var folders = FileIO.Instance.FileDecrypt(filePath, keyPath, password);
+            FileIO.Instance.OpenedFile.Open(filePath, keyPath, password, folders);
         }
     }
 }

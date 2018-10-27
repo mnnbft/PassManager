@@ -5,6 +5,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.ComponentModel;
 
 namespace PassManager.ViewModels
 {
@@ -12,16 +13,25 @@ namespace PassManager.ViewModels
     {
         public PassManagerViewModel()
         {
-            ItemOperation.Instance.PropertyChanged += (d, e) => { OnPropertyChanged(e); };
+            FileIO.Instance.OpenedFile.PropertyChanged += (d, e) => { OnPropertyChanged(e); };
         }
 
-        public ObservableCollection<RecursionFolder> RecursionFolders
+        public ObservableCollection<FolderItem> Folders 
         {
-            get { return ItemOperation.Instance.RecursionFolders; }
-            set { ItemOperation.Instance.RecursionFolders = value; }
+            get { return FileIO.Instance.OpenedFile.Folders; }
+            set { FileIO.Instance.OpenedFile.Folders = value; }
         }
-        public RecursionFolder SelectedFolder { get; set; }
-        public PasswordItem SelectedPassword { get; set; }
+        private FolderItem selectedFolder;
+        public FolderItem SelectedFolder
+        {
+            get { return selectedFolder; }
+            set { SetProperty(ref selectedFolder, value); }
+        }
+        public PasswordItem SelectedPassword
+        {
+            get { return ItemOperation.Instance.SelectedPassword; }
+            set { ItemOperation.Instance.SelectedPassword = value; }
+        }
 
         public DelegateCommand CommandFileFind
         {
@@ -49,8 +59,7 @@ namespace PassManager.ViewModels
         }
         private void FunctionNewItem()
         {
-            if (SelectedFolder == null) return;
-            SelectedFolder.Items.Add(new PasswordItem());
+            SelectedFolder.Passwords.Add(new PasswordItem());
         }
 
         public DelegateCommand CommandNewFolder
@@ -59,31 +68,64 @@ namespace PassManager.ViewModels
         }
         private void FunctionNewFolder()
         {
-            var newFolder = new FolderItem();
-            newFolder.Title = "新しいフォルダー";
-            var insertedList = ItemOperation.InsertItem(SelectedFolder,
-                                                        newFolder,
-                                                        RecursionFolders.ToList());
-            RecursionFolders.Clear();
-            foreach (var i in insertedList)
-            {
-                RecursionFolders.Add(i);
-            }
+            SelectedFolder.Children.Add(new FolderItem());
         }
 
-        public DelegateCommand CommandDeleteItem
+        public DelegateCommand CommandDeleteFolder
         {
             get { return new DelegateCommand(FunctionDeleteFolder); }
         }
         private void FunctionDeleteFolder()
         {
-            var deletedList = ItemOperation.DeleteItem(SelectedFolder, RecursionFolders.ToList());
+            if(!SelectedFolder.CanDelete)
+            { return; }
 
-            RecursionFolders.Clear();
-            foreach (var i in deletedList)
+            DeleteFolderItem(Folders);
+        }
+        private void DeleteFolderItem(ObservableCollection<FolderItem> children)
+        {
+            foreach(var folder in children)
             {
-                RecursionFolders.Add(i);
+                if (SelectedFolder == folder)
+                {
+                    children.Remove(SelectedFolder);
+                    break;
+                }
+                DeleteFolderItem(folder.Children);
             }
+        }
+
+        public DelegateCommand CommandSave
+        {
+            get { return new DelegateCommand(FunctionSave); }
+        }
+        private void FunctionSave()
+        {
+            var filePath = FileIO.Instance.OpenedFile.FilePath;
+            var keyPath = FileIO.Instance.OpenedFile.KeyPath;
+            var password = FileIO.Instance.OpenedFile.Password;
+            var folders = FileIO.Instance.OpenedFile.Folders;
+
+            FileIO.Instance.FileEncrypt(filePath, keyPath, password, folders);
+        }
+
+        public DelegateCommand CommandFileClose
+        {
+            get { return new DelegateCommand(FunctionFileClose); }
+        }
+        private void FunctionFileClose()
+        {
+            FileIO.Instance.OpenedFile.Close();
+        }
+
+        public DelegateCommand CommandSettings
+        {
+            get { return new DelegateCommand(FunctionSettings); }
+        }
+        private void FunctionSettings()
+        {
+            var dialog = new SettingsDialog();
+            DialogHost.Show(dialog);
         }
     }
 }

@@ -58,6 +58,9 @@
     <Reference Include="MaterialDesignThemes.Wpf, Version=2.4.0.1044, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.2.4.0.1044\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Prism, Version=7.0.0.396, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Core.7.0.0.396\lib\net45\Prism.dll</HintPath>
     </Reference>
@@ -102,6 +105,7 @@
     <Compile Include="Models\ItemOperation.cs" />
     <Compile Include="Models\Password.cs" />
     <Compile Include="ViewModels\PassManagerViewModel.cs" />
+    <Compile Include="ViewModels\SettingsDialogViewModel.cs" />
     <Compile Include="Views\Behavior\SecurePasswordBindingBehavior.cs" />
     <Compile Include="Views\Behavior\TreeViewSelectedItemBindingBehavior.cs" />
     <Compile Include="Views\Converter\MultiBindingConverter.cs" />
@@ -116,6 +120,9 @@
     </Compile>
     <Compile Include="Views\PasswordEditPanel.xaml.cs">
       <DependentUpon>PasswordEditPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsDialog.xaml.cs">
+      <DependentUpon>SettingsDialog.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +169,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.md" />
@@ -180,6 +191,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Licenses\Dragablz.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Licenses\Newtonsoft.Json.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
