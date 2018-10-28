@@ -1,4 +1,4 @@
-﻿<controls:MetroWindow x:Class="PassManager.Views.PassManager"
+﻿<controls:MetroWindow x:Class="PassManager.Views.PassManagerWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -20,7 +20,7 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{StaticResource MaterialDesignFont}"
-        d:DataContext="{d:DesignInstance viewmodels:PassManagerViewModel}"
+        d:DataContext="{d:DesignInstance viewmodels:PassManagerWindowViewModel}"
         mc:Ignorable="d"
         Title="" Height="600" Width="900">
     <DockPanel>
@@ -128,6 +128,7 @@
                             </TreeView>
                         </DockPanel>
                         <dragablz:TabablzControl ItemsSource="{Binding SelectedFolder.Passwords}"
+                                                 SelectedItem="{Binding SelectedPassword}"
                                                  DockPanel.Dock="Right">
                             <dragablz:TabablzControl.InterTabController>
                                 <dragablz:InterTabController />

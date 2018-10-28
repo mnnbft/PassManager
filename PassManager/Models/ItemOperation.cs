@@ -66,7 +66,7 @@ namespace PassManager.Models
             get { return url; }
             set { SetProperty(ref url, value); }
         }
-        public SecureString password;
+        private SecureString password;
         public SecureString Password
         {
             get { return password; }

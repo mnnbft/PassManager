@@ -7,19 +7,18 @@ using System.Collections.ObjectModel;
 
 namespace PassManager.Models
 {
+    public enum PassType : byte
+    {
+        Decimal,
+        Low_Alp,
+        Up_Alp,
+        Symbol
+    }
+
     public sealed class Password
     {
         public static Password Instance { get; } = new Password();
         private Password() { }
-
-        
-        public enum PassType : byte
-        {
-            Decimal,
-            Low_Alp,
-            Up_Alp,
-            Symbol
-        }
 
         Dictionary<PassType, string> passwordDictionary = 
             new Dictionary<PassType, string>()

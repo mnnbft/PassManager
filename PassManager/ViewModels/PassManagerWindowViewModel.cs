@@ -9,9 +9,9 @@ using System.ComponentModel;
 
 namespace PassManager.ViewModels
 {
-    class PassManagerViewModel : BindableBase
+    class PassManagerWindowViewModel : BindableBase
     {
-        public PassManagerViewModel()
+        public PassManagerWindowViewModel()
         {
             FileIO.Instance.OpenedFile.PropertyChanged += (d, e) => { OnPropertyChanged(e); };
         }

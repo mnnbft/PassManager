@@ -17,7 +17,7 @@
     <UserControl.Resources>
         <converter:MultiBindingConverter x:Key="MultiBindingConverter" />
     </UserControl.Resources>
-    <Grid Margin="16"
+    <Grid Margin="30"
           MinWidth="300"
           Height="300">
         <Grid.ColumnDefinitions>

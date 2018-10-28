@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:PassManager"
              xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
-             StartupUri="Views\PassManager.xaml">
+             StartupUri="Views\PassManagerWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
