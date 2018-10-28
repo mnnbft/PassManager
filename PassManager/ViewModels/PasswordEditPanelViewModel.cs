@@ -14,11 +14,6 @@ namespace PassManager.ViewModels
 {
     class PasswordEditPanelViewModel : BindableBase
     {
-        public PasswordEditPanelViewModel()
-        {
-            ItemOperation.Instance.PropertyChanged += (d, e) => { OnPropertyChanged(e); };
-        }
-
         public PasswordItem SelectedPassword 
         {
             get { return ItemOperation.Instance.SelectedPassword; }

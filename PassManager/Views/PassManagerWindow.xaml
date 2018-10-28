@@ -78,7 +78,14 @@
                                                 material:ShadowAssist.ShadowDepth="Depth2"
                                                 Padding="10"
                                                 Panel.ZIndex="1">
-                                <DockPanel>
+                                <DockPanel LastChildFill="False">
+                                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                            material:ShadowAssist.ShadowDepth="Depth0"
+                                            Command="{Binding CommandNewItem}">
+                                        <material:PackIcon Kind="KeyPlus"
+                                                           Width="24"
+                                                           Height="24" />
+                                    </Button>
                                     <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                                             DockPanel.Dock="Right"
                                             material:ShadowAssist.ShadowDepth="Depth0"
@@ -88,7 +95,7 @@
                                                            Height="24" />
                                     </Button>
                                     <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                                            HorizontalAlignment="Right"
+                                            DockPanel.Dock="Right"
                                             material:ShadowAssist.ShadowDepth="Depth0"
                                             Command="{Binding CommandNewFolder}">
                                         <material:PackIcon Kind="Plus"
