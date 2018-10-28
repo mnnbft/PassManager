@@ -113,6 +113,7 @@
     <Compile Include="Views\Behavior\PasswordBoxPasswordBindingBehavior.cs" />
     <Compile Include="Views\Behavior\TreeViewSelectedItemBindingBehavior.cs" />
     <Compile Include="Views\Converter\MultiBindingConverter.cs" />
+    <Compile Include="Views\Converter\ReverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Views\FileFindDialog.xaml.cs">
       <DependentUpon>FileFindDialog.xaml</DependentUpon>
     </Compile>

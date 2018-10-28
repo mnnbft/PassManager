@@ -19,6 +19,12 @@ namespace PassManager.ViewModels
             get { return ItemOperation.Instance.SelectedPassword; }
             set { ItemOperation.Instance.SelectedPassword = value; }
         }
+        private bool isPasswordView;
+        public bool IsPasswordView
+        {
+            get { return isPasswordView; }
+            set { SetProperty(ref isPasswordView, value); }
+        }
 
         public DelegateCommand CommandLoaded
         {
@@ -43,6 +49,15 @@ namespace PassManager.ViewModels
             };
 
             DialogHost.Show(dialog);
+        }
+
+        public DelegateCommand CommandPasswordView
+        {
+            get { return new DelegateCommand(FunctionPasswordView); }
+        }
+        private void FunctionPasswordView()
+        {
+            IsPasswordView = !IsPasswordView;
         }
     }
 }
