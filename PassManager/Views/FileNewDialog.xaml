@@ -7,7 +7,6 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behavior="clr-namespace:PassManager.Views.Behavior"
              xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:livet="http://schemas.livet-mvvm.net/2011/wpf"
              xmlns:converter="clr-namespace:PassManager.Views.Converter"
              xmlns:viewmodels="clr-namespace:PassManager.ViewModels"
              xmlns:prism="http://prismlibrary.com/"
@@ -81,10 +80,8 @@
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" /> 
         <PasswordBox Grid.Column="0"
                      Grid.Row="4"
-                     material:HintAssist.Hint="パスワード">
-            <i:Interaction.Behaviors>
-                <livet:PasswordBoxBindingSupportBehavior Password="{Binding PasswordString}" />
-            </i:Interaction.Behaviors>
+                     material:HintAssist.Hint="パスワード"
+                     behavior:PasswordBoxPasswordBindingBehavior.Password="{Binding PasswordString}">
         </PasswordBox>
         <Grid Grid.ColumnSpan="2"
               Grid.Row="5">
