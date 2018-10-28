@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security;
 using System.Collections.ObjectModel;
+using System.Text;
 
 namespace PassManager.Models
 {
@@ -29,10 +30,9 @@ namespace PassManager.Models
                 { PassType.Symbol, "`~!@#$%^&*()_+-=[]{};:'<>,./" },
             };
 
-        public SecureString GeneratePassword(int length, PassType[] passTypes)
+        public string GeneratePassword(int length, PassType[] passTypes)
         {
             var result = new List<char>();
-            var password = new SecureString();
 
             var countDictionary = new Dictionary<PassType, int>();
             var typeCount = Functions.IntSlice(length, passTypes.Length);
@@ -56,14 +56,15 @@ namespace PassManager.Models
                     result.Add(passwordDictionary[type][randNum]);
                 }
             }
-
             result = result.OrderBy(i => Guid.NewGuid()).ToList();
-            result.ForEach(i => password.AppendChar(i));
 
-            return password;
+            var sb = new StringBuilder();
+            result.ForEach(i => sb.Append(i));
+
+            return sb.ToString();
         }
 
-        public void CreateNewFile(string fileName, string filePath, string keyPath, SecureString password)
+        public void CreateNewFile(string fileName, string filePath, string keyPath, string password)
         {
             var fullFilePath = Path.Combine(filePath, fileName + ".pass");
             var fullKeyPath = Path.Combine(filePath, fileName + ".key");
@@ -76,7 +77,7 @@ namespace PassManager.Models
             OpenFile(fullFilePath, fullKeyPath, password);
         }
 
-        public void OpenFile(string filePath, string keyPath, SecureString password)
+        public void OpenFile(string filePath, string keyPath, string password)
         {
             var folders = FileIO.Instance.FileDecrypt(filePath, keyPath, password);
             FileIO.Instance.OpenedFile.Open(filePath, keyPath, password, folders);

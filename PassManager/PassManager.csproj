@@ -112,7 +112,6 @@
     <Compile Include="ViewModels\PasswordEditPanelViewModel.cs" />
     <Compile Include="ViewModels\PasswordGenerateDialogViewModel.cs" />
     <Compile Include="ViewModels\SettingsDialogViewModel.cs" />
-    <Compile Include="Views\Behavior\SecurePasswordBindingBehavior.cs" />
     <Compile Include="Views\Behavior\TreeViewSelectedItemBindingBehavior.cs" />
     <Compile Include="Views\Converter\MultiBindingConverter.cs" />
     <Compile Include="Views\FileFindDialog.xaml.cs">

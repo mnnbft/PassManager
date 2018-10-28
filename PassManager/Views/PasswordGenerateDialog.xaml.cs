@@ -26,16 +26,16 @@ namespace PassManager.Views
             InitializeComponent();
         }
         
-        public SecureString GeneratedPassword
+        public string GeneratedPassword
         {
-            get { return (SecureString)GetValue(GeneratedPasswordProperty); }
+            get { return (string)GetValue(GeneratedPasswordProperty); }
             set { SetValue(GeneratedPasswordProperty, value); }
         }
         public static readonly DependencyProperty GeneratedPasswordProperty =
             DependencyProperty.Register(
                 nameof(GeneratedPassword),
-                typeof(SecureString),
+                typeof(string),
                 typeof(PasswordGenerateDialog),
-                new PropertyMetadata(new SecureString()));
+                new PropertyMetadata(null));
     }
 }

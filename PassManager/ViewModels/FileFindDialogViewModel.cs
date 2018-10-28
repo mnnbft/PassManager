@@ -20,7 +20,7 @@ namespace PassManager.ViewModels
             get { return fullFilePath; }
             set { SetProperty(ref fullFilePath, value); }
         }
-        public SecureString SecurePassword { get; set; } = new SecureString();
+        public string PasswordString { get; set; }
 
         public DelegateCommand CommandFileOpen
         {
@@ -28,7 +28,7 @@ namespace PassManager.ViewModels
         }
         private void FunctionFileOpen()
         {
-            Password.Instance.OpenFile(FullFilePath, FullKeyPath, SecurePassword);
+            Password.Instance.OpenFile(FullFilePath, FullKeyPath, PasswordString);
             DialogHost.CloseDialogCommand.Execute(null, null);
         }
 

@@ -29,8 +29,8 @@ namespace PassManager.Models
             get { return keyPath; }
             set { SetProperty(ref keyPath, value); }
         }
-        private SecureString password;
-        public SecureString Password
+        private string password;
+        public string Password
         {
             get { return password; }
             set { SetProperty(ref password, value); }
@@ -42,7 +42,7 @@ namespace PassManager.Models
             set { SetProperty(ref folders, value); }
         }
 
-        public void Open(string filePath, string keyPath, SecureString password, ObservableCollection<FolderItem> folders)
+        public void Open(string filePath, string keyPath, string password, ObservableCollection<FolderItem> folders)
         {
             FilePath = filePath;
             KeyPath = keyPath;
@@ -53,7 +53,7 @@ namespace PassManager.Models
         {
             FilePath = "";
             KeyPath = "";
-            password.Clear();
+            password = "";
             Folders.Clear();
         }
     }
@@ -79,10 +79,9 @@ namespace PassManager.Models
             }
         }
 
-        public bool FileEncrypt(string filePath, string keyPath, SecureString password, ObservableCollection<FolderItem> FolderItems)
+        public bool FileEncrypt(string filePath, string keyPath, string password, ObservableCollection<FolderItem> FolderItems)
         {
-            var passString = Functions.SecureStringToString(password);
-            var bcryptHash = BCrypt.Net.BCrypt.HashPassword(passString, 10, true);
+            var bcryptHash = BCrypt.Net.BCrypt.HashPassword(password, 10, true);
 
             WriteBcryptHash(bcryptHash, keyPath);
 
@@ -96,7 +95,7 @@ namespace PassManager.Models
                     rij.Mode = CipherMode.CBC;
                     rij.Padding = PaddingMode.PKCS7;
 
-                    var deriveBytes = new Rfc2898DeriveBytes(passString, 32);
+                    var deriveBytes = new Rfc2898DeriveBytes(password, 32);
 
                     byte[] salt = new byte[32];
                     salt = deriveBytes.Salt;
@@ -146,16 +145,14 @@ namespace PassManager.Models
             return false;
         }
 
-        public ObservableCollection<FolderItem> FileDecrypt(string filePath, string keyPath, SecureString password)
+        public ObservableCollection<FolderItem> FileDecrypt(string filePath, string keyPath, string password)
         {
-            var passString = Functions.SecureStringToString(password);
-
             if (string.Compare(Path.GetExtension(filePath), ".pass", true) != 0)
             { return null; }
             if (string.Compare(Path.GetExtension(keyPath), ".key", true) != 0)
             { return null; }
 
-            if (ReadBcryptHash(passString, keyPath) == false)
+            if (ReadBcryptHash(password, keyPath) == false)
             { return null; }
 
             var FolderItems = new ObservableCollection<FolderItem>();
@@ -176,7 +173,7 @@ namespace PassManager.Models
                     fs.Read(iv, 0, 32);
                     rij.IV = iv;
 
-                    var deriveBytes = new Rfc2898DeriveBytes(passString, salt);
+                    var deriveBytes = new Rfc2898DeriveBytes(password, salt);
 
                     byte[] bufferKey = deriveBytes.GetBytes(32);
                     rij.Key = bufferKey;

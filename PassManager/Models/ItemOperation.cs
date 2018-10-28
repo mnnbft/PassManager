@@ -44,7 +44,7 @@ namespace PassManager.Models
             Title = "新しいパスワード";
             UserName = "";
             Url = "";
-            Password = new SecureString();
+            Password = "";
             Memos = new ObservableCollection<string>();
         }
 
@@ -66,8 +66,8 @@ namespace PassManager.Models
             get { return url; }
             set { SetProperty(ref url, value); }
         }
-        private SecureString password;
-        public SecureString Password
+        private string password;
+        public string Password
         {
             get { return password; }
             set { SetProperty(ref password, value); }

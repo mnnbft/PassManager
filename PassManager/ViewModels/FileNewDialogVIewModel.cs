@@ -25,7 +25,7 @@ namespace PassManager.ViewModels
             get { return fileName; }
             set { SetProperty(ref fileName, value); }
         }
-        public SecureString SecurePassword { get; set; } = new SecureString();
+        public string PasswordString { get; set; }
 
         public DelegateCommand CommandCreate
         {
@@ -33,7 +33,7 @@ namespace PassManager.ViewModels
         }
         private void FunctionCreate()
         {
-            Models.Password.Instance.CreateNewFile(FileName, FilePath, KeyPath, SecurePassword);
+            Models.Password.Instance.CreateNewFile(FileName, FilePath, KeyPath, PasswordString);
             DialogHost.CloseDialogCommand.Execute(null, null);
         }
 
