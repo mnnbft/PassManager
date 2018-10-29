@@ -21,13 +21,20 @@
         mc:Ignorable="d"
         Title="" Height="600" Width="900">
     <material:DialogHost>
-        <DockPanel>
-            <component:TopColorZone  DockPanel.Dock="Top"
-                                     Panel.ZIndex="1" />
-            <DockPanel DockPanel.Dock="Bottom">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <component:TopColorZone  Grid.Row="0"
+                                     Panel.ZIndex="1"/>
+            <DockPanel Grid.Row="1">
                 <component:PasswordTreeView DockPanel.Dock="Left" />
                 <component:PasswordEditTabControl DockPanel.Dock="Right" />
             </DockPanel>
-        </DockPanel>
+            <material:Snackbar Grid.Row="1" 
+                               Message="{Binding SnackMessage}"
+                               IsActive="{Binding IsSnackbarActive}" />
+        </Grid>
     </material:DialogHost>
 </controls:MetroWindow>

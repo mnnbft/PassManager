@@ -14,6 +14,7 @@ namespace PassManager.ViewModels
         public PassManagerWindowViewModel()
         {
             FileIO.Instance.OpenedFile.PropertyChanged += (d, e) => { OnPropertyChanged(e); };
+            MenuContent.Instance.PropertyChanged += (d, e) => { OnPropertyChanged(e); };
         }
 
         public ObservableCollection<FolderItem> Folders 
@@ -31,6 +32,16 @@ namespace PassManager.ViewModels
         {
             get { return ItemOperation.Instance.SelectedPassword; }
             set { ItemOperation.Instance.SelectedPassword = value; }
+        }
+        public string SnackMessage
+        {
+            get { return MenuContent.Instance.SnackMessage; }
+            set { MenuContent.Instance.SnackMessage = value; }
+        }
+        public bool IsSnackbarActive
+        {
+            get { return MenuContent.Instance.IsSnackbarActive; }
+            set { MenuContent.Instance.IsSnackbarActive = value; }
         }
 
         public DelegateCommand CommandFileFind
@@ -107,6 +118,9 @@ namespace PassManager.ViewModels
             var folders = FileIO.Instance.OpenedFile.Folders;
 
             FileIO.Instance.FileEncrypt(filePath, keyPath, password, folders);
+
+            IsSnackbarActive = true;
+            SnackMessage = "保存しました";
         }
 
         public DelegateCommand CommandFileClose

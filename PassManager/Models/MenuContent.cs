@@ -1,26 +1,29 @@
 ﻿using Prism.Mvvm;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace PassManager.Models
 {
+    public enum MenuButtonItem
+    {
+        View,
+        Setting,
+    }
+
+    public enum ContextMenuItem
+    {
+        New,
+        Modify,
+        Delete,
+    }
+
     public sealed class MenuContent : BindableBase
     {
-        public static MenuContent Instance { get; }
-            = new MenuContent();
-        private MenuContent() { }
+        public static MenuContent Instance { get; } = new MenuContent();
 
-        public enum MenuButtonItem
-        {
-            View,
-            Setting,
-        }
-        public enum ContextMenuItem
-        {
-            New,
-            Modify,
-            Delete,
-        }
+        private MenuContent() { }
 
         public Dictionary<MenuButtonItem, string> menuButtonDictionary =
             new Dictionary<MenuButtonItem, string>()
@@ -44,6 +47,29 @@ namespace PassManager.Models
         public IEnumerable<string> ContextMenuItems
         {
             get { return contextMenuDictionary.Select(i => i.Value); }
+        }
+        private string snackMessage;
+        public string SnackMessage
+        {
+            get { return snackMessage; }
+            set { SetProperty(ref snackMessage, value); }
+        }
+        private bool isSnackbarActive;
+        public bool IsSnackbarActive
+        {
+            get { return isSnackbarActive; }
+            set
+            {
+                SetProperty(ref isSnackbarActive, value);
+                if (IsSnackbarActive)
+                {
+                    Task.Run(() =>
+                    {
+                        Thread.Sleep(3000);
+                        SetProperty(ref isSnackbarActive, false);
+                    });
+                }
+            }
         }
     }
 }
