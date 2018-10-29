@@ -112,6 +112,12 @@
     <Compile Include="ViewModels\SettingsDialogViewModel.cs" />
     <Compile Include="Views\Behavior\PasswordBoxPasswordBindingBehavior.cs" />
     <Compile Include="Views\Behavior\TreeViewSelectedItemBindingBehavior.cs" />
+    <Compile Include="Views\Component\PasswordEditTabControl.xaml.cs">
+      <DependentUpon>PasswordEditTabControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Component\PasswordTreeView.xaml.cs">
+      <DependentUpon>PasswordTreeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Converter\MultiBindingConverter.cs" />
     <Compile Include="Views\Converter\ReverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Views\FileFindDialog.xaml.cs">
@@ -131,6 +137,9 @@
     </Compile>
     <Compile Include="Views\SettingsDialog.xaml.cs">
       <DependentUpon>SettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Component\TopColorZone.xaml.cs">
+      <DependentUpon>TopColorZone.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +170,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\Component\PasswordEditTabControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Component\PasswordTreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\FileFindDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -182,6 +199,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Component\TopColorZone.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
