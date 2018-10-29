@@ -59,5 +59,23 @@ namespace PassManager.ViewModels
         {
             IsPasswordView = !IsPasswordView;
         }
+
+        public DelegateCommand CommandMemoPlus
+        {
+            get { return new DelegateCommand(FunctionMemoPlus); }
+        }
+        private void FunctionMemoPlus()
+        {
+            SelectedPassword.Memos.Add(new MemoWrapper());
+        }
+
+        public DelegateCommand CommandMemoMinus
+        {
+            get { return new DelegateCommand(FunctionMemoMinus); }
+        }
+        private void FunctionMemoMinus()
+        {
+            SelectedPassword.Memos.Add(new MemoWrapper());
+        }
     }
 }

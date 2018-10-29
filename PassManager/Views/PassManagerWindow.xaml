@@ -23,11 +23,55 @@
         d:DataContext="{d:DesignInstance viewmodels:PassManagerWindowViewModel}"
         mc:Ignorable="d"
         Title="" Height="600" Width="900">
-    <DockPanel>
-        <material:DialogHost>
-            <material:DrawerHost>
-                <DockPanel>
-                    <material:ColorZone DockPanel.Dock="Top" 
+    <material:DialogHost>
+        <DockPanel>
+            <material:ColorZone DockPanel.Dock="Top" 
+                                Mode="PrimaryMid" 
+                                material:ShadowAssist.ShadowDepth="Depth2"
+                                Padding="10"
+                                Panel.ZIndex="1">
+                <DockPanel LastChildFill="False">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            material:ShadowAssist.ShadowDepth="Depth0"
+                            Command="{Binding CommandFileFind}">
+                        <material:PackIcon Kind="FileFind"
+                                           Width="24"
+                                           Height="24" />
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            material:ShadowAssist.ShadowDepth="Depth0"
+                            Command="{Binding CommandFileNew}">
+                        <material:PackIcon Kind="FilePlus"
+                                           Width="24"
+                                           Height="24" />
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            material:ShadowAssist.ShadowDepth="Depth0"
+                            Command="{Binding CommandSave}">
+                        <material:PackIcon Kind="ContentSave"
+                                           Width="24"
+                                           Height="24" />
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            material:ShadowAssist.ShadowDepth="Depth0"
+                            Command="{Binding CommandFileClose}">
+                        <material:PackIcon Kind="Close"
+                                           Width="24"
+                                           Height="24" />
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            DockPanel.Dock="Right"
+                            material:ShadowAssist.ShadowDepth="Depth0"
+                            Command="{Binding CommandSettings}">
+                        <material:PackIcon Kind="Settings"
+                                           Width="24"
+                                           Height="24" />
+                    </Button>
+                </DockPanel>
+            </material:ColorZone>
+            <DockPanel DockPanel.Dock="Bottom">
+                <DockPanel DockPanel.Dock="Left">
+                    <material:ColorZone DockPanel.Dock="Bottom" 
                                         Mode="PrimaryMid" 
                                         material:ShadowAssist.ShadowDepth="Depth2"
                                         Padding="10"
@@ -35,142 +79,77 @@
                         <DockPanel LastChildFill="False">
                             <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                                     material:ShadowAssist.ShadowDepth="Depth0"
-                                    Command="{Binding CommandFileFind}">
-                                <material:PackIcon Kind="FileFind"
-                                                   Width="24"
-                                                   Height="24" />
-                            </Button>
-                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                                    material:ShadowAssist.ShadowDepth="Depth0"
-                                    Command="{Binding CommandFileNew}">
-                                <material:PackIcon Kind="FilePlus"
-                                                   Width="24"
-                                                   Height="24" />
-                            </Button>
-                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                                    material:ShadowAssist.ShadowDepth="Depth0"
-                                    Command="{Binding CommandSave}">
-                                <material:PackIcon Kind="ContentSave"
-                                                   Width="24"
-                                                   Height="24" />
-                            </Button>
-                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                                    material:ShadowAssist.ShadowDepth="Depth0"
-                                    Command="{Binding CommandFileClose}">
-                                <material:PackIcon Kind="Close"
+                                    Command="{Binding CommandNewItem}">
+                                <material:PackIcon Kind="KeyPlus"
                                                    Width="24"
                                                    Height="24" />
                             </Button>
                             <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                                     DockPanel.Dock="Right"
                                     material:ShadowAssist.ShadowDepth="Depth0"
-                                    Command="{Binding CommandSettings}">
-                                <material:PackIcon Kind="Settings"
+                                    Command="{Binding CommandDeleteFolder}">
+                                <material:PackIcon Kind="Minus"
+                                                   Width="24"
+                                                   Height="24" />
+                            </Button>
+                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                    DockPanel.Dock="Right"
+                                    material:ShadowAssist.ShadowDepth="Depth0"
+                                    Command="{Binding CommandNewFolder}">
+                                <material:PackIcon Kind="Plus"
                                                    Width="24"
                                                    Height="24" />
                             </Button>
                         </DockPanel>
                     </material:ColorZone>
-                    <DockPanel DockPanel.Dock="Bottom">
-                        <DockPanel DockPanel.Dock="Left">
-                            <material:ColorZone DockPanel.Dock="Bottom" 
-                                                Mode="PrimaryMid" 
-                                                material:ShadowAssist.ShadowDepth="Depth2"
-                                                Padding="10"
-                                                Panel.ZIndex="1">
-                                <DockPanel LastChildFill="False">
-                                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                                            material:ShadowAssist.ShadowDepth="Depth0"
-                                            Command="{Binding CommandNewItem}">
-                                        <material:PackIcon Kind="KeyPlus"
-                                                           Width="24"
-                                                           Height="24" />
-                                    </Button>
-                                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                                            DockPanel.Dock="Right"
-                                            material:ShadowAssist.ShadowDepth="Depth0"
-                                            Command="{Binding CommandDeleteFolder}">
-                                        <material:PackIcon Kind="Minus"
-                                                           Width="24"
-                                                           Height="24" />
-                                    </Button>
-                                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                                            DockPanel.Dock="Right"
-                                            material:ShadowAssist.ShadowDepth="Depth0"
-                                            Command="{Binding CommandNewFolder}">
-                                        <material:PackIcon Kind="Plus"
-                                                           Width="24"
-                                                           Height="24" />
-                                    </Button>
-                                </DockPanel>
-                            </material:ColorZone>
-                            <TreeView DockPanel.Dock="Top"
-                                      ItemsSource="{Binding Folders}"
-                                      MinWidth="200">
-                                <i:Interaction.Behaviors>
-                                    <behavior:TreeViewSelectedItemBindingBehavior
-                                        SelectedItem="{Binding SelectedFolder}" />
-                                </i:Interaction.Behaviors>
-                                <TreeView.ItemContainerStyle>
-                                    <Style TargetType="TreeViewItem" 
-                                           BasedOn="{StaticResource {x:Type TreeViewItem}}">
-                                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                                    </Style>
-                                </TreeView.ItemContainerStyle>
-                                <TreeView.ItemTemplate>
-                                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                                        <TextBlock Text="{Binding Title}" />
-                                    </HierarchicalDataTemplate>
-                                </TreeView.ItemTemplate>
-                                <TreeView.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="新規作成"
-                                                  Command="{Binding CommandNewItem}" />
-                                        <MenuItem Header="新しいフォルダー"
-                                                  Command="{Binding CommandNewFolder}" />
-                                        <MenuItem Header="削除"
-                                                  Command="{Binding CommandDeleteFolder}" />
-                                    </ContextMenu>
-                                </TreeView.ContextMenu>
-                            </TreeView>
-                        </DockPanel>
-                        <dragablz:TabablzControl ItemsSource="{Binding SelectedFolder.Passwords}"
-                                                 SelectedItem="{Binding SelectedPassword}"
-                                                 DockPanel.Dock="Right">
-                            <dragablz:TabablzControl.InterTabController>
-                                <dragablz:InterTabController />
-                            </dragablz:TabablzControl.InterTabController>
-                            <dragablz:TabablzControl.HeaderItemTemplate>
-                                <DataTemplate>
-                                    <DockPanel MinWidth="75">
-                                        <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                                                DockPanel.Dock="Right"
-                                                VerticalAlignment="Center"
-                                                Width="14"
-                                                Height="14"
-                                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                                          AncestorType={x:Type controls:MetroWindow}}, Path=DataContext.CommandTabClose}"
-                                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                                                   AncestorType={x:Type dragablz:TabablzControl}}, Path=SelectedIndex}">
-                                            <material:PackIcon Kind="Close"
-                                                               Width="12"
-                                                               Height="12" />
-                                        </Button>
-                                        <TextBlock DockPanel.Dock="Left" 
-                                                   Text="{Binding Title}"
-                                                   VerticalAlignment="Center" />
-                                    </DockPanel>
-                                </DataTemplate>
-                            </dragablz:TabablzControl.HeaderItemTemplate>
-                            <dragablz:TabablzControl.ContentTemplate>
-                                <DataTemplate>
-                                    <local:PasswordEditPanel />
-                                </DataTemplate>
-                            </dragablz:TabablzControl.ContentTemplate>
-                        </dragablz:TabablzControl>
-                    </DockPanel>
+                    <TreeView DockPanel.Dock="Top"
+                              ItemsSource="{Binding Folders}"
+                              MinWidth="200">
+                        <i:Interaction.Behaviors>
+                            <behavior:TreeViewSelectedItemBindingBehavior
+                                SelectedItem="{Binding SelectedFolder}" />
+                        </i:Interaction.Behaviors>
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="TreeViewItem" 
+                                   BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                <TextBlock Text="{Binding Title}" />
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                        <TreeView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="新規作成"
+                                          Command="{Binding CommandNewItem}" />
+                                <MenuItem Header="新しいフォルダー"
+                                          Command="{Binding CommandNewFolder}" />
+                                <MenuItem Header="削除"
+                                          Command="{Binding CommandDeleteFolder}" />
+                            </ContextMenu>
+                        </TreeView.ContextMenu>
+                    </TreeView>
                 </DockPanel>
-            </material:DrawerHost>
-        </material:DialogHost>
-    </DockPanel>
+                <dragablz:TabablzControl ItemsSource="{Binding SelectedFolder.Passwords}"
+                                         SelectedItem="{Binding SelectedPassword}"
+                                         DockPanel.Dock="Right">
+                    <dragablz:TabablzControl.InterTabController>
+                        <dragablz:InterTabController />
+                    </dragablz:TabablzControl.InterTabController>
+                    <dragablz:TabablzControl.HeaderItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Title}"/>
+                        </DataTemplate>
+                    </dragablz:TabablzControl.HeaderItemTemplate>
+                    <dragablz:TabablzControl.ContentTemplate>
+                        <DataTemplate>
+                            <local:PasswordEditPanel />
+                        </DataTemplate>
+                    </dragablz:TabablzControl.ContentTemplate>
+                </dragablz:TabablzControl>
+            </DockPanel>
+        </DockPanel>
+    </material:DialogHost>
 </controls:MetroWindow>

@@ -45,7 +45,7 @@ namespace PassManager.Models
             UserName = "";
             Url = "";
             Password = "";
-            Memos = new ObservableCollection<string>();
+            Memos = new ObservableCollection<MemoWrapper>();
         }
 
         private string title;
@@ -72,7 +72,17 @@ namespace PassManager.Models
             get { return password; }
             set { SetProperty(ref password, value); }
         }
-        public ObservableCollection<string> Memos { get; set; }
+        public ObservableCollection<MemoWrapper> Memos { get; set; }
+    }
+
+    public class MemoWrapper : BindableBase
+    {
+        private string memo;
+        public string Memo
+        {
+            get { return memo; }
+            set { SetProperty(ref memo, value); }
+        }
     }
 
     public sealed class ItemOperation : BindableBase
