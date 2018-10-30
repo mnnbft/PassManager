@@ -48,6 +48,9 @@ namespace PassManager.ViewModels
         }
         public void FunctionItemSelected()
         {
+            if(SelectedPassword == null)
+            { return; }
+
             ItemOperation.Instance.SelectedPasswords.Add(SelectedPassword);
             _regionManager.RequestNavigate("PasswordRegion", "PasswordEditTabControl");
         }

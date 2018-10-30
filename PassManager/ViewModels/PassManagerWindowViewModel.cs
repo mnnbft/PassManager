@@ -50,6 +50,11 @@ namespace PassManager.ViewModels
         {
             get { return ItemOperation.Instance.SelectedPasswords; }
         }
+        public PasswordItem SelectedPassword
+        {
+            get { return ItemOperation.Instance.SelectedPassword; }
+            set { ItemOperation.Instance.SelectedPassword = value; }
+        }
         private bool isInEditMode;
         public bool IsInEditMode
         {
