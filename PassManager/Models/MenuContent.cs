@@ -58,18 +58,21 @@ namespace PassManager.Models
         public bool IsSnackbarActive
         {
             get { return isSnackbarActive; }
-            set
+            set { SetProperty(ref isSnackbarActive, value); }
+        }
+
+        public void ShowSnackMessage(string message, int interval = 1000)
+        {
+            if (IsSnackbarActive)
+            { return; }
+
+            IsSnackbarActive = true;
+            SnackMessage = message;
+            Task.Run(() =>
             {
-                SetProperty(ref isSnackbarActive, value);
-                if (IsSnackbarActive)
-                {
-                    Task.Run(() =>
-                    {
-                        Thread.Sleep(1000);
-                        SetProperty(ref isSnackbarActive, false);
-                    });
-                }
-            }
+                Thread.Sleep(interval);
+                IsSnackbarActive = false;
+            });
         }
     }
 }

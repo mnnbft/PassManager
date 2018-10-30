@@ -1,7 +1,8 @@
 ﻿using MaterialDesignThemes.Wpf;
+using PassManager.Models;
 using Prism.Commands;
 using Prism.Mvvm;
-using System.Security;
+using System.IO;
 
 namespace PassManager.ViewModels
 {
@@ -33,8 +34,11 @@ namespace PassManager.ViewModels
         }
         private void FunctionCreate()
         {
-            Models.Password.Instance.CreateNewFile(FileName, FilePath, KeyPath, PasswordString);
+            Password.Instance.CreateNewFile(FileName, FilePath, KeyPath, PasswordString);
             DialogHost.CloseDialogCommand.Execute(null, null);
+
+            var fullFilePath = Path.Combine(filePath, fileName + ".pass");
+            MenuContent.Instance.ShowSnackMessage(fullFilePath + "を開きました", 3000);
         }
 
         public DelegateCommand CommandCancel

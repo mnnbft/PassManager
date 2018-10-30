@@ -17,6 +17,12 @@ namespace PassManager.Models
     {
         public OpenedFileInfo() { }
 
+        private bool isOpened;
+        public bool IsOpened
+        {
+            get { return isOpened; }
+            set { SetProperty(ref isOpened, value); }
+        }
         private string filePath;
         public string FilePath
         {
@@ -44,6 +50,7 @@ namespace PassManager.Models
 
         public void Open(string filePath, string keyPath, string password, ObservableCollection<FolderItem> folders)
         {
+            IsOpened = true;
             FilePath = filePath;
             KeyPath = keyPath;
             Password = password;
@@ -51,6 +58,7 @@ namespace PassManager.Models
         }
         public void Close()
         {
+            IsOpened = false;
             FilePath = "";
             KeyPath = "";
             password = "";

@@ -40,12 +40,10 @@ namespace PassManager.ViewModels
         public string SnackMessage
         {
             get { return MenuContent.Instance.SnackMessage; }
-            set { MenuContent.Instance.SnackMessage = value; }
         }
         public bool IsSnackbarActive
         {
             get { return MenuContent.Instance.IsSnackbarActive; }
-            set { MenuContent.Instance.IsSnackbarActive = value; }
         }
         private bool isInEditMode;
         public bool IsInEditMode
@@ -122,8 +120,11 @@ namespace PassManager.ViewModels
         }
         private void FunctionSave()
         {
-            if(IsSnackbarActive)
-            { return; }
+            if(!FileIO.Instance.OpenedFile.IsOpened)
+            {
+                MenuContent.Instance.ShowSnackMessage("ファイルを開いてください");
+                return;
+            }
 
             var filePath = FileIO.Instance.OpenedFile.FilePath;
             var keyPath = FileIO.Instance.OpenedFile.KeyPath;
@@ -132,8 +133,7 @@ namespace PassManager.ViewModels
 
             FileIO.Instance.FileEncrypt(filePath, keyPath, password, folders);
 
-            IsSnackbarActive = true;
-            SnackMessage = "保存しました";
+            MenuContent.Instance.ShowSnackMessage("ファイルを保存しました");
         }
 
         public DelegateCommand CommandFileClose
@@ -142,13 +142,15 @@ namespace PassManager.ViewModels
         }
         private void FunctionFileClose()
         {
-            if(IsSnackbarActive)
-            { return; }
+            if(!FileIO.Instance.OpenedFile.IsOpened)
+            {
+                MenuContent.Instance.ShowSnackMessage("ファイルを開いてください");
+                return;
+            }
 
             FileIO.Instance.OpenedFile.Close();
 
-            IsSnackbarActive = true;
-            SnackMessage = "ファイルを閉じました";
+            MenuContent.Instance.ShowSnackMessage("ファイルを閉じました");
         }
 
         public DelegateCommand CommandSettings

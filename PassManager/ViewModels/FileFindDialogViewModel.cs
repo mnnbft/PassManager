@@ -30,6 +30,8 @@ namespace PassManager.ViewModels
         {
             Password.Instance.OpenFile(FullFilePath, FullKeyPath, PasswordString);
             DialogHost.CloseDialogCommand.Execute(null, null);
+
+            MenuContent.Instance.ShowSnackMessage(FullFilePath + "を開きました", 3000);
         }
 
         public DelegateCommand CommandCancel
