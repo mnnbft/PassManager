@@ -3,6 +3,7 @@ using PassManager.Models;
 using PassManager.Views;
 using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Regions;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.ComponentModel;
@@ -11,8 +12,12 @@ namespace PassManager.ViewModels
 {
     class PassManagerWindowViewModel : BindableBase
     {
-        public PassManagerWindowViewModel()
+        private readonly IRegionManager _regionManager;
+
+        public PassManagerWindowViewModel(IRegionManager regionManager)
         {
+            _regionManager = regionManager;
+
             FileIO.Instance.OpenedFile.PropertyChanged += (d, e) => { OnPropertyChanged(e); };
             MenuContent.Instance.PropertyChanged += (d, e) => { OnPropertyChanged(e); };
         }
@@ -29,6 +34,7 @@ namespace PassManager.ViewModels
             {
                 ItemOperation.Instance.SelectedFolder = value;
                 IsInEditMode = false;
+                _regionManager.RequestNavigate("PasswordRegion", "PasswordListPanel");
             }
         }
         public PasswordItem SelectedPassword

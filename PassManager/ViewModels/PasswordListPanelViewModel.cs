@@ -8,13 +8,18 @@ using System.ComponentModel;
 using PassManager.Models;
 using Prism.Mvvm;
 using Prism.Commands;
+using Prism.Regions;
 
 namespace PassManager.ViewModels
 {
     class PasswordListPanelViewModel : BindableBase
     {
-        public PasswordListPanelViewModel()
+        private readonly IRegionManager _regionManager;
+
+        public PasswordListPanelViewModel(IRegionManager regionManager)
         {
+            _regionManager = regionManager;
+
             ItemOperation.Instance.PropertyChanged += (d, e) => { OnPropertyChanged(e); };
         }
 
@@ -30,6 +35,15 @@ namespace PassManager.ViewModels
         public void FunctionLoaded()
         {
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(SelectedFolder)));
+        }
+
+        public DelegateCommand CommandItemSelected
+        {
+            get { return new DelegateCommand(FunctionItemSelected); }
+        }
+        public void FunctionItemSelected()
+        {
+            _regionManager.RequestNavigate("PasswordRegion", "PasswordEditTabControl");
         }
     }
 }
