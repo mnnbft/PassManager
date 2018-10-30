@@ -26,7 +26,11 @@ namespace PassManager.ViewModels
         public FolderItem SelectedFolder
         {
             get { return selectedFolder; }
-            set { SetProperty(ref selectedFolder, value); }
+            set
+            {
+                SetProperty(ref selectedFolder, value);
+                IsInEditMode = false;
+            }
         }
         public PasswordItem SelectedPassword
         {
@@ -42,6 +46,12 @@ namespace PassManager.ViewModels
         {
             get { return MenuContent.Instance.IsSnackbarActive; }
             set { MenuContent.Instance.IsSnackbarActive = value; }
+        }
+        private bool isInEditMode;
+        public bool IsInEditMode
+        {
+            get { return isInEditMode; }
+            set { SetProperty(ref isInEditMode, value); }
         }
 
         public DelegateCommand CommandFileFind
@@ -112,6 +122,9 @@ namespace PassManager.ViewModels
         }
         private void FunctionSave()
         {
+            if(IsSnackbarActive)
+            { return; }
+
             var filePath = FileIO.Instance.OpenedFile.FilePath;
             var keyPath = FileIO.Instance.OpenedFile.KeyPath;
             var password = FileIO.Instance.OpenedFile.Password;
@@ -129,7 +142,13 @@ namespace PassManager.ViewModels
         }
         private void FunctionFileClose()
         {
+            if(IsSnackbarActive)
+            { return; }
+
             FileIO.Instance.OpenedFile.Close();
+
+            IsSnackbarActive = true;
+            SnackMessage = "ファイルを閉じました";
         }
 
         public DelegateCommand CommandSettings
@@ -140,6 +159,24 @@ namespace PassManager.ViewModels
         {
             var dialog = new SettingsDialog();
             DialogHost.Show(dialog);
+        }
+
+        public DelegateCommand CommandFolderReName
+        {
+            get { return new DelegateCommand(FunctionFolderReName); }
+        }
+        private void FunctionFolderReName()
+        {
+            IsInEditMode = true;
+        }
+
+        public DelegateCommand CommandEditKeyDown
+        {
+            get { return new DelegateCommand(FunctionEditKeyDown); }
+        }
+        private void FunctionEditKeyDown()
+        {
+            IsInEditMode = false;
         }
     }
 }
