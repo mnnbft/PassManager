@@ -15,6 +15,13 @@
         <DockPanel LastChildFill="False">
             <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                     material:ShadowAssist.ShadowDepth="Depth0"
+                    Command="{Binding CommandBack}">
+                <material:PackIcon Kind="KeyboardBackspace"
+                                   Width="24"
+                                   Height="24" />
+            </Button>
+            <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                    material:ShadowAssist.ShadowDepth="Depth0"
                     Command="{Binding CommandFileFind}">
                 <material:PackIcon Kind="FileFind"
                                    Width="24"

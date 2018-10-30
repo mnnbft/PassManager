@@ -89,7 +89,10 @@ namespace PassManager.Models
     {
         public static ItemOperation Instance { get; } = new ItemOperation();
 
-        private ItemOperation() { }
+        private ItemOperation()
+        {
+            SelectedPasswords = new ObservableCollection<PasswordItem>();
+        }
 
         private FolderItem selectedFoloder;
         public FolderItem SelectedFolder
@@ -102,6 +105,12 @@ namespace PassManager.Models
         {
             get { return selectedPassword; }
             set { SetProperty(ref selectedPassword, value); }
+        }
+        private ObservableCollection<PasswordItem> selectedPasswords;
+        public ObservableCollection<PasswordItem> SelectedPasswords
+        {
+            get { return selectedPasswords; }
+            set { SetProperty(ref selectedPasswords, value); }
         }
     }
 }

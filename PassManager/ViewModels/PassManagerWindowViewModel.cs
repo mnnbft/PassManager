@@ -20,6 +20,7 @@ namespace PassManager.ViewModels
 
             FileIO.Instance.OpenedFile.PropertyChanged += (d, e) => { OnPropertyChanged(e); };
             MenuContent.Instance.PropertyChanged += (d, e) => { OnPropertyChanged(e); };
+            ItemOperation.Instance.PropertyChanged += (d, e) => { OnPropertyChanged(e); };
         }
 
         public ObservableCollection<FolderItem> Folders 
@@ -37,11 +38,6 @@ namespace PassManager.ViewModels
                 _regionManager.RequestNavigate("PasswordRegion", "PasswordListPanel");
             }
         }
-        public PasswordItem SelectedPassword
-        {
-            get { return ItemOperation.Instance.SelectedPassword; }
-            set { ItemOperation.Instance.SelectedPassword = value; }
-        }
         public string SnackMessage
         {
             get { return MenuContent.Instance.SnackMessage; }
@@ -49,6 +45,10 @@ namespace PassManager.ViewModels
         public bool IsSnackbarActive
         {
             get { return MenuContent.Instance.IsSnackbarActive; }
+        }
+        public ObservableCollection<PasswordItem> SelectedPasswords
+        {
+            get { return ItemOperation.Instance.SelectedPasswords; }
         }
         private bool isInEditMode;
         public bool IsInEditMode
@@ -184,6 +184,15 @@ namespace PassManager.ViewModels
         private void FunctionEditKeyDown()
         {
             IsInEditMode = false;
+        }
+
+        public DelegateCommand CommandBack
+        {
+            get { return new DelegateCommand(FunctionBack); }
+        }
+        private void FunctionBack()
+        {
+            _regionManager.RequestNavigate("PasswordRegion", "PasswordListPanel");
         }
     }
 }

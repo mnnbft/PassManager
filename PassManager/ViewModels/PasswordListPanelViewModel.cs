@@ -27,6 +27,11 @@ namespace PassManager.ViewModels
         {
             get { return ItemOperation.Instance.SelectedFolder; }
         }
+        public PasswordItem SelectedPassword
+        {
+            get { return ItemOperation.Instance.SelectedPassword; }
+            set { ItemOperation.Instance.SelectedPassword = value; }
+        }
 
         public DelegateCommand CommandLoaded
         {
@@ -43,6 +48,7 @@ namespace PassManager.ViewModels
         }
         public void FunctionItemSelected()
         {
+            ItemOperation.Instance.SelectedPasswords.Add(SelectedPassword);
             _regionManager.RequestNavigate("PasswordRegion", "PasswordEditTabControl");
         }
     }
