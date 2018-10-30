@@ -22,13 +22,12 @@ namespace PassManager.ViewModels
             get { return FileIO.Instance.OpenedFile.Folders; }
             set { FileIO.Instance.OpenedFile.Folders = value; }
         }
-        private FolderItem selectedFolder;
         public FolderItem SelectedFolder
         {
-            get { return selectedFolder; }
+            get { return ItemOperation.Instance.SelectedFolder; }
             set
             {
-                SetProperty(ref selectedFolder, value);
+                ItemOperation.Instance.SelectedFolder = value;
                 IsInEditMode = false;
             }
         }

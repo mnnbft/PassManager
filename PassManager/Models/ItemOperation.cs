@@ -91,6 +91,12 @@ namespace PassManager.Models
 
         private ItemOperation() { }
 
+        private FolderItem selectedFoloder;
+        public FolderItem SelectedFolder
+        {
+            get { return selectedFoloder; }
+            set { SetProperty(ref selectedFoloder, value); }
+        }
         private PasswordItem selectedPassword;
         public PasswordItem SelectedPassword
         {

@@ -109,6 +109,7 @@
     <Compile Include="ViewModels\PassManagerWindowViewModel.cs" />
     <Compile Include="ViewModels\PasswordEditPanelViewModel.cs" />
     <Compile Include="ViewModels\PasswordGenerateDialogViewModel.cs" />
+    <Compile Include="ViewModels\PasswordListPanelViewModel.cs" />
     <Compile Include="ViewModels\SettingsDialogViewModel.cs" />
     <Compile Include="Views\Behavior\PasswordBoxPasswordBindingBehavior.cs" />
     <Compile Include="Views\Behavior\TreeViewSelectedItemBindingBehavior.cs" />
@@ -134,6 +135,9 @@
     </Compile>
     <Compile Include="Views\PasswordGenerateDialog.xaml.cs">
       <DependentUpon>PasswordGenerateDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PasswordListPanel.xaml.cs">
+      <DependentUpon>PasswordListPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsDialog.xaml.cs">
       <DependentUpon>SettingsDialog.xaml</DependentUpon>
@@ -195,6 +199,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PasswordGenerateDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PasswordListPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

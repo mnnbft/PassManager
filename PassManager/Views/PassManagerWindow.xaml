@@ -30,7 +30,9 @@
                                      Panel.ZIndex="1"/>
             <DockPanel Grid.Row="1">
                 <component:PasswordTreeView DockPanel.Dock="Left" />
-                <component:PasswordEditTabControl DockPanel.Dock="Right" />
+                <!--<component:PasswordEditTabControl DockPanel.Dock="Right" />-->
+                <ContentControl DockPanel.Dock="Right"
+                                prism:RegionManager.RegionName="PasswordRegion" />
             </DockPanel>
             <material:Snackbar Grid.Row="1" 
                                Message="{Binding SnackMessage}"
