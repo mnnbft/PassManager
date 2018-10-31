@@ -7,6 +7,7 @@ using Prism.Regions;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.ComponentModel;
+using System.Collections.Specialized;
 
 namespace PassManager.ViewModels
 {
@@ -21,6 +22,7 @@ namespace PassManager.ViewModels
             FileIO.Instance.OpenedFile.PropertyChanged += (d, e) => { OnPropertyChanged(e); };
             MenuContent.Instance.PropertyChanged += (d, e) => { OnPropertyChanged(e); };
             ItemOperation.Instance.PropertyChanged += (d, e) => { OnPropertyChanged(e); };
+            ItemOperation.Instance.SelectedPasswords.CollectionChanged += SelectedPasswordsCollectionChanged;
         }
 
         public ObservableCollection<FolderItem> Folders 
@@ -198,6 +200,12 @@ namespace PassManager.ViewModels
         private void FunctionBack()
         {
             _regionManager.RequestNavigate("PasswordRegion", "PasswordListPanel");
+        }
+
+        private void SelectedPasswordsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if(ItemOperation.Instance.SelectedPasswords.Count == 0)
+            { _regionManager.RequestNavigate("PasswordRegion", "PasswordListPanel"); }
         }
     }
 }
