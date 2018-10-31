@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.ComponentModel;
 using PassManager.Models;
 using Prism.Mvvm;
@@ -42,17 +43,42 @@ namespace PassManager.ViewModels
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(SelectedFolder)));
         }
 
-        public DelegateCommand CommandItemSelected
+        public DelegateCommand CommandModify
         {
-            get { return new DelegateCommand(FunctionItemSelected); }
+            get { return new DelegateCommand(FunctionModify); }
         }
-        public void FunctionItemSelected()
+        private void FunctionModify()
         {
             if(SelectedPassword == null)
             { return; }
 
             ItemOperation.Instance.SelectedPasswords.Add(SelectedPassword);
             _regionManager.RequestNavigate("PasswordRegion", "PasswordEditTabControl");
+        }
+
+        public DelegateCommand CommandDelete
+        {
+            get { return new DelegateCommand(FunctionDelete); }
+        }
+        private void FunctionDelete()
+        {
+            if(SelectedPassword == null)
+            { return; }
+
+            ItemOperation.Instance.SelectedFolder.Passwords.Remove(SelectedPassword);
+        }
+
+        public DelegateCommand CommandClipBoard
+        {
+            get { return new DelegateCommand(FunctionClipBoard); }
+        }
+        private void FunctionClipBoard()
+        {
+            if(SelectedPassword == null)
+            { return; }
+
+            Clipboard.SetDataObject(SelectedPassword.Password);
+            MenuContent.Instance.ShowSnackMessage("クリップボードにコピーしました");
         }
     }
 }
