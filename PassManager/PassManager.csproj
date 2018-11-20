@@ -132,6 +132,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\ClipBoard.cs" />
     <Compile Include="Models\MenuContent.cs" />
     <Compile Include="ViewModels\CommonViewModel.cs" />
     <Compile Include="ViewModels\FileFindDialogViewModel.cs" />

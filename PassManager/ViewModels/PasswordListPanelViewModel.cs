@@ -74,11 +74,7 @@ namespace PassManager.ViewModels
         }
         private void FunctionClipBoard()
         {
-            if(SelectedPassword == null)
-            { return; }
-
-            Clipboard.SetDataObject(SelectedPassword.Password);
-            MenuContent.Instance.ShowSnackMessage("クリップボードにコピーしました");
+            ClipBoard.Instance.PasswordCopy();
         }
     }
 }
