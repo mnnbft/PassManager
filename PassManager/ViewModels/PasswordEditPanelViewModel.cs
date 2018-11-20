@@ -1,24 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PassManager.Views;
-using Prism.Mvvm;
-using Prism.Commands;
+﻿using MaterialDesignThemes.Wpf;
 using PassManager.Models;
+using PassManager.Views;
+using Prism.Commands;
+using Prism.Mvvm;
 using System.ComponentModel;
-using MaterialDesignThemes.Wpf;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
+using System.Windows;
 
 namespace PassManager.ViewModels
 {
-    class PasswordEditPanelViewModel : BindableBase
+    class PasswordEditPanelViewModel : ViewModelBase
     {
-        public PasswordItem SelectedPassword 
+        public PasswordEditPanelViewModel()
         {
-            get { return ItemOperation.Instance.SelectedPassword; }
-            set { ItemOperation.Instance.SelectedPassword = value; }
+            SelectedPassword = ItemOperation.Instance.ObserveProperty(i => i.SelectedPassword).ToReactiveProperty().AddTo(Disposables);
         }
+
+        public ReactiveProperty<PasswordItem> SelectedPassword { get; }
+
         private bool isPasswordView;
         public bool IsPasswordView
         {
@@ -42,12 +42,8 @@ namespace PassManager.ViewModels
         private void FunctionPasswordGenerate()
         {
             var dialog = new PasswordGenerateDialog();
-            dialog.Unloaded += (d, e) =>
-            {
-                SelectedPassword.Password = dialog.GeneratedPassword;
-                OnPropertyChanged(new PropertyChangedEventArgs(nameof(SelectedPassword)));
-            };
 
+            dialog.Unloaded += DialogUnLoaded;
             DialogHost.Show(dialog);
         }
 
@@ -66,7 +62,7 @@ namespace PassManager.ViewModels
         }
         private void FunctionMemoPlus()
         {
-            SelectedPassword.Memos.Add(new MemoWrapper());
+            ItemOperation.Instance.AddMemos();
         }
 
         public DelegateCommand CommandMemoMinus
@@ -75,7 +71,13 @@ namespace PassManager.ViewModels
         }
         private void FunctionMemoMinus()
         {
-            SelectedPassword.Memos.Add(new MemoWrapper());
+            ItemOperation.Instance.AddMemos();
+        }
+
+        private void DialogUnLoaded(object sender, RoutedEventArgs e)
+        {
+            var dialog = (PasswordGenerateDialog)sender;
+            ItemOperation.Instance.SetPassword(dialog.GeneratedPassword);
         }
     }
 }

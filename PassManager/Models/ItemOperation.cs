@@ -112,5 +112,24 @@ namespace PassManager.Models
             get { return selectedPasswords; }
             set { SetProperty(ref selectedPasswords, value); }
         }
+
+        /// <summary>
+        /// 選択されているパスワードアイテムに引数で渡したパスワードをセットする
+        /// </summary>
+        /// <param name="password"></param>
+        public void SetPassword(string password)
+        {
+            if (SelectedPassword == null) throw new NullReferenceException();
+            SelectedPassword.Password = password;
+        }
+
+        /// <summary>
+        /// 選択されているパスワードアイテムのメモの末尾に新しいメモ追加する
+        /// </summary>
+        public void AddMemos()
+        {
+            if (SelectedPassword == null) throw new NullReferenceException();
+            SelectedPassword.Memos.Add(new MemoWrapper());
+        }
     }
 }
